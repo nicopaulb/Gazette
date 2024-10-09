@@ -1,11 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gazette/controllers/ProfileController.dart';
+import 'package:gazette/screens/auth/LogInScreen.dart';
+import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
+import 'package:gazette/screens/settings/SettingScreen.dart';
+import 'package:gazette/services/PocketBaseService.dart';
+import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:prokit_socialv/models/SVCommonModels.dart';
-import 'package:prokit_socialv/screens/home/screens/SVForumScreen.dart';
-import 'package:prokit_socialv/screens/profile/screens/SVGroupProfileScreen.dart';
-import 'package:prokit_socialv/utils/SVColors.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
+import 'package:gazette/models/SVDrawerModels.dart';
+import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/models/UserModel.dart';
 
 class SVHomeDrawerComponent extends StatefulWidget {
   @override
@@ -13,7 +19,9 @@ class SVHomeDrawerComponent extends StatefulWidget {
 }
 
 class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
+  final ProfileController _profileController = Get.put(ProfileController());
   List<SVDrawerModel> options = getDrawerOptions();
+  final user = PocketbaseService.to.user!;
 
   int selectedIndex = -1;
 
@@ -26,28 +34,32 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset('images/socialv/faces/face_1.png', height: 62, width: 62, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
-                16.width,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Mal Nurrisht', style: boldTextStyle(size: 18)),
-                    8.height,
-                    Text('malnur@gmail.com', style: secondaryTextStyle(color: svGetBodyColor())),
-                  ],
-                ),
-              ],
-            ),
-            IconButton(
-              icon: Image.asset('images/socialv/icons/ic_CloseSquare.png', height: 16, width: 16, fit: BoxFit.cover, color: context.iconColor),
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 finish(context);
+                _profileController.updateUser(user.id);
+                ProfileScreen().launch(context);
               },
-            ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CachedNetworkImage(
+                          imageUrl: user.getResizedAvatar(100, 100),
+                          height: 62,
+                          width: 62,
+                          fit: BoxFit.cover)
+                      .cornerRadiusWithClipRRect(8),
+                  16.width,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(user.firstname, style: boldTextStyle(size: 18)),
+                    ],
+                  ),
+                ],
+              ),
+            )
           ],
         ).paddingOnly(left: 16, right: 8, bottom: 20, top: 20),
         20.height,
@@ -56,22 +68,38 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
           children: options.map((e) {
             int index = options.indexOf(e);
             return SettingItemWidget(
-              decoration: BoxDecoration(color: selectedIndex == index ? SVAppColorPrimary.withAlpha(30) : context.cardColor),
+              decoration: BoxDecoration(
+                  color: selectedIndex == index
+                      ? SVAppColorPrimary.withAlpha(30)
+                      : context.cardColor),
               title: e.title.validate(),
               titleTextStyle: boldTextStyle(size: 14),
-              leading: Image.asset(e.image.validate(), height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
-              onTap: () {
+              leading: Image.asset(e.image.validate(),
+                  height: 22,
+                  width: 22,
+                  fit: BoxFit.cover,
+                  color: SVAppColorPrimary),
+              onTap: () async {
                 selectedIndex = index;
                 setState(() {});
-                if (selectedIndex == options.length - 1) {
-                  finish(context);
-                  finish(context);
-                } else if (selectedIndex == 4) {
-                  finish(context);
-                  SVForumScreen().launch(context);
-                } else if (selectedIndex == 2) {
-                  finish(context);
-                  SVGroupProfileScreen().launch(context);
+                switch (selectedIndex) {
+                  case 0:
+                    finish(context);
+                    _profileController.updateUser(user.id);
+                    ProfileScreen().launch(context);
+                    break;
+                  case 1:
+                    finish(context);
+                    SettingScreen().launch(context);
+                    break;
+                  case 2:
+                    await PocketbaseService.to.logout();
+                    finish(context);
+                    LogInScreen().launch(context);
+                    break;
+                  default:
+                    finish(context);
+                    break;
                 }
               },
             );
@@ -80,7 +108,8 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
         Divider(indent: 16, endIndent: 16),
         SnapHelperWidget<PackageInfo>(
           future: PackageInfo.fromPlatform(),
-          onSuccess: (data) => Text(data.version, style: boldTextStyle(color: svGetBodyColor())),
+          onSuccess: (data) =>
+              Text(data.version, style: boldTextStyle(color: svGetBodyColor())),
         ),
         20.height,
       ],

@@ -2,7 +2,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 const double SVAppContainerRadius = 32;
 const double SVAppCommonRadius = 12;
-const svAppName = "SocialV";
+const svAppName = "Gazette";
 
 
 class SVNotificationType {

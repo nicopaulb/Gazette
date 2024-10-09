@@ -1,5 +1,5 @@
-name: prokit_socialv
-description: A new Flutter project.
+name: gazette
+description: La gazette au format numérique
 
 publish_to: 'none'
 version: 1.0.0
@@ -35,6 +35,13 @@ dependencies:
   # State Management Technique
   mobx: ^2.3.3+2
   flutter_mobx: ^2.2.1+1
+  pocketbase: ^0.18.1
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  cached_network_image: ^3.4.1
+  syncfusion_flutter_pdfviewer: ^27.1.53
+  flutter_localizations:
+    sdk: flutter
 
 dependency_overrides:
   intl: ^0.19.0
@@ -55,11 +62,8 @@ flutter:
 
 
   assets:
-    - images/socialv/posts/
-    - images/socialv/faces/
-    - images/socialv/
-    - images/socialv/icons/
-    - images/socialv/gifs/
+    - images/gazette/
+    - images/gazette/icons/
 
 
 

@@ -1,30 +1,19 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gazette/controllers/ProfileController.dart';
+import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/screens/home/components/SVHomeDrawerComponent.dart';
-import 'package:prokit_socialv/screens/home/components/SVPostComponent.dart';
-import 'package:prokit_socialv/screens/home/components/SVStoryComponent.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
+import 'package:gazette/screens/home/components/SVHomeDrawerComponent.dart';
+import 'package:gazette/screens/home/components/SVPostComponent.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
+import 'package:gazette/services/PocketBaseService.dart';
+import 'package:gazette/models/UserModel.dart';
 
-
-class SVHomeFragment extends StatefulWidget {
-  @override
-  State<SVHomeFragment> createState() => _SVHomeFragmentState();
-}
-
-class _SVHomeFragmentState extends State<SVHomeFragment> {
-  var scaffoldKey = GlobalKey<ScaffoldState>();
-
-  File? image;
-
-  @override
-  void initState() {
-    super.initState();
-    afterBuildCreated(() {
-      setStatusBarColor(svGetScaffoldColor());
-    });
-  }
+class SVHomeFragment extends StatelessWidget {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final User user = PocketbaseService.to.user!;
+  final ProfileController _profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +25,11 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
         elevation: 0,
         leading: IconButton(
           icon: Image.asset(
-            'images/socialv/icons/ic_More.png',
+            'images/gazette/icons/ic_More.png',
             width: 18,
             height: 18,
             fit: BoxFit.cover,
-            color: context.iconColor,
+            color: ContextExtensions(context).iconColor,
           ),
           onPressed: () {
             scaffoldKey.currentState?.openDrawer();
@@ -48,18 +37,21 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
         ),
         title: Text('Home', style: boldTextStyle(size: 18)),
         actions: [
-          IconButton(
-            icon: Image.asset(
-              'images/socialv/icons/ic_Camera.png',
-              width: 24,
-              height: 22,
-              fit: BoxFit.fill,
-              color: context.iconColor,
-            ),
-            onPressed: () async {
-              image = await svGetImageSource();
+          InkWell(
+            onTap: () {
+              _profileController.updateUser(user.id);
+              ProfileScreen().launch(context);
             },
-          ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(60),
+              child: CachedNetworkImage(
+                width: 24,
+                height: 24,
+                fit: BoxFit.cover,
+                imageUrl: user.getResizedAvatar(100, 100),
+              ),
+            ),
+          ).paddingRight(12),
         ],
       ),
       drawer: Drawer(
@@ -69,8 +61,6 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            16.height,
-            SVStoryComponent(),
             16.height,
             SVPostComponent(),
             16.height,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/utils/SVColors.dart';
+import 'package:gazette/utils/SVColors.dart';
 
 part 'AppStore.g.dart';
 
@@ -21,7 +21,6 @@ abstract class AppStoreBase with Store {
 
       defaultLoaderBgColorGlobal = Colors.white;
       shadowColorGlobal = Colors.white12;
-
     } else {
       textPrimaryColorGlobal = textPrimaryColor;
       textSecondaryColorGlobal = textSecondaryColor;
@@ -29,7 +28,6 @@ abstract class AppStoreBase with Store {
       defaultLoaderBgColorGlobal = Colors.white;
       appButtonBackgroundColorGlobal = SVAppColorPrimary;
       shadowColorGlobal = Colors.black12;
-
     }
   }
 }
