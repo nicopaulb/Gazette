@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/screens/auth/screens/SVSignInScreen.dart';
+import 'package:prokit_socialv/screens/SVDashboardScreen.dart';
 
 class SVSplashScreen extends StatefulWidget {
   const SVSplashScreen({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
     setStatusBarColor(Colors.transparent);
     await 3.seconds.delay;
     finish(context);
-    SVSignInScreen().launch(context,isNewTask: true);
+    SVDashboardScreen().launch(context, isNewTask: true);
   }
 
   @override
@@ -38,9 +38,15 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('images/socialv/svAppIcon.png', height: 50, width: 52, fit: BoxFit.cover, color: Colors.white),
+              Image.asset('images/socialv/svAppIcon.png',
+                  height: 50,
+                  width: 52,
+                  fit: BoxFit.cover,
+                  color: Colors.white),
               8.width,
-              Text("SocialV", style: primaryTextStyle(color: Colors.white, size: 40, weight: FontWeight.w500)),
+              Text("SocialV",
+                  style: primaryTextStyle(
+                      color: Colors.white, size: 40, weight: FontWeight.w500)),
             ],
           ),
         ],
