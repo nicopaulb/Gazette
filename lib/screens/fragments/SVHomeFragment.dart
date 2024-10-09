@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:prokit_socialv/screens/home/components/SVHomeDrawerComponent.dart';
 import 'package:prokit_socialv/screens/home/components/SVPostComponent.dart';
-import 'package:prokit_socialv/screens/home/components/SVStoryComponent.dart';
 import 'package:prokit_socialv/utils/SVCommon.dart';
 
 
@@ -47,20 +46,7 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
           },
         ),
         title: Text('Home', style: boldTextStyle(size: 18)),
-        actions: [
-          IconButton(
-            icon: Image.asset(
-              'images/socialv/icons/ic_Camera.png',
-              width: 24,
-              height: 22,
-              fit: BoxFit.fill,
-              color: context.iconColor,
-            ),
-            onPressed: () async {
-              image = await svGetImageSource();
-            },
-          ),
-        ],
+        actions: [],
       ),
       drawer: Drawer(
         backgroundColor: context.cardColor,
@@ -69,8 +55,6 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            16.height,
-            SVStoryComponent(),
             16.height,
             SVPostComponent(),
             16.height,

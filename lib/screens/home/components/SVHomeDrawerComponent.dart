@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:prokit_socialv/models/SVCommonModels.dart';
-import 'package:prokit_socialv/screens/home/screens/SVForumScreen.dart';
-import 'package:prokit_socialv/screens/profile/screens/SVGroupProfileScreen.dart';
+import 'package:prokit_socialv/models/SVDrawerModels.dart';
 import 'package:prokit_socialv/utils/SVColors.dart';
 import 'package:prokit_socialv/utils/SVCommon.dart';
 
@@ -35,19 +33,11 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Mal Nurrisht', style: boldTextStyle(size: 18)),
-                    8.height,
-                    Text('malnur@gmail.com', style: secondaryTextStyle(color: svGetBodyColor())),
+                    Text('Nicolas', style: boldTextStyle(size: 18)),
                   ],
                 ),
               ],
-            ),
-            IconButton(
-              icon: Image.asset('images/socialv/icons/ic_CloseSquare.png', height: 16, width: 16, fit: BoxFit.cover, color: context.iconColor),
-              onPressed: () {
-                finish(context);
-              },
-            ),
+            )
           ],
         ).paddingOnly(left: 16, right: 8, bottom: 20, top: 20),
         20.height,
@@ -63,15 +53,10 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
               onTap: () {
                 selectedIndex = index;
                 setState(() {});
-                if (selectedIndex == options.length - 1) {
-                  finish(context);
-                  finish(context);
-                } else if (selectedIndex == 4) {
-                  finish(context);
-                  SVForumScreen().launch(context);
-                } else if (selectedIndex == 2) {
-                  finish(context);
-                  SVGroupProfileScreen().launch(context);
+                switch (selectedIndex) {
+                  // Fill with action to do when drawer item is tapped
+                  default:
+                    finish(context);
                 }
               },
             );

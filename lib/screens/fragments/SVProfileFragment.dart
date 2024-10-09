@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:prokit_socialv/main.dart';
-import 'package:prokit_socialv/screens/home/components/SVStoryComponent.dart';
 import 'package:prokit_socialv/screens/profile/components/SVProfileHeaderComponent.dart';
 import 'package:prokit_socialv/screens/profile/components/SVProfilePostsComponent.dart';
 import 'package:prokit_socialv/utils/SVCommon.dart';
@@ -43,7 +42,6 @@ class _SVProfileFragmentState extends State<SVProfileFragment> {
               value: appStore.isDarkMode,
               activeColor: SVAppColorPrimary,
             ),
-            //IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
           ],
         ),
         body: SingleChildScrollView(
@@ -54,61 +52,31 @@ class _SVProfileFragmentState extends State<SVProfileFragment> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Manding boss', style: boldTextStyle(size: 20)),
-                  4.width,
-                  Image.asset('images/socialv/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover),
+                  Text('Nicolas', style: boldTextStyle(size: 20))
                 ],
               ),
-              Text('@splatterui', style: secondaryTextStyle(color: svGetBodyColor())),
-              24.height,
-              AppButton(
-                shapeBorder: RoundedRectangleBorder(borderRadius: radius(4)),
-                text: 'Following',
-                textStyle: boldTextStyle(color: Colors.white),
-                onTap: () {},
-                elevation: 0,
-                color: SVAppColorPrimary,
-              ),
+              Text('@admin', style: secondaryTextStyle(color: svGetBodyColor())),
               24.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
                     children: [
-                      Text('Posts', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
+                      Text('Annecdotes', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
                       4.height,
-                      Text('1,1286', style: boldTextStyle(size: 18)),
+                      Text('16', style: boldTextStyle(size: 18)),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('Followers', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
+                      Text('Mots', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
                       4.height,
-                      Text('127k', style: boldTextStyle(size: 18)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text('Views', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
-                      4.height,
-                      Text('1156m', style: boldTextStyle(size: 18)),
+                      Text('1k', style: boldTextStyle(size: 18)),
                     ],
                   )
                 ],
               ),
               16.height,
-              Container(
-                decoration: BoxDecoration(color: context.cardColor, borderRadius: radius(SVAppCommonRadius)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    16.height,
-                    Text('Your Stories', style: boldTextStyle(size: 14)).paddingSymmetric(horizontal: 16),
-                    16.height,
-                    SVStoryComponent(),
-                  ],
-                ),
-              ),
               SVProfilePostsComponent(),
               16.height,
             ],

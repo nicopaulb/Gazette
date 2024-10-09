@@ -45,7 +45,7 @@ class _SVProfilePostsComponentState extends State<SVProfilePostsComponent> {
                       setState(() {});
                     },
                     child: Text(
-                      'All Post',
+                      'Annecdotes',
                       style: TextStyle(
                         color: SVAppColorPrimary,
                         fontSize: 14,
@@ -68,7 +68,7 @@ class _SVProfilePostsComponentState extends State<SVProfilePostsComponent> {
                       setState(() {});
                     },
                     child: Text(
-                      'Mentions',
+                      'Éditions spéciales',
                       style: TextStyle(
                         color: SVAppColorPrimary,
                         fontSize: 14,
