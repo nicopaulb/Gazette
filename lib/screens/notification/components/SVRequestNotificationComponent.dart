@@ -23,7 +23,7 @@ class SVRequestNotificationComponent extends StatelessWidget {
               children: [
                 Text(element.name.validate(), style: boldTextStyle(size: 14)),
                 2.width,
-                element.isOfficial.validate() ? Image.asset('images/socialv/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover) : Offstage(),
+                element.isOfficial.validate() ? Image.asset('images/gazette/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover) : Offstage(),
                 Text('send request to follow you', style: secondaryTextStyle(color: svGetBodyColor())),
               ],
               mainAxisSize: MainAxisSize.min,

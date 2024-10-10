@@ -27,13 +27,13 @@ class _SVCommentComponentState extends State<SVCommentComponent> {
                 16.width,
                 Text(widget.comment.name.validate(), style: boldTextStyle(size: 14)),
                 4.width,
-                Image.asset('images/socialv/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover),
+                Image.asset('images/gazette/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover),
               ],
             ),
             Row(
               children: [
                 Image.asset(
-                  'images/socialv/icons/ic_TimeSquare.png',
+                  'images/gazette/icons/ic_TimeSquare.png',
                   height: 14,
                   width: 14,
                   fit: BoxFit.cover,
@@ -57,9 +57,9 @@ class _SVCommentComponentState extends State<SVCommentComponent> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   widget.comment.like.validate()
-                      ? Image.asset('images/socialv/icons/ic_HeartFilled.png', height: 14, width: 14, fit: BoxFit.fill)
+                      ? Image.asset('images/gazette/icons/ic_HeartFilled.png', height: 14, width: 14, fit: BoxFit.fill)
                       : Image.asset(
-                          'images/socialv/icons/ic_Heart.png',
+                          'images/gazette/icons/ic_Heart.png',
                           height: 14,
                           width: 14,
                           fit: BoxFit.cover,

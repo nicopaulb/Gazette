@@ -24,7 +24,7 @@ class SVSearchCardComponent extends StatelessWidget {
                     Text(element.name.validate(), style: boldTextStyle()),
                     6.width,
                     element.isOfficialAccount.validate()
-                        ? Image.asset('images/socialv/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
+                        ? Image.asset('images/gazette/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
                         : Offstage(),
                   ],
                   mainAxisSize: MainAxisSize.min,
@@ -37,7 +37,7 @@ class SVSearchCardComponent extends StatelessWidget {
           ],
         ),
         Image.asset(
-          'images/socialv/icons/ic_CloseSquare.png',
+          'images/gazette/icons/ic_CloseSquare.png',
           height: 20,
           width: 20,
           fit: BoxFit.cover,

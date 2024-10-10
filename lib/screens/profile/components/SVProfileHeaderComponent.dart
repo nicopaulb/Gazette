@@ -15,7 +15,7 @@ class SVProfileHeaderComponent extends StatelessWidget {
             alignment: Alignment.topCenter,
             children: [
               Image.asset(
-                'images/socialv/backgroundImage.png',
+                'images/gazette/backgroundImage.png',
                 width: context.width(),
                 height: 130,
                 fit: BoxFit.cover,
@@ -24,7 +24,7 @@ class SVProfileHeaderComponent extends StatelessWidget {
                 bottom: 0,
                 child: Container(
                   decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 2), borderRadius: radius(18)),
-                  child: Image.asset('images/socialv/faces/face_5.png', height: 88, width: 88, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
+                  child: Image.asset('images/gazette/faces/face_5.png', height: 88, width: 88, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
                 ),
               ),
             ],

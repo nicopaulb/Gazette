@@ -27,7 +27,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset('images/socialv/faces/face_1.png', height: 62, width: 62, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
+                Image.asset('images/gazette/faces/face_1.png', height: 62, width: 62, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
                 16.width,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

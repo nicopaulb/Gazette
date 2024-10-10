@@ -26,7 +26,7 @@ class SVBirthdayNotificationComponent extends StatelessWidget {
                     Text(element.name.validate(), style: boldTextStyle(size: 14)),
                     2.width,
                     element.isOfficial.validate()
-                        ? Image.asset('images/socialv/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
+                        ? Image.asset('images/gazette/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
                         : Offstage(),
                     Text(' and ${element.secondName}', style: secondaryTextStyle(color: svGetBodyColor())),
                   ],
@@ -47,7 +47,7 @@ class SVBirthdayNotificationComponent extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(color: context.cardColor, borderRadius: radius(8)),
-          child: Image.asset('images/socialv/icons/ic_Cake.png', height: 20, width: 20, fit: BoxFit.cover),
+          child: Image.asset('images/gazette/icons/ic_Cake.png', height: 20, width: 20, fit: BoxFit.cover),
         ),
       ],
     ).paddingAll(16);

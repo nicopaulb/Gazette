@@ -24,7 +24,7 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
         30.height,
         Row(
           children: [
-            Image.asset('images/socialv/posts/post_one.png', height: 80, width: 80, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
+            Image.asset('images/gazette/posts/post_one.png', height: 80, width: 80, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
             10.width,
             Container(
               width: context.width() * 0.6,
@@ -50,14 +50,14 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
               border: InputBorder.none,
               hintText: 'Search Here',
               hintStyle: secondaryTextStyle(color: svGetBodyColor()),
-              prefixIcon: Image.asset('images/socialv/icons/ic_Search.png', height: 16, width: 16, fit: BoxFit.cover, color: svGetBodyColor()).paddingAll(16),
+              prefixIcon: Image.asset('images/gazette/icons/ic_Search.png', height: 16, width: 16, fit: BoxFit.cover, color: svGetBodyColor()).paddingAll(16),
             ),
           ),
         ),
         16.height,
         Row(
           children: [
-            Image.asset('images/socialv/faces/face_5.png', height: 48, width: 48, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
+            Image.asset('images/gazette/faces/face_5.png', height: 48, width: 48, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
             10.width,
             Text('Add post to your story', style: secondaryTextStyle(color: svGetBodyColor())),
           ],
@@ -78,7 +78,7 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
                         Text(e.name.validate(), style: boldTextStyle()),
                         6.width,
                         e.isOfficialAccount.validate()
-                            ? Image.asset('images/socialv/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
+                            ? Image.asset('images/gazette/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
                             : Offstage(),
                       ],
                       mainAxisSize: MainAxisSize.min,

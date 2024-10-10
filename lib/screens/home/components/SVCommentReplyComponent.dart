@@ -18,7 +18,7 @@ class SVCommentReplyComponent extends StatelessWidget {
           Row(
             children: [
               16.width,
-              Image.asset('images/socialv/faces/face_5.png', height: 48, width: 48, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
+              Image.asset('images/gazette/faces/face_5.png', height: 48, width: 48, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
               10.width,
               Container(
                 width: context.width() * 0.6,

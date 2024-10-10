@@ -30,7 +30,7 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
         alignment: Alignment.center,
         children: [
           Image.asset(
-            'images/socialv/svSplashImage.jpg',
+            'images/gazette/svSplashImage.jpg',
             height: context.height(),
             width: context.width(),
             fit: BoxFit.fill,
@@ -38,7 +38,7 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('images/socialv/svAppIcon.png',
+              Image.asset('images/gazette/svAppIcon.png',
                   height: 50,
                   width: 52,
                   fit: BoxFit.cover,

@@ -35,7 +35,7 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
         elevation: 0,
         leading: IconButton(
           icon: Image.asset(
-            'images/socialv/icons/ic_More.png',
+            'images/gazette/icons/ic_More.png',
             width: 18,
             height: 18,
             fit: BoxFit.cover,

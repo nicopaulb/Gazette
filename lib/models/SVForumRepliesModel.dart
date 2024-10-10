@@ -19,7 +19,7 @@ List<SVForumRepliesModel> getRepliesList() {
     hashTagNo: '123',
     subTitle: 'Public Group',
     description: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit...',
-    profileImage: 'images/socialv/faces/face_1.png',
+    profileImage: 'images/gazette/faces/face_1.png',
   ));
   list.add(SVForumRepliesModel(
     name: 'Mal Nurrisht',
@@ -27,7 +27,7 @@ List<SVForumRepliesModel> getRepliesList() {
     hashTagNo: '123',
     subTitle: 'Public Group',
     description: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit...',
-    profileImage: 'images/socialv/faces/face_2.png',
+    profileImage: 'images/gazette/faces/face_2.png',
   ));
 
   list.add(SVForumRepliesModel(
@@ -36,7 +36,7 @@ List<SVForumRepliesModel> getRepliesList() {
     hashTagNo: '123',
     subTitle: 'Public Group',
     description: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit...',
-    profileImage: 'images/socialv/faces/face_3.png',
+    profileImage: 'images/gazette/faces/face_3.png',
   ));
 
   return list;

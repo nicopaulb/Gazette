@@ -15,15 +15,15 @@ class _SVProfilePostsComponentState extends State<SVProfilePostsComponent> {
   int selectedIndex = 0;
 
   List<String> allPostList = [
-    'images/socialv/posts/post_one.png',
-    'images/socialv/posts/post_two.png',
-    'images/socialv/posts/post_three.png',
-    'images/socialv/posts/post_one.png',
-    'images/socialv/posts/post_two.png',
-    'images/socialv/posts/post_three.png',
-    'images/socialv/posts/post_one.png',
-    'images/socialv/posts/post_two.png',
-    'images/socialv/posts/post_three.png',
+    'images/gazette/posts/post_one.png',
+    'images/gazette/posts/post_two.png',
+    'images/gazette/posts/post_three.png',
+    'images/gazette/posts/post_one.png',
+    'images/gazette/posts/post_two.png',
+    'images/gazette/posts/post_three.png',
+    'images/gazette/posts/post_one.png',
+    'images/gazette/posts/post_two.png',
+    'images/gazette/posts/post_three.png',
   ];
 
   @override

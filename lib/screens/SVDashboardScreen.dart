@@ -47,30 +47,30 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Image.asset('images/socialv/icons/ic_Home.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Home.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/socialv/icons/ic_HomeSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_HomeSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/socialv/icons/ic_Search.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Search.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/socialv/icons/ic_SearchSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_SearchSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/socialv/icons/ic_Plus.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Plus.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/socialv/icons/ic_PlusSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_PlusSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
             icon:
-            Image.asset('images/socialv/icons/ic_Notification.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            Image.asset('images/gazette/icons/ic_Notification.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/socialv/icons/ic_NotificationSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_NotificationSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/socialv/icons/ic_User.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_User.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/socialv/icons/ic_UserSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_UserSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
         ],
         onTap: (val) {

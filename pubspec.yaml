@@ -55,11 +55,11 @@ flutter:
 
 
   assets:
-    - images/socialv/posts/
-    - images/socialv/faces/
-    - images/socialv/
-    - images/socialv/icons/
-    - images/socialv/gifs/
+    - images/gazette/posts/
+    - images/gazette/faces/
+    - images/gazette/
+    - images/gazette/icons/
+    - images/gazette/gifs/
 
 
 
