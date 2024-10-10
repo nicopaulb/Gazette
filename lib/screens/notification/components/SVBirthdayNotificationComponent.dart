@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/models/SVNotificationModel.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
+import 'package:gazette/models/SVNotificationModel.dart';
+import 'package:gazette/utils/SVCommon.dart';
 
 class SVBirthdayNotificationComponent extends StatelessWidget {
   final SVNotificationModel element;
@@ -17,18 +17,23 @@ class SVBirthdayNotificationComponent extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(element.profileImage.validate(), height: 40, width: 40, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
+            Image.asset(element.profileImage.validate(),
+                    height: 40, width: 40, fit: BoxFit.cover)
+                .cornerRadiusWithClipRRect(8),
             8.width,
             Column(
               children: [
                 Row(
                   children: [
-                    Text(element.name.validate(), style: boldTextStyle(size: 14)),
+                    Text(element.name.validate(),
+                        style: boldTextStyle(size: 14)),
                     2.width,
                     element.isOfficial.validate()
-                        ? Image.asset('images/gazette/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
+                        ? Image.asset('images/gazette/icons/ic_TickSquare.png',
+                            height: 14, width: 14, fit: BoxFit.cover)
                         : Offstage(),
-                    Text(' and ${element.secondName}', style: secondaryTextStyle(color: svGetBodyColor())),
+                    Text(' and ${element.secondName}',
+                        style: secondaryTextStyle(color: svGetBodyColor())),
                   ],
                   mainAxisSize: MainAxisSize.min,
                 ),
@@ -38,7 +43,9 @@ class SVBirthdayNotificationComponent extends StatelessWidget {
                       color: svGetBodyColor(),
                     )),
                 6.height,
-                Text('${element.time.validate()} ago', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
+                Text('${element.time.validate()} ago',
+                    style:
+                        secondaryTextStyle(color: svGetBodyColor(), size: 12)),
               ],
               crossAxisAlignment: CrossAxisAlignment.start,
             ),
@@ -46,8 +53,10 @@ class SVBirthdayNotificationComponent extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(color: context.cardColor, borderRadius: radius(8)),
-          child: Image.asset('images/gazette/icons/ic_Cake.png', height: 20, width: 20, fit: BoxFit.cover),
+          decoration:
+              BoxDecoration(color: context.cardColor, borderRadius: radius(8)),
+          child: Image.asset('images/gazette/icons/ic_Cake.png',
+              height: 20, width: 20, fit: BoxFit.cover),
         ),
       ],
     ).paddingAll(16);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/screens/SVDashboardScreen.dart';
+import 'package:gazette/screens/SVDashboardScreen.dart';
 
 class SVSplashScreen extends StatefulWidget {
   const SVSplashScreen({Key? key}) : super(key: key);

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/main.dart';
-import 'package:prokit_socialv/screens/addPost/components/SVPostOptionsComponent.dart';
-import 'package:prokit_socialv/screens/addPost/components/SVPostTextComponent.dart';
-import 'package:prokit_socialv/utils/SVColors.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-
+import 'package:gazette/main.dart';
+import 'package:gazette/screens/addPost/components/SVPostOptionsComponent.dart';
+import 'package:gazette/screens/addPost/components/SVPostTextComponent.dart';
+import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/SVCommon.dart';
 
 class SVAddPostFragment extends StatefulWidget {
   const SVAddPostFragment({Key? key}) : super(key: key);
@@ -25,10 +24,10 @@ class _SVAddPostFragmentState extends State<SVAddPostFragment> {
     });
   }
 
-
   @override
   void dispose() {
-    setStatusBarColor(appStore.isDarkMode ? appBackgroundColorDark : SVAppLayoutBackground);
+    setStatusBarColor(
+        appStore.isDarkMode ? appBackgroundColorDark : SVAppLayoutBackground);
     super.dispose();
   }
 
@@ -72,5 +71,3 @@ class _SVAddPostFragmentState extends State<SVAddPostFragment> {
     );
   }
 }
-
-

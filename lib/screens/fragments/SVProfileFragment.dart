@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/main.dart';
-import 'package:prokit_socialv/screens/profile/components/SVProfileHeaderComponent.dart';
-import 'package:prokit_socialv/screens/profile/components/SVProfilePostsComponent.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-import 'package:prokit_socialv/utils/SVConstants.dart';
+import 'package:gazette/main.dart';
+import 'package:gazette/screens/profile/components/SVProfileHeaderComponent.dart';
+import 'package:gazette/screens/profile/components/SVProfilePostsComponent.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/SVConstants.dart';
 
 import '../../utils/SVColors.dart';
 
@@ -51,25 +51,28 @@ class _SVProfileFragmentState extends State<SVProfileFragment> {
               16.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Nicolas', style: boldTextStyle(size: 20))
-                ],
+                children: [Text('Nicolas', style: boldTextStyle(size: 20))],
               ),
-              Text('@admin', style: secondaryTextStyle(color: svGetBodyColor())),
+              Text('@admin',
+                  style: secondaryTextStyle(color: svGetBodyColor())),
               24.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
                     children: [
-                      Text('Annecdotes', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
+                      Text('Annecdotes',
+                          style: secondaryTextStyle(
+                              color: svGetBodyColor(), size: 12)),
                       4.height,
                       Text('16', style: boldTextStyle(size: 18)),
                     ],
                   ),
                   Column(
                     children: [
-                      Text('Mots', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
+                      Text('Mots',
+                          style: secondaryTextStyle(
+                              color: svGetBodyColor(), size: 12)),
                       4.height,
                       Text('1k', style: boldTextStyle(size: 18)),
                     ],

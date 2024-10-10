@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:prokit_socialv/models/SVDrawerModels.dart';
-import 'package:prokit_socialv/utils/SVColors.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
+import 'package:gazette/models/SVDrawerModels.dart';
+import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/SVCommon.dart';
 
 class SVHomeDrawerComponent extends StatefulWidget {
   @override
@@ -27,7 +27,9 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset('images/gazette/faces/face_1.png', height: 62, width: 62, fit: BoxFit.cover).cornerRadiusWithClipRRect(8),
+                Image.asset('images/gazette/faces/face_1.png',
+                        height: 62, width: 62, fit: BoxFit.cover)
+                    .cornerRadiusWithClipRRect(8),
                 16.width,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,10 +48,17 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
           children: options.map((e) {
             int index = options.indexOf(e);
             return SettingItemWidget(
-              decoration: BoxDecoration(color: selectedIndex == index ? SVAppColorPrimary.withAlpha(30) : context.cardColor),
+              decoration: BoxDecoration(
+                  color: selectedIndex == index
+                      ? SVAppColorPrimary.withAlpha(30)
+                      : context.cardColor),
               title: e.title.validate(),
               titleTextStyle: boldTextStyle(size: 14),
-              leading: Image.asset(e.image.validate(), height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
+              leading: Image.asset(e.image.validate(),
+                  height: 22,
+                  width: 22,
+                  fit: BoxFit.cover,
+                  color: SVAppColorPrimary),
               onTap: () {
                 selectedIndex = index;
                 setState(() {});
@@ -65,7 +74,8 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
         Divider(indent: 16, endIndent: 16),
         SnapHelperWidget<PackageInfo>(
           future: PackageInfo.fromPlatform(),
-          onSuccess: (data) => Text(data.version, style: boldTextStyle(color: svGetBodyColor())),
+          onSuccess: (data) =>
+              Text(data.version, style: boldTextStyle(color: svGetBodyColor())),
         ),
         20.height,
       ],

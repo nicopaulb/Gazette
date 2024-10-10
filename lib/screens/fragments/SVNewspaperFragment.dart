@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/models/SVNotificationModel.dart';
-import 'package:prokit_socialv/screens/notification/components/SVBirthdayNotificationComponent.dart';
-import 'package:prokit_socialv/screens/notification/components/SVLikeNotificationComponent.dart';
-import 'package:prokit_socialv/screens/notification/components/SVNewPostNotificationComponent.dart';
-import 'package:prokit_socialv/screens/notification/components/SVRequestNotificationComponent.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-import 'package:prokit_socialv/utils/SVConstants.dart';
+import 'package:gazette/models/SVNotificationModel.dart';
+import 'package:gazette/screens/notification/components/SVBirthdayNotificationComponent.dart';
+import 'package:gazette/screens/notification/components/SVLikeNotificationComponent.dart';
+import 'package:gazette/screens/notification/components/SVNewPostNotificationComponent.dart';
+import 'package:gazette/screens/notification/components/SVRequestNotificationComponent.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/SVConstants.dart';
 
 class SVNotificationFragment extends StatefulWidget {
   @override
@@ -18,7 +18,8 @@ class _SVNotificationFragmentState extends State<SVNotificationFragment> {
   List<SVNotificationModel> listMonth = getNotificationsThisMonth();
   List<SVNotificationModel> listEarlier = getNotificationsEarlier();
 
-  Widget getNotificationComponent({String? type, required SVNotificationModel element}) {
+  Widget getNotificationComponent(
+      {String? type, required SVNotificationModel element}) {
     if (type == SVNotificationType.like) {
       return SVLikeNotificationComponent(element: element);
     } else if (type == SVNotificationType.request) {
@@ -60,21 +61,24 @@ class _SVNotificationFragmentState extends State<SVNotificationFragment> {
             Divider(height: 0, indent: 16, endIndent: 16),
             Column(
               children: listToday.map((e) {
-                return getNotificationComponent(type: e.notificationType, element: e);
+                return getNotificationComponent(
+                    type: e.notificationType, element: e);
               }).toList(),
             ),
             Text('THIS MONTH', style: boldTextStyle()).paddingAll(16),
             Divider(height: 0, indent: 16, endIndent: 16),
             Column(
               children: listMonth.map((e) {
-                return getNotificationComponent(type: e.notificationType, element: e);
+                return getNotificationComponent(
+                    type: e.notificationType, element: e);
               }).toList(),
             ),
             Text('Earlier', style: boldTextStyle()).paddingAll(16),
             Divider(height: 0, indent: 16, endIndent: 16),
             Column(
               children: listEarlier.map((e) {
-                return getNotificationComponent(type: e.notificationType, element: e);
+                return getNotificationComponent(
+                    type: e.notificationType, element: e);
               }).toList(),
             ),
             16.height,

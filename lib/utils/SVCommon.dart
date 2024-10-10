@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/main.dart';
-import 'package:prokit_socialv/screens/addPost/components/SVSharePostBottomSheetComponent.dart';
-import 'package:prokit_socialv/utils/SVColors.dart';
-import 'package:prokit_socialv/utils/SVConstants.dart';
+import 'package:gazette/main.dart';
+import 'package:gazette/screens/addPost/components/SVSharePostBottomSheetComponent.dart';
+import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/SVConstants.dart';
 
 InputDecoration svInputDecoration(BuildContext context,
     {String? hint,
@@ -26,16 +26,26 @@ InputDecoration svInputDecoration(BuildContext context,
     prefixIcon: prefixIcon,
     errorMaxLines: 2,
     errorStyle: primaryTextStyle(color: Colors.red, size: 12),
-    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: SVAppBorderColor)),
-    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
-    border: UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
-    focusedErrorBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 1.0)),
-    errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 1.0)),
+    enabledBorder:
+        UnderlineInputBorder(borderSide: BorderSide(color: SVAppBorderColor)),
+    focusedBorder:
+        UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
+    border:
+        UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
+    focusedErrorBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.red, width: 1.0)),
+    errorBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.red, width: 1.0)),
     alignLabelWithHint: true,
   );
 }
 
-Widget svRobotoText({required String text, Color? color, FontStyle? fontStyle, Function? onTap, TextAlign? textAlign}) {
+Widget svRobotoText(
+    {required String text,
+    Color? color,
+    FontStyle? fontStyle,
+    Function? onTap,
+    TextAlign? textAlign}) {
   return Text(
     text,
     style: secondaryTextStyle(
@@ -44,7 +54,8 @@ Widget svRobotoText({required String text, Color? color, FontStyle? fontStyle, F
       fontStyle: fontStyle ?? FontStyle.normal,
     ),
     textAlign: textAlign ?? TextAlign.center,
-  ).onTap(onTap, splashColor: Colors.transparent, highlightColor: Colors.transparent);
+  ).onTap(onTap,
+      splashColor: Colors.transparent, highlightColor: Colors.transparent);
 }
 
 Color svGetBodyColor() {
@@ -61,28 +72,39 @@ Color svGetScaffoldColor() {
     return SVAppLayoutBackground;
 }
 
-
-Widget svHeaderContainer({required Widget child, required BuildContext context}) {
+Widget svHeaderContainer(
+    {required Widget child, required BuildContext context}) {
   return Stack(
     alignment: Alignment.bottomCenter,
     children: [
       Container(
         width: context.width(),
-        decoration: BoxDecoration(color: SVAppColorPrimary, borderRadius: radiusOnly(topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
+        decoration: BoxDecoration(
+            color: SVAppColorPrimary,
+            borderRadius: radiusOnly(
+                topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
         padding: EdgeInsets.all(24),
         child: child,
       ),
       Container(
         height: 20,
-        decoration: BoxDecoration(color: context.cardColor, borderRadius: radiusOnly(topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
+        decoration: BoxDecoration(
+            color: context.cardColor,
+            borderRadius: radiusOnly(
+                topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
       )
     ],
   );
 }
 
-Widget svAppButton({required String text, required Function onTap, double? width, required BuildContext context}) {
+Widget svAppButton(
+    {required String text,
+    required Function onTap,
+    double? width,
+    required BuildContext context}) {
   return AppButton(
-    shapeBorder: RoundedRectangleBorder(borderRadius: radius(SVAppCommonRadius)),
+    shapeBorder:
+        RoundedRectangleBorder(borderRadius: radius(SVAppCommonRadius)),
     text: text,
     textStyle: boldTextStyle(color: Colors.white),
     onTap: onTap,
@@ -106,7 +128,8 @@ void svShowShareBottomSheet(BuildContext context) {
     enableDrag: true,
     isDismissible: true,
     backgroundColor: context.cardColor,
-    shape: RoundedRectangleBorder(borderRadius: radiusOnly(topLeft: 30, topRight: 30)),
+    shape: RoundedRectangleBorder(
+        borderRadius: radiusOnly(topLeft: 30, topRight: 30)),
     builder: (context) {
       return SVSharePostBottomSheetComponent();
     },

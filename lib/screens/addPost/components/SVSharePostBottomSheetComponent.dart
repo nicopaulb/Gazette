@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/models/SVSearchModel.dart';
-import 'package:prokit_socialv/utils/SVColors.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-import 'package:prokit_socialv/utils/SVConstants.dart';
+import 'package:gazette/models/SVSearchModel.dart';
+import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/SVConstants.dart';
 
 class SVSharePostBottomSheetComponent extends StatefulWidget {
   const SVSharePostBottomSheetComponent({Key? key}) : super(key: key);
 
   @override
-  State<SVSharePostBottomSheetComponent> createState() => _SVSharePostBottomSheetComponentState();
+  State<SVSharePostBottomSheetComponent> createState() =>
+      _SVSharePostBottomSheetComponentState();
 }
 
-class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheetComponent> {
+class _SVSharePostBottomSheetComponentState
+    extends State<SVSharePostBottomSheetComponent> {
   List<SVSearchModel> list = getSharePostList();
 
   @override
@@ -24,7 +26,9 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
         30.height,
         Row(
           children: [
-            Image.asset('images/gazette/posts/post_one.png', height: 80, width: 80, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
+            Image.asset('images/gazette/posts/post_one.png',
+                    height: 80, width: 80, fit: BoxFit.cover)
+                .cornerRadiusWithClipRRect(SVAppCommonRadius),
             10.width,
             Container(
               width: context.width() * 0.6,
@@ -43,23 +47,33 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
         ),
         20.height,
         Container(
-          decoration: BoxDecoration(color: svGetScaffoldColor(), borderRadius: radius(SVAppCommonRadius)),
+          decoration: BoxDecoration(
+              color: svGetScaffoldColor(),
+              borderRadius: radius(SVAppCommonRadius)),
           child: AppTextField(
             textFieldType: TextFieldType.NAME,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Search Here',
               hintStyle: secondaryTextStyle(color: svGetBodyColor()),
-              prefixIcon: Image.asset('images/gazette/icons/ic_Search.png', height: 16, width: 16, fit: BoxFit.cover, color: svGetBodyColor()).paddingAll(16),
+              prefixIcon: Image.asset('images/gazette/icons/ic_Search.png',
+                      height: 16,
+                      width: 16,
+                      fit: BoxFit.cover,
+                      color: svGetBodyColor())
+                  .paddingAll(16),
             ),
           ),
         ),
         16.height,
         Row(
           children: [
-            Image.asset('images/gazette/faces/face_5.png', height: 48, width: 48, fit: BoxFit.cover).cornerRadiusWithClipRRect(SVAppCommonRadius),
+            Image.asset('images/gazette/faces/face_5.png',
+                    height: 48, width: 48, fit: BoxFit.cover)
+                .cornerRadiusWithClipRRect(SVAppCommonRadius),
             10.width,
-            Text('Add post to your story', style: secondaryTextStyle(color: svGetBodyColor())),
+            Text('Add post to your story',
+                style: secondaryTextStyle(color: svGetBodyColor())),
           ],
         ),
         Divider(height: 40),
@@ -71,14 +85,19 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
               children: [
                 Row(
                   children: [
-                    Image.asset(e.profileImage.validate(), height: 56, width: 56, fit: BoxFit.cover),
+                    Image.asset(e.profileImage.validate(),
+                        height: 56, width: 56, fit: BoxFit.cover),
                     10.width,
                     Row(
                       children: [
                         Text(e.name.validate(), style: boldTextStyle()),
                         6.width,
                         e.isOfficialAccount.validate()
-                            ? Image.asset('images/gazette/icons/ic_TickSquare.png', height: 14, width: 14, fit: BoxFit.cover)
+                            ? Image.asset(
+                                'images/gazette/icons/ic_TickSquare.png',
+                                height: 14,
+                                width: 14,
+                                fit: BoxFit.cover)
                             : Offstage(),
                       ],
                       mainAxisSize: MainAxisSize.min,
@@ -89,7 +108,11 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
                 AppButton(
                   shapeBorder: RoundedRectangleBorder(borderRadius: radius(4)),
                   text: 'Send',
-                  textStyle: secondaryTextStyle(color: e.doSend.validate() ? Colors.white : SVAppColorPrimary, size: 10),
+                  textStyle: secondaryTextStyle(
+                      color: e.doSend.validate()
+                          ? Colors.white
+                          : SVAppColorPrimary,
+                      size: 10),
                   onTap: () {
                     e.doSend = !e.doSend.validate();
                     setState(() {});
@@ -97,7 +120,9 @@ class _SVSharePostBottomSheetComponentState extends State<SVSharePostBottomSheet
                   elevation: 0,
                   height: 30,
                   width: 50,
-                  color: e.doSend.validate() ? SVAppColorPrimary : svGetScaffoldColor(),
+                  color: e.doSend.validate()
+                      ? SVAppColorPrimary
+                      : svGetScaffoldColor(),
                   padding: EdgeInsets.all(0),
                 ),
               ],

@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/screens/home/components/SVHomeDrawerComponent.dart';
-import 'package:prokit_socialv/screens/home/components/SVPostComponent.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-
+import 'package:gazette/screens/home/components/SVHomeDrawerComponent.dart';
+import 'package:gazette/screens/home/components/SVPostComponent.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/screens/fragments/SVProfileFragment.dart';
 
 class SVHomeFragment extends StatefulWidget {
   @override
@@ -46,7 +46,16 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
           },
         ),
         title: Text('Home', style: boldTextStyle(size: 18)),
-        actions: [],
+        actions: [
+          IconButton(
+            icon: Image.asset('images/gazette/icons/ic_User.png',
+                    height: 24, width: 24, fit: BoxFit.cover)
+                .paddingTop(12),
+            onPressed: () {
+              SVProfileFragment().launch(context);
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         backgroundColor: context.cardColor,

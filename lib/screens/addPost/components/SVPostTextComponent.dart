@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-import 'package:prokit_socialv/utils/SVConstants.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/SVConstants.dart';
 
 class SVPostTextComponent extends StatelessWidget {
   const SVPostTextComponent({Key? key}) : super(key: key);
@@ -11,7 +11,8 @@ class SVPostTextComponent extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.all(16),
-      decoration: BoxDecoration(color: svGetScaffoldColor(), borderRadius: radius(SVAppCommonRadius)),
+      decoration: BoxDecoration(
+          color: svGetScaffoldColor(), borderRadius: radius(SVAppCommonRadius)),
       child: TextField(
         autofocus: false,
         maxLines: 15,

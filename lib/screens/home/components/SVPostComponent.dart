@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/models/SVPostModel.dart';
-import 'package:prokit_socialv/screens/home/screens/SVCommentScreen.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-import 'package:prokit_socialv/utils/SVConstants.dart';
+import 'package:gazette/models/SVPostModel.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/SVConstants.dart';
 
 class SVPostComponent extends StatefulWidget {
   @override
@@ -21,7 +20,9 @@ class _SVPostComponentState extends State<SVPostComponent> {
         return Container(
           padding: EdgeInsets.symmetric(vertical: 16),
           margin: EdgeInsets.symmetric(vertical: 8),
-          decoration: BoxDecoration(borderRadius: radius(SVAppCommonRadius), color: context.cardColor),
+          decoration: BoxDecoration(
+              borderRadius: radius(SVAppCommonRadius),
+              color: context.cardColor),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,21 +38,29 @@ class _SVPostComponentState extends State<SVPostComponent> {
                         fit: BoxFit.cover,
                       ).cornerRadiusWithClipRRect(SVAppCommonRadius),
                       12.width,
-                      Text(postList[index].name.validate(), style: boldTextStyle()),
+                      Text(postList[index].name.validate(),
+                          style: boldTextStyle()),
                     ],
                   ).paddingSymmetric(horizontal: 16),
                   Row(
                     children: [
-                      Text('${postList[index].time.validate()}', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
+                      Text('${postList[index].time.validate()}',
+                          style: secondaryTextStyle(
+                              color: svGetBodyColor(), size: 12)),
                     ],
                   ).paddingSymmetric(horizontal: 16),
                 ],
               ),
               16.height,
               postList[index].description.validate().isNotEmpty
-                  ? svRobotoText(text: postList[index].description.validate(), textAlign: TextAlign.start).paddingSymmetric(horizontal: 16)
+                  ? svRobotoText(
+                          text: postList[index].description.validate(),
+                          textAlign: TextAlign.start)
+                      .paddingSymmetric(horizontal: 16)
                   : Offstage(),
-              postList[index].description.validate().isNotEmpty ? 16.height : Offstage(),
+              postList[index].description.validate().isNotEmpty
+                  ? 16.height
+                  : Offstage(),
               Image.asset(
                 postList[index].postImage.validate(),
                 height: 300,

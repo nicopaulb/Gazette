@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/screens/SVSplashScreen.dart';
-import 'package:prokit_socialv/store/AppStore.dart';
-import 'package:prokit_socialv/utils/AppTheme.dart';
+import 'package:gazette/screens/SVSplashScreen.dart';
+import 'package:gazette/store/AppStore.dart';
+import 'package:gazette/utils/AppTheme.dart';
 
 AppStore appStore = AppStore();
 

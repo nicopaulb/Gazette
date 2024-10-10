@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:prokit_socialv/screens/fragments/SVAddPostFragment.dart';
-import 'package:prokit_socialv/screens/fragments/SVHomeFragment.dart';
-import 'package:prokit_socialv/screens/fragments/SVNotificationFragment.dart';
-import 'package:prokit_socialv/screens/fragments/SVProfileFragment.dart';
-import 'package:prokit_socialv/screens/fragments/SVSearchFragment.dart';
-import 'package:prokit_socialv/utils/SVCommon.dart';
-
+import 'package:gazette/screens/fragments/SVAddPostFragment.dart';
+import 'package:gazette/screens/fragments/SVHomeFragment.dart';
+import 'package:gazette/screens/fragments/SVNewspaperFragment.dart';
+import 'package:gazette/screens/fragments/SVProfileFragment.dart';
+import 'package:gazette/screens/fragments/SVSearchFragment.dart';
+import 'package:gazette/utils/SVCommon.dart';
 
 class SVDashboardScreen extends StatefulWidget {
   @override
@@ -22,7 +21,7 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
     } else if (selectedIndex == 1) {
       return SVSearchFragment();
     } else if (selectedIndex == 2) {
-      //return AddPostFragment();
+      return SVAddPostFragment();
     } else if (selectedIndex == 3) {
       return SVNotificationFragment();
     } else if (selectedIndex == 4) {
@@ -47,40 +46,72 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Home.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Home.png',
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover,
+                    color: context.iconColor)
+                .paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_HomeSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_HomeSelected.png',
+                    height: 24, width: 24, fit: BoxFit.cover)
+                .paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Search.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Search.png',
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover,
+                    color: context.iconColor)
+                .paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_SearchSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset(
+                    'images/gazette/icons/ic_SearchSelected.png',
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover)
+                .paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Plus.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Plus.png',
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover,
+                    color: context.iconColor)
+                .paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_PlusSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_PlusSelected.png',
+                    height: 24, width: 24, fit: BoxFit.cover)
+                .paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon:
-            Image.asset('images/gazette/icons/ic_Notification.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Newspaper.png',
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover,
+                    color: context.iconColor)
+                .paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_NotificationSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset(
+                    'images/gazette/icons/ic_NewspaperSelected.png',
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover)
+                .paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_User.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_User.png',
+                    height: 24, width: 24, fit: BoxFit.cover)
+                .paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_UserSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_UserSelected.png',
+                    height: 24, width: 24, fit: BoxFit.cover)
+                .paddingTop(12),
           ),
         ],
         onTap: (val) {
           selectedIndex = val;
           setState(() {});
-          if (val == 2) {
-            selectedIndex = 0;
-            setState(() {});
-            SVAddPostFragment().launch(context);
-          }
         },
         currentIndex: selectedIndex,
       ),
