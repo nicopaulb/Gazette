@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/SVDashboardScreen.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:gazette/screens/auth/LogInScreen.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/services/PocketBaseService.dart';
 
 class SVSplashScreen extends StatefulWidget {
   const SVSplashScreen({Key? key}) : super(key: key);
@@ -20,37 +23,29 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
     setStatusBarColor(Colors.transparent);
     await 3.seconds.delay;
     finish(context);
-    SVDashboardScreen().launch(context, isNewTask: true);
+    if (PocketbaseService.to.isAuth) {
+      SVDashboardScreen().launch(context, isNewTask: true);
+    } else {
+      LogInScreen().launch(context, isNewTask: true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image.asset(
-            'images/gazette/svSplashImage.jpg',
-            height: context.height(),
-            width: context.width(),
-            fit: BoxFit.fill,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('images/gazette/svAppIcon.png',
-                  height: 50,
-                  width: 52,
-                  fit: BoxFit.cover,
-                  color: Colors.white),
-              8.width,
-              Text("SocialV",
-                  style: primaryTextStyle(
-                      color: Colors.white, size: 40, weight: FontWeight.w500)),
-            ],
-          ),
-        ],
-      ),
-    );
+        backgroundColor: svGetScaffoldColor(),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/gazette/logo.png',
+              //height: context.height(),
+              width: context.width(),
+              fit: BoxFit.fill,
+            ),
+            //your widgets here...
+          ],
+        ));
   }
 }

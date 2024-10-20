@@ -39,7 +39,7 @@ class _SVSearchFragmentState extends State<SVSearchFragment> {
               border: InputBorder.none,
               hintText: 'Search Here',
               hintStyle: secondaryTextStyle(color: svGetBodyColor()),
-              prefixIcon: Image.asset('images/socialv/icons/ic_Search.png',
+              prefixIcon: Image.asset('images/gazette/icons/ic_Search.png',
                       height: 16,
                       width: 16,
                       fit: BoxFit.cover,
