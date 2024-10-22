@@ -1,3 +1,5 @@
+import 'package:gazette/models/AnecdoteModel.dart';
+import 'package:gazette/models/NewspaperModel.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -11,6 +13,8 @@ class PocketbaseService extends GetxService {
   late PocketBase _client;
   late AuthStore _authStore;
   final Map<String, User> _cachedUsersData = {};
+  final Map<String, Newspaper> _cachedNewspapersData = {};
+  final Map<String, Anecdote> _cachedAnecdotesData = {};
   User? user;
   bool get isAuth => user != null;
 
@@ -37,7 +41,6 @@ class PocketbaseService extends GetxService {
     _authStore.save(token, model);
   }
 
-  /// Auth
   Future login(String username, password) async {
     try {
       RecordAuth userData = await _client
@@ -84,6 +87,63 @@ class PocketbaseService extends GetxService {
       var user = User.fromRecord(result);
       _cachedUsersData[userId] = user;
       return user;
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
+  Future<List<Newspaper>> getAllNewspapers({bool useCache = false}) async {
+    try {
+      if (useCache && _cachedNewspapersData.isNotEmpty) {
+        return Future<List<Newspaper>>.value(
+            _cachedNewspapersData.values.toList().cast<Newspaper>());
+      }
+      final results =
+          await _client.collection('edition').getFullList(sort: "-date");
+      return results.map((final result) {
+        var newspaper = Newspaper.fromRecord(result);
+        _cachedNewspapersData[newspaper.id] = newspaper;
+        return newspaper;
+      }).toList();
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
+  Future<Newspaper> getNewspaper(
+    String newspaperId, {
+    bool useCache = false,
+  }) async {
+    try {
+      if (useCache && _cachedNewspapersData.containsKey(newspaperId)) {
+        return Future<Newspaper>.value(_cachedNewspapersData[newspaperId]);
+      }
+      final result = await _client.collection('edition').getOne(newspaperId);
+      var newspaper = Newspaper.fromRecord(result);
+      _cachedNewspapersData[newspaperId] = newspaper;
+      return newspaper;
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
+  Future<List<Anecdote>> getAllAnecdotes({bool useCache = false}) async {
+    try {
+      if (useCache && _cachedAnecdotesData.isNotEmpty) {
+        return Future<List<Anecdote>>.value(
+            _cachedAnecdotesData.values.toList().cast<Anecdote>());
+      }
+      final results = await _client.collection('anecdotes').getFullList();
+      return Future.wait(results.map((final result) async {
+        var anecdote = Anecdote.fromRecord(result);
+        anecdote.user = await getUserDetails(anecdote.userId);
+        anecdote.newspaper = await getNewspaper(anecdote.newspaperId);
+        _cachedAnecdotesData[anecdote.id] = anecdote;
+        return anecdote;
+      }).toList());
     } on ClientException catch (e) {
       Get.log(e.toString());
       throw e.originalError;

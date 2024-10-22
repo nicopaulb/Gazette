@@ -1,9 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gazette/screens/auth/LogInScreen.dart';
+import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
+import 'package:gazette/services/PocketBaseService.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:gazette/models/SVDrawerModels.dart';
 import 'package:gazette/utils/SVColors.dart';
 import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/models/UserModel.dart';
 
 class SVHomeDrawerComponent extends StatefulWidget {
   @override
@@ -12,6 +17,7 @@ class SVHomeDrawerComponent extends StatefulWidget {
 
 class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
   List<SVDrawerModel> options = getDrawerOptions();
+  User user = PocketbaseService.to.user!;
 
   int selectedIndex = -1;
 
@@ -27,15 +33,18 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset('images/gazette/faces/face_1.png',
-                        height: 62, width: 62, fit: BoxFit.cover)
+                CachedNetworkImage(
+                        imageUrl: user.getResizedAvatar(100, 100),
+                        height: 62,
+                        width: 62,
+                        fit: BoxFit.cover)
                     .cornerRadiusWithClipRRect(8),
                 16.width,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Nicolas', style: boldTextStyle(size: 18)),
+                    Text(user.firstname, style: boldTextStyle(size: 18)),
                   ],
                 ),
               ],
@@ -59,13 +68,22 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
                   width: 22,
                   fit: BoxFit.cover,
                   color: SVAppColorPrimary),
-              onTap: () {
+              onTap: () async {
                 selectedIndex = index;
                 setState(() {});
                 switch (selectedIndex) {
-                  // Fill with action to do when drawer item is tapped
+                  case 0:
+                    finish(context);
+                    ProfileScreen().launch(context);
+                    break;
+                  case 2:
+                    await PocketbaseService.to.logout();
+                    finish(context);
+                    LogInScreen().launch(context);
+                    break;
                   default:
                     finish(context);
+                    break;
                 }
               },
             );

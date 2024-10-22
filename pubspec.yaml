@@ -39,6 +39,7 @@ dependencies:
   get: ^4.6.6
   get_storage: ^2.1.1
   cached_network_image: ^3.4.1
+  syncfusion_flutter_pdfviewer: ^27.1.53
 
 dependency_overrides:
   intl: ^0.19.0

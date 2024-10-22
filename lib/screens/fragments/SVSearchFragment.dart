@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/models/SVSearchModel.dart';
-import 'package:gazette/screens/fragments/SVProfileFragment.dart';
+import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/screens/search/components/SVSearchCardComponent.dart';
 import 'package:gazette/utils/SVCommon.dart';
 
@@ -61,7 +61,7 @@ class _SVSearchFragmentState extends State<SVSearchFragment> {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return SVSearchCardComponent(element: list[index]).onTap(() {
-                  SVProfileFragment().launch(context);
+                  ProfileScreen().launch(context);
                 });
               },
               separatorBuilder: (BuildContext context, int index) {

@@ -1,11 +1,12 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/home/components/SVHomeDrawerComponent.dart';
 import 'package:gazette/screens/home/components/SVPostComponent.dart';
 import 'package:gazette/utils/SVCommon.dart';
-import 'package:gazette/screens/fragments/SVProfileFragment.dart';
+import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
+import 'package:gazette/services/PocketBaseService.dart';
+import 'package:gazette/models/UserModel.dart';
 
 class SVHomeFragment extends StatefulWidget {
   @override
@@ -14,8 +15,7 @@ class SVHomeFragment extends StatefulWidget {
 
 class _SVHomeFragmentState extends State<SVHomeFragment> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
-
-  File? image;
+  User user = PocketbaseService.to.user!;
 
   @override
   void initState() {
@@ -48,11 +48,14 @@ class _SVHomeFragmentState extends State<SVHomeFragment> {
         title: Text('Home', style: boldTextStyle(size: 18)),
         actions: [
           IconButton(
-            icon: Image.asset('images/gazette/icons/ic_User.png',
-                    height: 24, width: 24, fit: BoxFit.cover)
+            icon: CachedNetworkImage(
+                    imageUrl: user.getResizedAvatar(100, 100),
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover)
                 .paddingTop(12),
             onPressed: () {
-              SVProfileFragment().launch(context);
+              ProfileScreen().launch(context);
             },
           ),
         ],

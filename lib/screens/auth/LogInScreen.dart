@@ -7,9 +7,9 @@ import 'package:gazette/utils/SVCommon.dart';
 import 'package:gazette/screens/SVDashboardScreen.dart';
 
 class LogInScreen extends StatelessWidget {
+  final LoginController _loginController = Get.put(LoginController());
   final _usernameTextController = TextEditingController(text: "");
   final _passwordTextController = TextEditingController(text: "");
-  final LoginController _loginController = Get.put(LoginController());
   final _formKey = GlobalKey<FormState>();
 
   @override

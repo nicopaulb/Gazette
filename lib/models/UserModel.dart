@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:pocketbase/pocketbase.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 
@@ -9,14 +7,11 @@ class User {
   final DateTime? updated;
   final String collectionId;
   final String collectionName;
-  final String email;
-  final bool emailVisibility;
   final String username;
-  final bool verified;
   final String avatarFileName;
   final String firstname;
   final String lastname;
-  Uri? avatarUri;
+  String? avatarUri;
   String? token;
 
   User({
@@ -25,10 +20,7 @@ class User {
     required this.updated,
     required this.collectionId,
     required this.collectionName,
-    required this.email,
-    required this.emailVisibility,
     required this.username,
-    required this.verified,
     required this.firstname,
     required this.lastname,
     required this.avatarFileName,
@@ -43,10 +35,7 @@ class User {
       updated: DateTime.tryParse(json["updated"] ?? ""),
       collectionId: json["collectionId"],
       collectionName: json["collectionName"],
-      email: json["email"],
-      emailVisibility: json["emailVisibility"],
       username: json["username"],
-      verified: json["verified"],
       avatarFileName: json["avatar"],
       avatarUri: json["avatarUri"],
       firstname: json["firstname"],
@@ -57,8 +46,9 @@ class User {
   factory User.fromRecord(RecordModel record) {
     User user = User.fromJson(record.toJson());
     if (user.avatarFileName.isNotEmpty) {
-      user.avatarUri =
-          PocketbaseService.to.getFileUrl(record, user.avatarFileName);
+      user.avatarUri = PocketbaseService.to
+          .getFileUrl(record, user.avatarFileName)
+          .toString();
     }
     return user;
   }
@@ -69,14 +59,23 @@ class User {
         "updated": updated?.toIso8601String(),
         "collectionId": collectionId,
         "collectionName": collectionName,
-        "email": email,
-        "emailVisibility": emailVisibility,
         "username": username,
-        "verified": verified,
         "token": token,
         "firstname": firstname,
         "lastname": lastname,
         "avatar": avatarFileName,
-        "avatarUri": avatarUri,
+        "avatarUri": avatarUri.toString(),
       };
+
+  String getResizedAvatar(int width, int height) {
+    String url = "";
+    if (this.avatarUri != null) {
+      url = this.avatarUri.toString() +
+          "?thumb=" +
+          width.toString() +
+          "x" +
+          height.toString();
+    }
+    return url;
+  }
 }

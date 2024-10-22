@@ -3,7 +3,6 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/fragments/SVAddPostFragment.dart';
 import 'package:gazette/screens/fragments/SVHomeFragment.dart';
 import 'package:gazette/screens/fragments/SVNewspaperFragment.dart';
-import 'package:gazette/screens/fragments/SVProfileFragment.dart';
 import 'package:gazette/screens/fragments/SVSearchFragment.dart';
 import 'package:gazette/utils/SVCommon.dart';
 
@@ -19,13 +18,13 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
     if (selectedIndex == 0) {
       return SVHomeFragment();
     } else if (selectedIndex == 1) {
-      return SVSearchFragment();
+      //return SVSearchFragment();
     } else if (selectedIndex == 2) {
       return SVAddPostFragment();
     } else if (selectedIndex == 3) {
-      return SVNotificationFragment();
+      return SVNewspaperFragment();
     } else if (selectedIndex == 4) {
-      return SVProfileFragment();
+      //return ProfileScreen();
     }
     return SVHomeFragment();
   }
@@ -100,11 +99,11 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
                 .paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_User.png',
+            icon: Image.asset('images/gazette/icons/ic_Calendar.png',
                     height: 24, width: 24, fit: BoxFit.cover)
                 .paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_UserSelected.png',
+            activeIcon: Image.asset('images/gazette/icons/ic_Calendar.png',
                     height: 24, width: 24, fit: BoxFit.cover)
                 .paddingTop(12),
           ),
