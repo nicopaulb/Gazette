@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Column(
                   children: [
-                    Text('Annecdotes',
+                    Text('Anecdotes',
                         style: secondaryTextStyle(
                             color: svGetBodyColor(), size: 12)),
                     4.height,

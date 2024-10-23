@@ -1,73 +1,144 @@
 import 'package:flutter/material.dart';
+import 'package:gazette/controllers/AddAnecdoteController.dart';
+import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/main.dart';
-import 'package:gazette/screens/addPost/components/SVPostOptionsComponent.dart';
-import 'package:gazette/screens/addPost/components/SVPostTextComponent.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/SVConstants.dart';
 import 'package:gazette/utils/SVColors.dart';
 import 'package:gazette/utils/SVCommon.dart';
 
-class SVAddPostFragment extends StatefulWidget {
-  const SVAddPostFragment({Key? key}) : super(key: key);
-
-  @override
-  State<SVAddPostFragment> createState() => _SVAddPostFragmentState();
-}
-
-class _SVAddPostFragmentState extends State<SVAddPostFragment> {
+class SVAddPostFragment extends StatelessWidget {
+  final AddAnecdoteController _addAnecdoteController =
+      Get.put(AddAnecdoteController());
   String image = '';
-
-  @override
-  void initState() {
-    super.initState();
-    afterBuildCreated(() {
-      setStatusBarColor(context.cardColor);
-    });
-  }
-
-  @override
-  void dispose() {
-    setStatusBarColor(
-        appStore.isDarkMode ? appBackgroundColorDark : SVAppLayoutBackground);
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.cardColor,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: context.iconColor),
+        iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
         backgroundColor: context.cardColor,
-        title: Text('New Post', style: boldTextStyle(size: 20)),
+        title: Text('Nouvelle anecdote', style: boldTextStyle(size: 20)),
         elevation: 0,
         centerTitle: true,
         actions: [
           AppButton(
             shapeBorder: RoundedRectangleBorder(borderRadius: radius(4)),
-            text: 'Post',
-            textStyle: secondaryTextStyle(color: Colors.white, size: 10),
-            onTap: () {
-              svShowShareBottomSheet(context);
-            },
+            text: 'Envoyer',
+            textStyle: secondaryTextStyle(color: Colors.white, size: 12),
+            onTap: () => _addAnecdoteController.sendAnecdote(context),
             elevation: 0,
             color: SVAppColorPrimary,
-            width: 50,
+            width: 100,
             padding: EdgeInsets.all(0),
-          ).paddingAll(16),
+          ).paddingAll(8),
         ],
       ),
-      body: SizedBox(
-        height: context.height(),
-        child: Stack(
-          children: [
-            SVPostTextComponent(),
-            Positioned(
-              child: SVPostOptionsComponent(),
-              bottom: 0,
-            ),
-          ],
-        ),
-      ),
+      body: Obx(() => _addAnecdoteController.isUploading.value
+          ? const Center(child: CircularProgressIndicator())
+          : SizedBox(
+              height: ContextExtensions(context).height(),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    margin: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: svGetScaffoldColor(),
+                        borderRadius: radius(SVAppCommonRadius)),
+                    child: Form(
+                      key: _addAnecdoteController.formKey,
+                      child: TextFormField(
+                        controller:
+                            _addAnecdoteController.contentTextController,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "L'anecdote ne peut pas être vide";
+                          }
+                          return null;
+                        },
+                        autofocus: false,
+                        maxLines: 15,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Il était une fois...',
+                          hintStyle: secondaryTextStyle(
+                              size: 14, color: svGetBodyColor()),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                      padding: EdgeInsets.all(4),
+                      margin: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                          color: svGetScaffoldColor(),
+                          borderRadius: radius(SVAppCommonRadius)),
+                      child: ListTile(
+                        onTap: () {
+                          _addAnecdoteController.pickerImage();
+                        },
+                        title: Text(
+                          "Image",
+                          style: primaryTextStyle(),
+                        ),
+                        subtitle: GetBuilder<AddAnecdoteController>(
+                            builder: (_) => Text(
+                                  _addAnecdoteController.getSelectedImageName(),
+                                  style: secondaryTextStyle(
+                                      color: _addAnecdoteController
+                                          .getSelectedImageNameColor()),
+                                )),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.image,
+                            color: ContextExtensions(context).iconColor,
+                          ),
+                          onPressed: () async {
+                            _addAnecdoteController.pickerImage();
+                          },
+                        ),
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(4),
+                      margin: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                          color: svGetScaffoldColor(),
+                          borderRadius: radius(SVAppCommonRadius)),
+                      child: ListTile(
+                        onTap: () {
+                          _addAnecdoteController.pickerDate(context);
+                        },
+                        title: Text(
+                          'Date',
+                          style: primaryTextStyle(),
+                        ),
+                        subtitle: GetBuilder<AddAnecdoteController>(
+                            builder: (_) => Text(
+                                  _addAnecdoteController.getSelectedDate(),
+                                  style: secondaryTextStyle(),
+                                )),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.date_range,
+                            color: ContextExtensions(context).iconColor,
+                          ),
+                          onPressed: () {
+                            _addAnecdoteController.pickerDate(context);
+                          },
+                        ),
+                      )),
+
+                  // Positioned(
+                  //   child: SVPostOptionsComponent(),
+                  //   bottom: 0,
+                  // ),
+                ],
+              ),
+            )),
     );
   }
 }

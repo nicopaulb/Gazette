@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/main.dart';
-import 'package:gazette/screens/addPost/components/SVSharePostBottomSheetComponent.dart';
 import 'package:gazette/utils/SVColors.dart';
 import 'package:gazette/utils/SVConstants.dart';
 
@@ -112,26 +111,5 @@ Widget svAppButton(
     color: SVAppColorPrimary,
     width: width ?? context.width() - 32,
     height: 56,
-  );
-}
-
-Future<File> svGetImageSource() async {
-  final picker = ImagePicker();
-  final pickedImage = await picker.pickImage(source: ImageSource.camera);
-  return File(pickedImage!.path);
-}
-
-void svShowShareBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    enableDrag: true,
-    isDismissible: true,
-    backgroundColor: context.cardColor,
-    shape: RoundedRectangleBorder(
-        borderRadius: radiusOnly(topLeft: 30, topRight: 30)),
-    builder: (context) {
-      return SVSharePostBottomSheetComponent();
-    },
   );
 }

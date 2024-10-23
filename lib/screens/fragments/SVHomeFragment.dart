@@ -8,22 +8,9 @@ import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:gazette/models/UserModel.dart';
 
-class SVHomeFragment extends StatefulWidget {
-  @override
-  State<SVHomeFragment> createState() => _SVHomeFragmentState();
-}
-
-class _SVHomeFragmentState extends State<SVHomeFragment> {
-  var scaffoldKey = GlobalKey<ScaffoldState>();
-  User user = PocketbaseService.to.user!;
-
-  @override
-  void initState() {
-    super.initState();
-    afterBuildCreated(() {
-      setStatusBarColor(svGetScaffoldColor());
-    });
-  }
+class SVHomeFragment extends StatelessWidget {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final User user = PocketbaseService.to.user!;
 
   @override
   Widget build(BuildContext context) {

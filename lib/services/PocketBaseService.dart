@@ -1,10 +1,13 @@
+import 'package:flutter/widgets.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:gazette/models/UserModel.dart';
 import 'package:gazette/services/StorageService.dart';
+import 'package:http/http.dart' as http;
 
 class PocketbaseService extends GetxService {
   static PocketbaseService get to => Get.find();
@@ -136,11 +139,15 @@ class PocketbaseService extends GetxService {
         return Future<List<Anecdote>>.value(
             _cachedAnecdotesData.values.toList().cast<Anecdote>());
       }
-      final results = await _client.collection('anecdotes').getFullList();
+      final results = await _client
+          .collection('anecdotes')
+          .getFullList(filter: "published = true");
       return Future.wait(results.map((final result) async {
         var anecdote = Anecdote.fromRecord(result);
         anecdote.user = await getUserDetails(anecdote.userId);
-        anecdote.newspaper = await getNewspaper(anecdote.newspaperId);
+        if (anecdote.newspaper != null) {
+          anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
+        }
         _cachedAnecdotesData[anecdote.id] = anecdote;
         return anecdote;
       }).toList());
@@ -148,6 +155,25 @@ class PocketbaseService extends GetxService {
       Get.log(e.toString());
       throw e.originalError;
     }
+  }
+
+  Future<Anecdote> createAnecdote(
+      String text, XFile image, DateTime date) async {
+    final result = await _client.collection("anecdotes").create(body: {
+      "user": this.user!.id,
+      "text": text,
+      "date": date.toString(),
+      "published": "false"
+    }, files: [
+      http.MultipartFile.fromBytes(
+        "image",
+        await image.readAsBytes(),
+        filename: image.name,
+      )
+    ]);
+    var anecdote = Anecdote.fromRecord(result);
+    _cachedAnecdotesData[anecdote.id] = anecdote;
+    return anecdote;
   }
 
   Uri getFileUrl(RecordModel recordModel, String fileName) =>

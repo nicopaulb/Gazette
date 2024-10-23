@@ -46,7 +46,7 @@ class _SVProfilePostsComponentState extends State<SVProfilePostsComponent> {
                       setState(() {});
                     },
                     child: Text(
-                      'Annecdotes',
+                      'Anecdotes',
                       style: TextStyle(
                         color: SVAppColorPrimary,
                         fontSize: 14,
