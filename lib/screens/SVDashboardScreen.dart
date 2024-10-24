@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/screens/fragments/SVAddPostFragment.dart';
+import 'package:gazette/screens/fragments/AddPostFragment.dart';
 import 'package:gazette/screens/fragments/SVHomeFragment.dart';
 import 'package:gazette/screens/fragments/SVNewspaperFragment.dart';
-import 'package:gazette/screens/fragments/SVSearchFragment.dart';
 import 'package:gazette/utils/SVCommon.dart';
 
 class SVDashboardScreen extends StatefulWidget {
@@ -20,7 +19,7 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
     } else if (selectedIndex == 1) {
       //return SVSearchFragment();
     } else if (selectedIndex == 2) {
-      return SVAddPostFragment();
+      return AddPostFragment();
     } else if (selectedIndex == 3) {
       return SVNewspaperFragment();
     } else if (selectedIndex == 4) {
@@ -103,8 +102,11 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
                     height: 24, width: 24, fit: BoxFit.cover)
                 .paddingTop(12),
             label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_Calendar.png',
-                    height: 24, width: 24, fit: BoxFit.cover)
+            activeIcon: Image.asset(
+                    'images/gazette/icons/ic_CalendarSelected2.png',
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover)
                 .paddingTop(12),
           ),
         ],

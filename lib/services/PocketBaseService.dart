@@ -1,8 +1,6 @@
-import 'package:flutter/widgets.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:get/get.dart';
-import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:gazette/models/UserModel.dart';
@@ -141,7 +139,7 @@ class PocketbaseService extends GetxService {
       }
       final results = await _client
           .collection('anecdotes')
-          .getFullList(filter: "published = true");
+          .getFullList(sort: "-date", filter: "published = true");
       return Future.wait(results.map((final result) async {
         var anecdote = Anecdote.fromRecord(result);
         anecdote.user = await getUserDetails(anecdote.userId);
@@ -149,6 +147,25 @@ class PocketbaseService extends GetxService {
           anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
         }
         _cachedAnecdotesData[anecdote.id] = anecdote;
+        return anecdote;
+      }).toList());
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
+  Future<List<Anecdote>> getAllAnecdotesFromUser(User user) async {
+    try {
+      final results = await _client
+          .collection('anecdotes')
+          .getFullList(filter: 'published = true && user = "${user.id}"');
+      return Future.wait(results.map((final result) async {
+        var anecdote = Anecdote.fromRecord(result);
+        anecdote.user = user;
+        if (anecdote.newspaper != null) {
+          anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
+        }
         return anecdote;
       }).toList());
     } on ClientException catch (e) {

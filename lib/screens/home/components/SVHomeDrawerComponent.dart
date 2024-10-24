@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
+import 'package:gazette/screens/settings/SettingScreen.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -75,6 +76,10 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
                   case 0:
                     finish(context);
                     ProfileScreen().launch(context);
+                    break;
+                  case 1:
+                    finish(context);
+                    SettingScreen().launch(context);
                     break;
                   case 2:
                     await PocketbaseService.to.logout();

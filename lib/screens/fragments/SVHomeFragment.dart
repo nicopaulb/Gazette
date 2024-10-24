@@ -34,17 +34,20 @@ class SVHomeFragment extends StatelessWidget {
         ),
         title: Text('Home', style: boldTextStyle(size: 18)),
         actions: [
-          IconButton(
-            icon: CachedNetworkImage(
-                    imageUrl: user.getResizedAvatar(100, 100),
-                    height: 24,
-                    width: 24,
-                    fit: BoxFit.cover)
-                .paddingTop(12),
-            onPressed: () {
+          InkWell(
+            onTap: () {
               ProfileScreen().launch(context);
             },
-          ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(60),
+              child: CachedNetworkImage(
+                width: 24,
+                height: 24,
+                fit: BoxFit.cover,
+                imageUrl: user.getResizedAvatar(100, 100),
+              ),
+            ),
+          ).paddingRight(12),
         ],
       ),
       drawer: Drawer(

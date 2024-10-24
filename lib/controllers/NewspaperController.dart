@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';

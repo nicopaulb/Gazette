@@ -1,6 +1,4 @@
-import 'package:flutter/widgets.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
-import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
@@ -46,7 +44,7 @@ class AnecdoteController extends GetxController {
   }
 
   String getImage(int index) {
-    return anecdotes[index].imageUri ?? "";
+    return anecdotes[index].getResizedImage(500, 500);
   }
 
   String getText(int index) {

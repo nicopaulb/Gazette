@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AddAnecdoteController.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/main.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:gazette/utils/SVConstants.dart';
 import 'package:gazette/utils/SVColors.dart';
-import 'package:gazette/utils/SVCommon.dart';
 
-class SVAddPostFragment extends StatelessWidget {
+class AddPostFragment extends StatelessWidget {
   final AddAnecdoteController _addAnecdoteController =
       Get.put(AddAnecdoteController());
-  String image = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +24,7 @@ class SVAddPostFragment extends StatelessWidget {
           AppButton(
             shapeBorder: RoundedRectangleBorder(borderRadius: radius(4)),
             text: 'Envoyer',
-            textStyle: secondaryTextStyle(color: Colors.white, size: 12),
+            textStyle: boldTextStyle(color: Colors.white, size: 12),
             onTap: () => _addAnecdoteController.sendAnecdote(context),
             elevation: 0,
             color: SVAppColorPrimary,
@@ -61,7 +57,7 @@ class SVAddPostFragment extends StatelessWidget {
                           return null;
                         },
                         autofocus: false,
-                        maxLines: 15,
+                        maxLines: 8,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Il était une fois...',

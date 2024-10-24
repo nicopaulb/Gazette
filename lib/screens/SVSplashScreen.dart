@@ -21,7 +21,7 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
 
   Future<void> init() async {
     setStatusBarColor(Colors.transparent);
-    await 3.seconds.delay;
+    await 1.seconds.delay;
     finish(context);
     if (PocketbaseService.to.isAuth) {
       SVDashboardScreen().launch(context, isNewTask: true);
@@ -38,11 +38,16 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'images/gazette/logo.png',
-              //height: context.height(),
-              width: context.width(),
-              fit: BoxFit.fill,
+            Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 600),
+                child: Image.asset(
+                  'images/gazette/logo.png',
+                  //height: context.height(),
+                  width: context.width(),
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
             //your widgets here...
           ],
