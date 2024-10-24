@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gazette/controllers/ProfileController.dart';
+import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/home/components/SVHomeDrawerComponent.dart';
 import 'package:gazette/screens/home/components/SVPostComponent.dart';
@@ -11,6 +13,7 @@ import 'package:gazette/models/UserModel.dart';
 class SVHomeFragment extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final User user = PocketbaseService.to.user!;
+  final ProfileController _profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class SVHomeFragment extends StatelessWidget {
             width: 18,
             height: 18,
             fit: BoxFit.cover,
-            color: context.iconColor,
+            color: ContextExtensions(context).iconColor,
           ),
           onPressed: () {
             scaffoldKey.currentState?.openDrawer();
@@ -36,6 +39,7 @@ class SVHomeFragment extends StatelessWidget {
         actions: [
           InkWell(
             onTap: () {
+              _profileController.updateUser(user.id);
               ProfileScreen().launch(context);
             },
             child: ClipRRect(
