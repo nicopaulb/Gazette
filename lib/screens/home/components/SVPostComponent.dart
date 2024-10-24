@@ -1,18 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AnecdoteController.dart';
+import 'package:gazette/controllers/ProfileController.dart';
+import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:gazette/utils/SVConstants.dart';
 
-class SVPostComponent extends StatefulWidget {
-  @override
-  State<SVPostComponent> createState() => _SVPostComponentState();
-}
-
-class _SVPostComponentState extends State<SVPostComponent> {
+class SVPostComponent extends StatelessWidget {
   final AnecdoteController _anecdoteController = Get.put(AnecdoteController());
+  final ProfileController _profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,21 +39,30 @@ class _SVPostComponentState extends State<SVPostComponent> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    CachedNetworkImage(
-                                      imageUrl: _anecdoteController
-                                          .getUserAvatar(index),
-                                      height: 56,
-                                      width: 56,
-                                      fit: BoxFit.cover,
-                                    ).cornerRadiusWithClipRRect(
-                                        SVAppCommonRadius),
-                                    12.width,
-                                    Text(_anecdoteController.getUserName(index),
-                                        style: boldTextStyle()),
-                                  ],
-                                ).paddingSymmetric(horizontal: 16),
+                                GestureDetector(
+                                  onTap: () {
+                                    _profileController.updateUser(
+                                        _anecdoteController.getUserId(index));
+                                    ProfileScreen().launch(context);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: _anecdoteController
+                                            .getUserAvatar(index),
+                                        height: 56,
+                                        width: 56,
+                                        fit: BoxFit.cover,
+                                      ).cornerRadiusWithClipRRect(
+                                          SVAppCommonRadius),
+                                      12.width,
+                                      Text(
+                                          _anecdoteController
+                                              .getUserName(index),
+                                          style: boldTextStyle()),
+                                    ],
+                                  ).paddingSymmetric(horizontal: 16),
+                                ),
                                 Row(
                                   children: [
                                     Text(_anecdoteController.getDate(index),

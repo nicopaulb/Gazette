@@ -1,46 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
+import 'package:gazette/models/UserModel.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class ProfileController extends GetxController {
   final _pocketBaseService = PocketbaseService.to;
+  Rxn<User> selectedUser = Rxn<User>();
   List<Anecdote> anecdotes = [];
   RxBool isLoading = false.obs;
 
   @override
-  void onInit() {
-    loadAnecdotes();
+  void onInit() async {
     afterBuildCreated(() {
       setStatusBarColor(Colors.transparent);
     });
-
     super.onInit();
   }
 
-  void loadAnecdotes() async {
+  void updateUser(String userId) async {
     isLoading.value = true;
+    selectedUser.value = await _pocketBaseService.getUserDetails(userId);
     try {
-      anecdotes = await _pocketBaseService
-          .getAllAnecdotesFromUser(_pocketBaseService.user!);
-      isLoading.value = false;
+      anecdotes =
+          await _pocketBaseService.getAllAnecdotesFromUser(selectedUser.value!);
     } catch (e) {
-      isLoading.value = false;
       Get.log('GotError : $e');
     }
+
+    isLoading.value = false;
   }
 
   String getName() {
-    return _pocketBaseService.user!.firstname;
+    return selectedUser.value?.firstname ?? "Name";
   }
 
   String getUsername() {
-    return "@${_pocketBaseService.user!.username}";
+    return "@${selectedUser.value?.username ?? "username"}";
   }
 
   String getAvatar() {
-    return _pocketBaseService.user!.getResizedAvatar(100, 100);
+    return selectedUser.value?.getResizedAvatar(100, 100) ?? "";
   }
 
   int getAnecdotesCount() {

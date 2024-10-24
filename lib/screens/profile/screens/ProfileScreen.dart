@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:gazette/utils/SVConstants.dart';
-
-import '../../../utils/SVColors.dart';
+import 'package:gazette/utils/SVColors.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController _profileController = Get.put(ProfileController());
@@ -23,7 +22,8 @@ class ProfileScreen extends StatelessWidget {
           iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
         ),
         body: Obx(
-          () => _profileController.isLoading.value
+          () => _profileController.isLoading.value ||
+                  _profileController.selectedUser.value == null
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                   child: Column(
@@ -104,6 +104,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       16.height,
                       Container(
+                        constraints: BoxConstraints(maxWidth: 1000),
                         margin: EdgeInsets.all(16),
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(

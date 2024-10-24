@@ -29,6 +29,10 @@ class AnecdoteController extends GetxController {
     }
   }
 
+  String getUserId(int index) {
+    return anecdotes[index].user?.id ?? "";
+  }
+
   String getUserName(int index) {
     return anecdotes[index].user?.firstname ?? "";
   }

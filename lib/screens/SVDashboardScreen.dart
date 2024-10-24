@@ -22,9 +22,7 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
       return AddPostFragment();
     } else if (selectedIndex == 3) {
       return SVNewspaperFragment();
-    } else if (selectedIndex == 4) {
-      //return ProfileScreen();
-    }
+    } else if (selectedIndex == 4) {}
     return SVHomeFragment();
   }
 

@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gazette/controllers/ProfileController.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/screens/settings/SettingScreen.dart';
 import 'package:gazette/services/PocketBaseService.dart';
+import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:gazette/models/SVDrawerModels.dart';
@@ -17,8 +19,9 @@ class SVHomeDrawerComponent extends StatefulWidget {
 }
 
 class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
+  final ProfileController _profileController = Get.put(ProfileController());
   List<SVDrawerModel> options = getDrawerOptions();
-  User user = PocketbaseService.to.user!;
+  final user = PocketbaseService.to.user!;
 
   int selectedIndex = -1;
 
@@ -31,24 +34,31 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CachedNetworkImage(
-                        imageUrl: user.getResizedAvatar(100, 100),
-                        height: 62,
-                        width: 62,
-                        fit: BoxFit.cover)
-                    .cornerRadiusWithClipRRect(8),
-                16.width,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(user.firstname, style: boldTextStyle(size: 18)),
-                  ],
-                ),
-              ],
+            GestureDetector(
+              onTap: () {
+                finish(context);
+                _profileController.updateUser(user.id);
+                ProfileScreen().launch(context);
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CachedNetworkImage(
+                          imageUrl: user.getResizedAvatar(100, 100),
+                          height: 62,
+                          width: 62,
+                          fit: BoxFit.cover)
+                      .cornerRadiusWithClipRRect(8),
+                  16.width,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(user.firstname, style: boldTextStyle(size: 18)),
+                    ],
+                  ),
+                ],
+              ),
             )
           ],
         ).paddingOnly(left: 16, right: 8, bottom: 20, top: 20),
@@ -75,6 +85,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
                 switch (selectedIndex) {
                   case 0:
                     finish(context);
+                    _profileController.updateUser(user.id);
                     ProfileScreen().launch(context);
                     break;
                   case 1:
