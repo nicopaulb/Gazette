@@ -3,6 +3,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/fragments/AddPostFragment.dart';
 import 'package:gazette/screens/fragments/SVHomeFragment.dart';
 import 'package:gazette/screens/fragments/SVNewspaperFragment.dart';
+import 'package:gazette/screens/fragments/SearchFragment.dart';
 import 'package:gazette/utils/SVCommon.dart';
 
 class SVDashboardScreen extends StatefulWidget {
@@ -17,13 +18,13 @@ class _SVDashboardScreenState extends State<SVDashboardScreen> {
     if (selectedIndex == 0) {
       return SVHomeFragment();
     } else if (selectedIndex == 1) {
-      //return SVSearchFragment();
+      return SearchFragment();
     } else if (selectedIndex == 2) {
       return AddPostFragment();
     } else if (selectedIndex == 3) {
       return SVNewspaperFragment();
     } else if (selectedIndex == 4) {}
-    return SVHomeFragment();
+    return SearchFragment();
   }
 
   @override
