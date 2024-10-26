@@ -1,4 +1,5 @@
 import 'package:gazette/models/AnecdoteModel.dart';
+import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
@@ -39,6 +40,10 @@ class AnecdoteController extends GetxController {
 
   String getUserAvatar(int index) {
     return anecdotes[index].user?.getResizedAvatar(100, 100) ?? "";
+  }
+
+  Newspaper getNewspaper(int index) {
+    return anecdotes[index].newspaper!;
   }
 
   String getDate(int index) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/NewspaperController.dart';
+import 'package:gazette/controllers/NewspaperViewerController.dart';
 import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -33,7 +34,8 @@ class SVNewspaperFragment extends StatelessWidget {
                               title: Text(_newspaperController.getName(index)),
                               trailing: Icon(Icons.visibility),
                               onTap: () {
-                                _newspaperController.currentIndex = index;
+                                _newspaperController
+                                    .startNewspaperViewer(index);
                                 NewspaperViewerScreen().launch(context);
                               }));
                     })));

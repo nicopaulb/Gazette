@@ -1,3 +1,4 @@
+import 'package:gazette/controllers/NewspaperViewerController.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class NewspaperController extends GetxController {
+  final NewspaperViewerController _newspaperViewerController =
+      Get.put(NewspaperViewerController());
   RxBool isLoading = false.obs;
   List<Newspaper> newspapers = <Newspaper>[];
   int _currentIndex = -1;
@@ -47,5 +50,9 @@ class NewspaperController extends GetxController {
 
   String getCurrentPdfUri() {
     return newspapers[_currentIndex].pdfUri ?? "";
+  }
+
+  void startNewspaperViewer(int index) {
+    _newspaperViewerController.newspaper = newspapers[index];
   }
 }

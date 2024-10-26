@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AnecdoteController.dart';
+import 'package:gazette/controllers/NewspaperViewerController.dart';
 import 'package:gazette/controllers/ProfileController.dart';
+import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -11,6 +13,8 @@ import 'package:gazette/utils/SVConstants.dart';
 class SVPostComponent extends StatelessWidget {
   final AnecdoteController _anecdoteController = Get.put(AnecdoteController());
   final ProfileController _profileController = Get.put(ProfileController());
+  final NewspaperViewerController _newspaperViewerController =
+      Get.put(NewspaperViewerController());
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +72,23 @@ class SVPostComponent extends StatelessWidget {
                                     Text(_anecdoteController.getDate(index),
                                         style: secondaryTextStyle(
                                             color: svGetBodyColor(), size: 12)),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.more_horiz)),
+                                    PopupMenuButton(
+                                      onSelected: (item) {
+                                        _newspaperViewerController.newspaper =
+                                            _anecdoteController
+                                                .getNewspaper(index);
+                                        NewspaperViewerScreen().launch(context);
+                                      },
+                                      itemBuilder: (BuildContext context) {
+                                        return const [
+                                          PopupMenuItem(
+                                            child:
+                                                Text("Ouvrir la version PDF"),
+                                            value: 'newspaper',
+                                          )
+                                        ];
+                                      },
+                                    ),
                                   ],
                                 ).paddingSymmetric(horizontal: 16),
                               ],

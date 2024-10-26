@@ -58,7 +58,7 @@ class PocketbaseService extends GetxService {
     StorageService.to.user = null;
   }
 
-  Future<List<User>> getAllUserDetails({bool useCache = false}) async {
+  Future<List<User>> getAllUserDetails({bool useCache = true}) async {
     try {
       if (useCache && _cachedUsersData.isNotEmpty) {
         return Future<List<User>>.value(
@@ -78,7 +78,7 @@ class PocketbaseService extends GetxService {
 
   Future<User> getUserDetails(
     String userId, {
-    bool useCache = false,
+    bool useCache = true,
   }) async {
     try {
       if (useCache && _cachedUsersData.containsKey(userId)) {
@@ -94,7 +94,7 @@ class PocketbaseService extends GetxService {
     }
   }
 
-  Future<List<Newspaper>> getAllNewspapers({bool useCache = false}) async {
+  Future<List<Newspaper>> getAllNewspapers({bool useCache = true}) async {
     try {
       if (useCache && _cachedNewspapersData.isNotEmpty) {
         return Future<List<Newspaper>>.value(
@@ -115,7 +115,7 @@ class PocketbaseService extends GetxService {
 
   Future<Newspaper> getNewspaper(
     String newspaperId, {
-    bool useCache = false,
+    bool useCache = true,
   }) async {
     try {
       if (useCache && _cachedNewspapersData.containsKey(newspaperId)) {
@@ -131,7 +131,7 @@ class PocketbaseService extends GetxService {
     }
   }
 
-  Future<List<Anecdote>> getAllAnecdotes({bool useCache = false}) async {
+  Future<List<Anecdote>> getAllAnecdotes({bool useCache = true}) async {
     try {
       if (useCache && _cachedAnecdotesData.isNotEmpty) {
         return Future<List<Anecdote>>.value(
@@ -143,7 +143,7 @@ class PocketbaseService extends GetxService {
       return Future.wait(results.map((final result) async {
         var anecdote = Anecdote.fromRecord(result);
         anecdote.user = await getUserDetails(anecdote.userId);
-        if (anecdote.newspaper != null) {
+        if (anecdote.newspaperId != null) {
           anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
         }
         _cachedAnecdotesData[anecdote.id] = anecdote;
