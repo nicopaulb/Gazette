@@ -94,7 +94,7 @@ class PocketbaseService extends GetxService {
     }
   }
 
-  Future<List<Newspaper>> getAllNewspapers({bool useCache = true}) async {
+  Future<List<Newspaper>> getAllNewspapers({bool useCache = false}) async {
     try {
       if (useCache && _cachedNewspapersData.isNotEmpty) {
         return Future<List<Newspaper>>.value(
