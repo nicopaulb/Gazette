@@ -8,15 +8,11 @@ import 'package:gazette/screens/SVDashboardScreen.dart';
 
 class LogInScreen extends StatelessWidget {
   final LoginController _loginController = Get.put(LoginController());
-  final _usernameTextController = TextEditingController(text: "");
-  final _passwordTextController = TextEditingController(text: "");
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
-
     return Scaffold(
       backgroundColor: svGetScaffoldColor(),
       body: Center(
@@ -31,7 +27,7 @@ class LogInScreen extends StatelessWidget {
               Image.asset('images/gazette/logo.png',
                   width: width, fit: BoxFit.fill),
               Form(
-                  key: _formKey,
+                  key: _loginController.formKey,
                   child: Container(
                     margin: EdgeInsets.all(24),
                     decoration: BoxDecoration(
@@ -43,7 +39,7 @@ class LogInScreen extends StatelessWidget {
                       children: <Widget>[
                         SizedBox(height: 10),
                         TextFormField(
-                          controller: _usernameTextController,
+                          controller: _loginController.usernameTextController,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return "Nom d'utilisateur requis";
@@ -82,89 +78,98 @@ class LogInScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
-                        TextFormField(
-                          controller: _passwordTextController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Mot de passe requis";
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.text,
-                          obscureText: true,
-                          maxLength: 16,
-                          style: secondaryTextStyle(),
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                            hintText: "Mot de passe",
-                            hintStyle: TextStyle(color: hintTextColor),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide: const BorderSide(
-                                  color: hintTextColor, width: 0.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide: const BorderSide(
-                                  color: hintTextColor, width: 0.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide: const BorderSide(
-                                  color: Colors.red, width: 0.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide: const BorderSide(
-                                  color: hintTextColor, width: 0.0),
-                            ),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                        SizedBox(height: 26),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                                child: TextButton(
-                              style: ButtonStyle(
-                                  fixedSize: WidgetStatePropertyAll(
-                                      Size.fromHeight(70)),
-                                  foregroundColor:
-                                      WidgetStatePropertyAll<Color>(whiteColor),
-                                  backgroundColor:
-                                      WidgetStatePropertyAll<Color>(
-                                          SVAppColorPrimary),
-                                  shape: WidgetStatePropertyAll<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          side: BorderSide(
-                                              color: SVAppColorPrimary)))),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  String? error =
-                                      await _loginController.onLogin(
-                                          _usernameTextController.text,
-                                          _passwordTextController.text);
-                                  if (error != null) {
-                                    printInfo(info: error);
-                                  } else {
-                                    SVDashboardScreen()
-                                        .launch(context, isNewTask: true);
-                                  }
+                        Obx(() => TextFormField(
+                              controller:
+                                  _loginController.passwordTextController,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return "Mot de passe requis";
                                 }
+                                return null;
                               },
-                              child: Text("Connexion",
-                                  style: primaryTextStyle(
-                                      size: 20, color: whiteColor)),
-                              // decoration: BoxDecoration(
-                              //     color: SVAppColorPrimary,
-                              //     borderRadius: radius(8))),
+                              keyboardType: TextInputType.text,
+                              obscureText: true,
+                              maxLength: 16,
+                              style: secondaryTextStyle(),
+                              decoration: InputDecoration(
+                                counterText: "",
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(16, 10, 16, 10),
+                                hintText: "Mot de passe",
+                                hintStyle: TextStyle(color: hintTextColor),
+                                errorText: _loginController.error.value,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(
+                                      color: hintTextColor, width: 0.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(
+                                      color: hintTextColor, width: 0.0),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(
+                                      color: Colors.red, width: 0.0),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(
+                                      color: hintTextColor, width: 0.0),
+                                ),
+                                border: InputBorder.none,
+                              ),
                             )),
-                          ],
-                        )
+                        SizedBox(height: 26),
+                        Obx(() => _loginController.isLoading.value
+                            ? const Center(child: CircularProgressIndicator())
+                            : Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      child: TextButton(
+                                    style: ButtonStyle(
+                                        fixedSize: WidgetStatePropertyAll(
+                                            Size.fromHeight(70)),
+                                        foregroundColor:
+                                            WidgetStatePropertyAll<Color>(
+                                                whiteColor),
+                                        backgroundColor:
+                                            WidgetStatePropertyAll<Color>(
+                                                SVAppColorPrimary),
+                                        shape: WidgetStatePropertyAll<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                side: BorderSide(
+                                                    color:
+                                                        SVAppColorPrimary)))),
+                                    onPressed: () async {
+                                      if (_loginController.formKey.currentState!
+                                          .validate()) {
+                                        if (await _loginController.onLogin(
+                                                _loginController
+                                                    .usernameTextController
+                                                    .text,
+                                                _loginController
+                                                    .passwordTextController
+                                                    .text) ==
+                                            null) {
+                                          SVDashboardScreen()
+                                              .launch(context, isNewTask: true);
+                                        }
+                                      }
+                                    },
+                                    child: Text("Connexion",
+                                        style: primaryTextStyle(
+                                            size: 20, color: whiteColor)),
+                                    // decoration: BoxDecoration(
+                                    //     color: SVAppColorPrimary,
+                                    //     borderRadius: radius(8))),
+                                  )),
+                                ],
+                              ))
                       ],
                     ),
                   )),

@@ -49,7 +49,7 @@ class PocketbaseService extends GetxService {
           .authWithPassword(username, password);
       return userData;
     } on ClientException catch (e) {
-      throw e.originalError;
+      throw e;
     }
   }
 
