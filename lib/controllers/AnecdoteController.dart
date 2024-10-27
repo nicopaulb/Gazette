@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/utils/SVCommon.dart';
@@ -7,26 +8,52 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AnecdoteController extends GetxController {
+  final ScrollController scrollController = ScrollController();
   RxBool isLoading = false.obs;
   List<Anecdote> anecdotes = <Anecdote>[];
+  int page = 1;
+  final int NB_PER_PAGE = 30;
+  bool canLoadMore = false;
 
   @override
   void onInit() {
-    loadAnecdotes();
+    super.onInit();
+    scrollController.addListener(_scrollListener);
+    loadFirstAnecdotes();
     afterBuildCreated(() {
       setStatusBarColor(svGetScaffoldColor());
     });
-    super.onInit();
   }
 
-  Future<void> loadAnecdotes() async {
+  Future<void> loadFirstAnecdotes() async {
     isLoading.value = true;
     try {
-      anecdotes = await PocketbaseService.to.getAllAnecdotes();
+      anecdotes =
+          await PocketbaseService.to.getAnecdotesPerPage(page++, NB_PER_PAGE);
+      canLoadMore = true;
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
       Get.log('GotError : $e');
+    }
+  }
+
+  Future<void> loadMoreAnecdotes() async {
+    if (canLoadMore) {
+      try {
+        List<Anecdote> additionalAnecdotes =
+            await PocketbaseService.to.getAnecdotesPerPage(page++, NB_PER_PAGE);
+        if (additionalAnecdotes.isNotEmpty) {
+          anecdotes.addAll(additionalAnecdotes);
+          update();
+        }
+
+        if (additionalAnecdotes.length == NB_PER_PAGE) {
+          canLoadMore = true;
+        }
+      } catch (e) {
+        Get.log('GotError : $e');
+      }
     }
   }
 
@@ -58,5 +85,11 @@ class AnecdoteController extends GetxController {
 
   String getText(int index) {
     return anecdotes[index].text;
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.extentAfter < 1000) {
+      loadMoreAnecdotes();
+    }
   }
 }

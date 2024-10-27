@@ -58,15 +58,7 @@ class SVHomeFragment extends StatelessWidget {
         backgroundColor: context.cardColor,
         child: SVHomeDrawerComponent(),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            16.height,
-            SVPostComponent(),
-            16.height,
-          ],
-        ),
-      ),
+      body: SVPostComponent(),
     );
   }
 }

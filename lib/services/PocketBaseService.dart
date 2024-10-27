@@ -155,6 +155,28 @@ class PocketbaseService extends GetxService {
     }
   }
 
+  Future<List<Anecdote>> getAnecdotesPerPage(int page, int perPage) async {
+    try {
+      final results = await _client.collection('anecdotes').getList(
+          perPage: perPage,
+          page: page,
+          sort: "-date",
+          filter: "published = true");
+      return Future.wait(results.items.map((final result) async {
+        var anecdote = Anecdote.fromRecord(result);
+        anecdote.user = await getUserDetails(anecdote.userId);
+        if (anecdote.newspaperId != null) {
+          anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
+        }
+        _cachedAnecdotesData[anecdote.id] = anecdote;
+        return anecdote;
+      }).toList());
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
   Future<List<Anecdote>> getAllAnecdotesFromUser(User user) async {
     try {
       final results = await _client
