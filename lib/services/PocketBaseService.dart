@@ -132,6 +132,7 @@ class PocketbaseService extends GetxService {
   }
 
   Future<List<Anecdote>> getAllAnecdotes({bool useCache = true}) async {
+    List<Anecdote> anecdotesList = [];
     try {
       if (useCache && _cachedAnecdotesData.isNotEmpty) {
         return Future<List<Anecdote>>.value(
@@ -140,15 +141,16 @@ class PocketbaseService extends GetxService {
       final results = await _client
           .collection('anecdotes')
           .getFullList(sort: "-date", filter: "published = true");
-      return Future.wait(results.map((final result) async {
-        var anecdote = Anecdote.fromRecord(result);
+      for (RecordModel anecdoteRecord in results) {
+        var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = await getUserDetails(anecdote.userId);
         if (anecdote.newspaperId != null) {
           anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
         }
         _cachedAnecdotesData[anecdote.id] = anecdote;
-        return anecdote;
-      }).toList());
+        anecdotesList.add(anecdote);
+      }
+      return anecdotesList;
     } on ClientException catch (e) {
       Get.log(e.toString());
       throw e.originalError;
@@ -156,21 +158,25 @@ class PocketbaseService extends GetxService {
   }
 
   Future<List<Anecdote>> getAnecdotesPerPage(int page, int perPage) async {
+    List<Anecdote> anecdotesList = [];
     try {
       final results = await _client.collection('anecdotes').getList(
           perPage: perPage,
           page: page,
           sort: "-date",
           filter: "published = true");
-      return Future.wait(results.items.map((final result) async {
-        var anecdote = Anecdote.fromRecord(result);
+
+      for (RecordModel anecdoteRecord in results.items) {
+        var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = await getUserDetails(anecdote.userId);
         if (anecdote.newspaperId != null) {
           anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
         }
         _cachedAnecdotesData[anecdote.id] = anecdote;
-        return anecdote;
-      }).toList());
+        anecdotesList.add(anecdote);
+      }
+
+      return anecdotesList;
     } on ClientException catch (e) {
       Get.log(e.toString());
       throw e.originalError;
@@ -178,18 +184,22 @@ class PocketbaseService extends GetxService {
   }
 
   Future<List<Anecdote>> getAllAnecdotesFromUser(User user) async {
+    List<Anecdote> anecdotesList = [];
     try {
       final results = await _client
           .collection('anecdotes')
           .getFullList(filter: 'published = true && user = "${user.id}"');
-      return Future.wait(results.map((final result) async {
-        var anecdote = Anecdote.fromRecord(result);
+
+      for (RecordModel anecdoteRecord in results) {
+        var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = user;
         if (anecdote.newspaper != null) {
           anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
         }
-        return anecdote;
-      }).toList());
+        anecdotesList.add(anecdote);
+      }
+
+      return anecdotesList;
     } on ClientException catch (e) {
       Get.log(e.toString());
       throw e.originalError;
