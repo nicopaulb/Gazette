@@ -40,6 +40,7 @@ class AnecdoteController extends GetxController {
 
   Future<void> loadMoreAnecdotes() async {
     if (canLoadMore) {
+      canLoadMore = false;
       try {
         List<Anecdote> additionalAnecdotes =
             await PocketbaseService.to.getAnecdotesPerPage(page++, NB_PER_PAGE);
