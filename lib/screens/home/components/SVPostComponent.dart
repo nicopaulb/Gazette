@@ -136,16 +136,40 @@ class SVPostComponent extends StatelessWidget {
                                         textAlign: TextAlign.start)
                                     .paddingSymmetric(horizontal: 16),
                                 16.height,
-                                CachedNetworkImage(
-                                  imageUrl: _anecdoteController.getImage(index),
-                                  height: 400,
-                                  width:
-                                      ContextExtensions(context).width() - 32,
-                                  fit: BoxFit.cover,
-                                )
-                                    .cornerRadiusWithClipRRect(
-                                        SVAppCommonRadius)
-                                    .center(),
+                                GestureDetector(
+                                    onTap: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (_) => Dialog(
+                                            backgroundColor: Colors.transparent,
+                                            child: FractionallySizedBox(
+                                              widthFactor: 0.9,
+                                              heightFactor: 0.9,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        _anecdoteController
+                                                            .getImage(index),
+                                                    fit: BoxFit.contain),
+                                              ),
+                                            )),
+                                      );
+                                    },
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          _anecdoteController.getImage(index),
+                                      height: 400,
+                                      width:
+                                          ContextExtensions(context).width() -
+                                              32,
+                                      fit: BoxFit.cover,
+                                    )
+                                        .cornerRadiusWithClipRRect(
+                                            SVAppCommonRadius)
+                                        .center()),
                               ],
                             ),
                           );
