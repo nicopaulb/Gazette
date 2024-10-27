@@ -45,10 +45,14 @@ class SVPostComponent extends StatelessWidget {
                           ),
                           20.width,
                           Flexible(
-                            child: Text(
-                                "Bienvenue sur la première version de la Gazette numérique !\nN'hesitez pas à addresser vos retours à l'équipe de la Gazette.",
-                                style: primaryTextStyle(
-                                    color: Colors.white, size: 14)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                  "Bienvenue sur la première version de la Gazette numérique !\nN'hesitez pas à adresser vos retours et suggestions à l'équipe de la Gazette.",
+                                  style: primaryTextStyle(
+                                      color: Colors.white, size: 14)),
+                            ),
                           )
                         ],
                       )),

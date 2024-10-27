@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: svGetScaffoldColor(),
         appBar: AppBar(
           backgroundColor: svGetScaffoldColor(),
-          title: Text('Profile', style: boldTextStyle(size: 20)),
+          title: Text('Profil', style: boldTextStyle(size: 20)),
           elevation: 0,
           centerTitle: true,
           iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),

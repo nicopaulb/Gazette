@@ -35,7 +35,7 @@ class SVHomeFragment extends StatelessWidget {
             scaffoldKey.currentState?.openDrawer();
           },
         ),
-        title: Text('Home', style: boldTextStyle(size: 18)),
+        title: Text('Accueil', style: boldTextStyle(size: 18)),
         actions: [
           InkWell(
             onTap: () {

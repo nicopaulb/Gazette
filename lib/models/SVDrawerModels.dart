@@ -9,7 +9,7 @@ List<SVDrawerModel> getDrawerOptions() {
   List<SVDrawerModel> list = [];
 
   list.add(SVDrawerModel(
-      image: 'images/gazette/icons/ic_Profile.png', title: 'Profile'));
+      image: 'images/gazette/icons/ic_Profile.png', title: 'Profil'));
   list.add(SVDrawerModel(
       image: 'images/gazette/icons/ic_Settings.png', title: 'Paramètres'));
   list.add(SVDrawerModel(
