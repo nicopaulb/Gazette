@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
@@ -13,9 +14,12 @@ class AddAnecdoteController extends GetxController {
   final formKey = GlobalKey<FormState>();
   RxBool isUploading = false.obs;
   bool selectedImageError = false;
+  List<Anecdote> submittedAnecdotes = [];
+  final _pocketbaseService = PocketbaseService.to;
 
   @override
   void onInit() {
+    getAnecdotesCount();
     afterBuildCreated(() {
       setStatusBarColor(svGetScaffoldColor());
     });
@@ -78,7 +82,7 @@ class AddAnecdoteController extends GetxController {
 
     isUploading.value = true;
     try {
-      await PocketbaseService.to.createAnecdote(
+      await _pocketbaseService.createAnecdote(
           contentTextController.text, selectedImage!, selectedDate);
       resetForm();
       Get.showSnackbar(
@@ -92,10 +96,25 @@ class AddAnecdoteController extends GetxController {
         ),
       );
       isUploading.value = false;
+      getAnecdotesCount();
     } catch (e) {
       isUploading.value = false;
       Get.log('GotError : $e');
     }
+  }
+
+  Future<void> getAnecdotesCount() async {
+    try {
+      submittedAnecdotes =
+          await _pocketbaseService.getAllSubmittedAnecdotesFromCurrentUser();
+      update();
+    } catch (e) {
+      Get.log('GotError : $e');
+    }
+  }
+
+  String getUserName() {
+    return _pocketbaseService.user?.firstname ?? "";
   }
 
   void resetForm() {

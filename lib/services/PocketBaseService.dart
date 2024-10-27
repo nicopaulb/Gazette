@@ -196,6 +196,21 @@ class PocketbaseService extends GetxService {
     }
   }
 
+  Future<List<Anecdote>> getAllSubmittedAnecdotesFromCurrentUser() async {
+    try {
+      final results = await _client.collection('anecdotes').getFullList(
+          filter: 'published = false && user = "${this.user!.id}"');
+      return Future.wait(results.map((final result) async {
+        var anecdote = Anecdote.fromRecord(result);
+        anecdote.user = user;
+        return anecdote;
+      }).toList());
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
   Future<Anecdote> createAnecdote(
       String text, XFile image, DateTime date) async {
     final result = await _client.collection("anecdotes").create(body: {

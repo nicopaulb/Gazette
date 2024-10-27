@@ -127,11 +127,13 @@ class AddPostFragment extends StatelessWidget {
                           },
                         ),
                       )),
-
-                  // Positioned(
-                  //   child: SVPostOptionsComponent(),
-                  //   bottom: 0,
-                  // ),
+                  Spacer(),
+                  GetBuilder<AddAnecdoteController>(
+                      builder: (_) => Text(
+                            "Anecdotes envoyées par ${_addAnecdoteController.getUserName()} : ${_addAnecdoteController.submittedAnecdotes.length}",
+                            style: secondaryTextStyle(),
+                          )),
+                  10.height
                 ],
               ),
             )),
