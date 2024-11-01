@@ -21,4 +21,6 @@ class StorageService extends GetxService {
   }
 
   set user(User? data) => _storage.write(_userKey, data?.toJson());
+
+  void clear() => _storage.erase();
 }

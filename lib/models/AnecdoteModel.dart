@@ -13,8 +13,8 @@ class Anecdote {
   final DateTime? date;
   final String text;
   final String imageFileName;
-  final bool published;
-  final String? newspaperId;
+  bool published;
+  final String newspaperId;
   String? imageUri;
   User? user;
   Newspaper? newspaper;

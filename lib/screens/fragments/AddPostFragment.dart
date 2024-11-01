@@ -25,7 +25,7 @@ class AddPostFragment extends StatelessWidget {
             shapeBorder: RoundedRectangleBorder(borderRadius: radius(4)),
             text: 'Envoyer',
             textStyle: boldTextStyle(color: Colors.white, size: 12),
-            onTap: () => _addAnecdoteController.sendAnecdote(context),
+            onTap: () => _addAnecdoteController.sendAnecdote(),
             elevation: 0,
             color: SVAppColorPrimary,
             width: 100,

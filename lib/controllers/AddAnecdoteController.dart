@@ -70,7 +70,7 @@ class AddAnecdoteController extends GetxController {
     return selectedImageError ? Colors.red : null;
   }
 
-  void sendAnecdote(BuildContext context) async {
+  void sendAnecdote() async {
     if (selectedImage == null) {
       selectedImageError = true;
       update();

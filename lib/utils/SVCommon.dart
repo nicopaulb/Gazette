@@ -92,21 +92,3 @@ Widget svHeaderContainer(
     ],
   );
 }
-
-Widget svAppButton(
-    {required String text,
-    required Function onTap,
-    double? width,
-    required BuildContext context}) {
-  return AppButton(
-    shapeBorder:
-        RoundedRectangleBorder(borderRadius: radius(SVAppCommonRadius)),
-    text: text,
-    textStyle: boldTextStyle(color: Colors.white),
-    onTap: onTap,
-    elevation: 0,
-    color: SVAppColorPrimary,
-    width: width ?? context.width() - 32,
-    height: 56,
-  );
-}

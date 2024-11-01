@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gazette/controllers/HomeDrawerController.dart';
 import 'package:gazette/controllers/ProfileController.dart';
+import 'package:gazette/screens/admin/AdminScreen.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/screens/settings/SettingScreen.dart';
@@ -20,10 +22,16 @@ class SVHomeDrawerComponent extends StatefulWidget {
 
 class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
   final ProfileController _profileController = Get.put(ProfileController());
-  List<SVDrawerModel> options = getDrawerOptions();
+  final HomeDrawerController _homeDrawerController =
+      Get.put(HomeDrawerController());
   final user = PocketbaseService.to.user!;
-
   int selectedIndex = -1;
+
+  @override
+  void initState() {
+    setStatusBarColor(Colors.transparent);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,48 +71,70 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
           ],
         ).paddingOnly(left: 16, right: 8, bottom: 20, top: 20),
         20.height,
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: options.map((e) {
-            int index = options.indexOf(e);
-            return SettingItemWidget(
-              decoration: BoxDecoration(
-                  color: selectedIndex == index
-                      ? SVAppColorPrimary.withAlpha(30)
-                      : context.cardColor),
-              title: e.title.validate(),
-              titleTextStyle: boldTextStyle(size: 14),
-              leading: Image.asset(e.image.validate(),
-                  height: 22,
-                  width: 22,
-                  fit: BoxFit.cover,
-                  color: SVAppColorPrimary),
-              onTap: () async {
-                selectedIndex = index;
-                setState(() {});
-                switch (selectedIndex) {
-                  case 0:
-                    finish(context);
-                    _profileController.updateUser(user.id);
-                    ProfileScreen().launch(context);
-                    break;
-                  case 1:
-                    finish(context);
-                    SettingScreen().launch(context);
-                    break;
-                  case 2:
-                    await PocketbaseService.to.logout();
-                    finish(context);
-                    LogInScreen().launch(context);
-                    break;
-                  default:
-                    finish(context);
-                    break;
-                }
-              },
-            );
-          }).toList(),
-        ).expand(),
+        Column(mainAxisSize: MainAxisSize.min, children: [
+          SettingItemWidget(
+            decoration: BoxDecoration(color: context.cardColor),
+            title: "Profil",
+            titleTextStyle: boldTextStyle(size: 14),
+            leading: Image.asset('images/gazette/icons/ic_Profile.png',
+                height: 22,
+                width: 22,
+                fit: BoxFit.cover,
+                color: SVAppColorPrimary),
+            onTap: () {
+              finish(context);
+              _profileController.updateUser(user.id);
+              ProfileScreen().launch(context);
+            },
+          ),
+          SettingItemWidget(
+            decoration: BoxDecoration(color: context.cardColor),
+            title: "Paramètres",
+            titleTextStyle: boldTextStyle(size: 14),
+            leading: Image.asset('images/gazette/icons/ic_Settings.png',
+                height: 22,
+                width: 22,
+                fit: BoxFit.cover,
+                color: SVAppColorPrimary),
+            onTap: () {
+              finish(context);
+              SettingScreen().launch(context);
+            },
+          ),
+          GetBuilder<HomeDrawerController>(
+              builder: (_) => user.admin
+                  ? SettingItemWidget(
+                      decoration: BoxDecoration(color: context.cardColor),
+                      title: "Administration",
+                      titleTextStyle: boldTextStyle(size: 14),
+                      leading: Image.asset(
+                          'images/gazette/icons/ic_Document.png',
+                          height: 22,
+                          width: 22,
+                          fit: BoxFit.cover,
+                          color: SVAppColorPrimary),
+                      onTap: () {
+                        finish(context);
+                        AdminScreen().launch(context);
+                      },
+                    )
+                  : Container()),
+          SettingItemWidget(
+            decoration: BoxDecoration(color: context.cardColor),
+            title: "Se déconnecter",
+            titleTextStyle: boldTextStyle(size: 14),
+            leading: Image.asset('images/gazette/icons/ic_Logout.png',
+                height: 22,
+                width: 22,
+                fit: BoxFit.cover,
+                color: SVAppColorPrimary),
+            onTap: () async {
+              await PocketbaseService.to.logout();
+              finish(context);
+              LogInScreen().launch(context);
+            },
+          ),
+        ]).expand(),
         Divider(indent: 16, endIndent: 16),
         SnapHelperWidget<PackageInfo>(
           future: PackageInfo.fromPlatform(),

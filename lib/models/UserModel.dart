@@ -11,6 +11,7 @@ class User {
   final String avatarFileName;
   final String firstname;
   final String lastname;
+  final bool admin;
   String? avatarUri;
   String? token;
 
@@ -25,22 +26,23 @@ class User {
     required this.lastname,
     required this.avatarFileName,
     required this.avatarUri,
+    required this.admin,
     this.token,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json["id"],
-      created: DateTime.tryParse(json["created"] ?? ""),
-      updated: DateTime.tryParse(json["updated"] ?? ""),
-      collectionId: json["collectionId"],
-      collectionName: json["collectionName"],
-      username: json["username"],
-      avatarFileName: json["avatar"],
-      avatarUri: json["avatarUri"],
-      firstname: json["firstname"],
-      lastname: json["lastname"],
-    );
+        id: json["id"],
+        created: DateTime.tryParse(json["created"] ?? ""),
+        updated: DateTime.tryParse(json["updated"] ?? ""),
+        collectionId: json["collectionId"],
+        collectionName: json["collectionName"],
+        username: json["username"],
+        avatarFileName: json["avatar"] ?? "",
+        avatarUri: json["avatarUri"] ?? "",
+        firstname: json["firstname"] ?? "",
+        lastname: json["lastname"] ?? "",
+        admin: json["priviliged"].toString() == "true");
   }
 
   factory User.fromRecord(RecordModel record) {
@@ -65,6 +67,7 @@ class User {
         "lastname": lastname,
         "avatar": avatarFileName,
         "avatarUri": avatarUri.toString(),
+        "priviliged": admin.toString()
       };
 
   String getResizedAvatar(int width, int height) {

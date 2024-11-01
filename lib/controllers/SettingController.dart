@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/main.dart';
+import 'package:gazette/services/StorageService.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -19,5 +20,9 @@ class SettingController extends GetxController {
 
   bool isDarkMode() {
     return appStore.isDarkMode;
+  }
+
+  void clearCache() {
+    StorageService.to.clear();
   }
 }

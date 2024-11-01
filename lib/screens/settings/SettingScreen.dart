@@ -6,9 +6,6 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class SettingScreen extends StatelessWidget {
-  bool isSwitched1 = false;
-  bool isSwitched2 = false;
-  bool isSwitched3 = false;
   final SettingController _settingController = Get.put(SettingController());
 
   @override
@@ -42,6 +39,23 @@ class SettingScreen extends StatelessWidget {
                       value: _settingController.isDarkMode(),
                       activeColor: SVAppColorPrimary,
                     )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16, 4, 6, 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Supprimer les données en cache",
+                        style: boldTextStyle(size: 14)),
+                    IconButton(
+                        onPressed: () => {_settingController.clearCache()},
+                        icon: Icon(
+                          Icons.delete,
+                          color: ContextExtensions(context).iconColor,
+                        ))
                   ],
                 ),
               ),

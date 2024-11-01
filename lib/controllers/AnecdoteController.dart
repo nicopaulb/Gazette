@@ -70,8 +70,8 @@ class AnecdoteController extends GetxController {
     return anecdotes[index].user?.getResizedAvatar(100, 100) ?? "";
   }
 
-  Newspaper getNewspaper(int index) {
-    return anecdotes[index].newspaper!;
+  Newspaper? getNewspaper(int index) {
+    return anecdotes[index].newspaper;
   }
 
   String getDate(int index) {

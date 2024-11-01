@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AnecdoteController.dart';
 import 'package:gazette/controllers/NewspaperViewerController.dart';
 import 'package:gazette/controllers/ProfileController.dart';
+import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/utils/SVColors.dart';
@@ -124,13 +125,16 @@ class SVPostComponent extends StatelessWidget {
                                                         size: 12)),
                                                 PopupMenuButton(
                                                   onSelected: (item) {
-                                                    _newspaperViewerController
-                                                            .newspaper =
+                                                    Newspaper? news =
                                                         _anecdoteController
                                                             .getNewspaper(
                                                                 index);
-                                                    NewspaperViewerScreen()
-                                                        .launch(context);
+                                                    if (news != null) {
+                                                      _newspaperViewerController
+                                                          .newspaper = news;
+                                                      NewspaperViewerScreen()
+                                                          .launch(context);
+                                                    }
                                                   },
                                                   itemBuilder:
                                                       (BuildContext context) {
@@ -162,8 +166,8 @@ class SVPostComponent extends StatelessWidget {
                                                     backgroundColor:
                                                         Colors.transparent,
                                                     child: FractionallySizedBox(
-                                                      widthFactor: 0.9,
-                                                      heightFactor: 0.9,
+                                                      widthFactor: 0.95,
+                                                      heightFactor: 0.95,
                                                       child: GestureDetector(
                                                         onTap: () {
                                                           Navigator.pop(

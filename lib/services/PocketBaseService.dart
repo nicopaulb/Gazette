@@ -42,6 +42,12 @@ class PocketbaseService extends GetxService {
     _authStore.save(token, model);
   }
 
+  void clearCachedData() {
+    _cachedUsersData.clear();
+    _cachedNewspapersData.clear();
+    _cachedAnecdotesData.clear();
+  }
+
   Future login(String username, password) async {
     try {
       RecordAuth userData = await _client
@@ -169,7 +175,7 @@ class PocketbaseService extends GetxService {
       for (RecordModel anecdoteRecord in results.items) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = await getUserDetails(anecdote.userId);
-        if (anecdote.newspaperId != null) {
+        if (anecdote.newspaperId.isNotEmpty) {
           anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
         }
         _cachedAnecdotesData[anecdote.id] = anecdote;
@@ -215,6 +221,40 @@ class PocketbaseService extends GetxService {
         anecdote.user = user;
         return anecdote;
       }).toList());
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
+  Future<List<Anecdote>> getAllSubmittedAnecdotes() async {
+    List<Anecdote> anecdotesList = [];
+
+    try {
+      final results = await _client
+          .collection('anecdotes')
+          .getFullList(filter: 'published = false', sort: "+date");
+
+      for (RecordModel anecdoteRecord in results) {
+        var anecdote = Anecdote.fromRecord(anecdoteRecord);
+        anecdote.user = await getUserDetails(anecdote.userId);
+        _cachedAnecdotesData[anecdote.id] = anecdote;
+        anecdotesList.add(anecdote);
+      }
+      return anecdotesList;
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
+  Future<void> publishAnecdote(Anecdote anecdote) async {
+    try {
+      anecdote.published = true;
+      final result = await _client
+          .collection('anecdotes')
+          .update(anecdote.id, body: anecdote.toJson());
+      anecdote = Anecdote.fromRecord(result);
     } on ClientException catch (e) {
       Get.log(e.toString());
       throw e.originalError;
