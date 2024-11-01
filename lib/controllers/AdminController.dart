@@ -37,8 +37,7 @@ class AdminController extends GetxController {
 
   Future<void> publish() async {
     Get.defaultDialog(
-        middleText:
-            "Est-tu sûr de vouloir publier toutes les anecdotes en attente ?",
+        middleText: "Est-tu sûr de vouloir publier toutes les anecdotes en attente ?",
         title: "Confirmation",
         textConfirm: "Publier",
         textCancel: "Annuler",
@@ -99,21 +98,32 @@ class AdminController extends GetxController {
       http.Response response = await http.get(
         Uri.parse(anecdotes[_selectedIndex].imageUri ?? ""),
       );
-      final item =
-          DataWriterItem(suggestedName: '${anecdotes[_selectedIndex].id}.png');
+      final item = DataWriterItem(suggestedName: '${anecdotes[_selectedIndex].id}.png');
+      item.add(Formats.png(response.bodyBytes));
+      await _clipboard!.write([item]);
+    }
+  }
+
+  void copyUserAvatar() async {
+    if (_clipboard != null) {
+      http.Response response = await http.get(
+        Uri.parse(anecdotes[_selectedIndex].user!.avatarUri ?? ""),
+      );
+      final item = DataWriterItem(suggestedName: '${anecdotes[_selectedIndex].user!.username}.png');
       item.add(Formats.png(response.bodyBytes));
       await _clipboard!.write([item]);
     }
   }
 
   Future<void> downloadImage() async {
-    await WebImageDownloader.downloadImageFromWeb(
-        anecdotes[_selectedIndex].imageUri ?? "",
-        name: new DateFormat.yMd("fr_FR")
-                .format(anecdotes[_selectedIndex].date!)
-                .replaceAll("/", "-") +
+    await WebImageDownloader.downloadImageFromWeb(anecdotes[_selectedIndex].imageUri ?? "",
+        name: new DateFormat.yMd("fr_FR").format(anecdotes[_selectedIndex].date!).replaceAll("/", "-") +
             " " +
             anecdotes[_selectedIndex].user!.firstname);
+  }
+
+  Future<void> downloadUserAvatar() async {
+    await WebImageDownloader.downloadImageFromWeb(anecdotes[_selectedIndex].user!.avatarUri ?? "", name: anecdotes[_selectedIndex].user!.username);
   }
 
   String getId(int index) {
@@ -133,15 +143,11 @@ class AdminController extends GetxController {
   }
 
   String getSelectedName() {
-    return (anecdotes[_selectedIndex].user?.firstname ?? "") +
-        " " +
-        (anecdotes[_selectedIndex].user?.lastname ?? "");
+    return (anecdotes[_selectedIndex].user?.firstname ?? "") + " " + (anecdotes[_selectedIndex].user?.lastname.capitalizeFirstLetter() ?? "");
   }
 
   String getSelectedDate() {
-    return new DateFormat.MMMMd("fr_FR")
-        .format(anecdotes[_selectedIndex].date!)
-        .capitalizeFirstLetter();
+    return new DateFormat.MMMMd("fr_FR").format(anecdotes[_selectedIndex].date!).capitalizeFirstLetter();
   }
 
   String getSelectedImage() {

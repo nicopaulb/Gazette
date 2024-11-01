@@ -17,13 +17,10 @@ class AdminAnecdoteScreen extends StatelessWidget {
               backgroundColor: svGetScaffoldColor(),
               appBar: AppBar(
                 backgroundColor: svGetScaffoldColor(),
-                title: Text(
-                    "Anecdote ${_adminController.selectedIndex + 1}/${_adminController.anecdotes.length}",
-                    style: boldTextStyle(size: 20)),
+                title: Text("Anecdote ${_adminController.selectedIndex + 1}/${_adminController.anecdotes.length}", style: boldTextStyle(size: 20)),
                 elevation: 0,
                 centerTitle: true,
-                iconTheme:
-                    IconThemeData(color: ContextExtensions(context).iconColor),
+                iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
               ),
               body: Container(
                 color: context.scaffoldBackgroundColor,
@@ -33,17 +30,38 @@ class AdminAnecdoteScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
+                          "Avatar : ",
+                          style: boldTextStyle(),
+                        ),
+                        CachedNetworkImage(height: 50, width: 50, fit: BoxFit.cover, imageUrl: _adminController.getSelectedUserAvatar()),
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: () => {_adminController.copyUserAvatar()},
+                                icon: Icon(
+                                  Icons.copy,
+                                  color: ContextExtensions(context).iconColor,
+                                )),
+                            IconButton(
+                                onPressed: () => {_adminController.downloadUserAvatar()},
+                                icon: Icon(
+                                  Icons.download,
+                                  color: ContextExtensions(context).iconColor,
+                                ))
+                          ],
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
                           "Auteur : ",
                           style: boldTextStyle(),
                         ),
                         Row(
                           children: [
-                            // CachedNetworkImage(
-                            //     height: 50,
-                            //     width: 50,
-                            //     fit: BoxFit.cover,
-                            //     imageUrl: _adminController.getSelectedUserAvatar()),
-                            // 10.width,
                             Text(
                               _adminController.getSelectedName(),
                               style: primaryTextStyle(),
@@ -70,11 +88,7 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           "Image : ",
                           style: boldTextStyle(),
                         ),
-                        CachedNetworkImage(
-                            height: 100,
-                            width: 100,
-                            fit: BoxFit.cover,
-                            imageUrl: _adminController.getSelectedImage()),
+                        CachedNetworkImage(height: 100, width: 100, fit: BoxFit.cover, imageUrl: _adminController.getSelectedImage()),
                         Row(
                           children: [
                             IconButton(
@@ -84,8 +98,7 @@ class AdminAnecdoteScreen extends StatelessWidget {
                                   color: ContextExtensions(context).iconColor,
                                 )),
                             IconButton(
-                                onPressed: () =>
-                                    {_adminController.downloadImage()},
+                                onPressed: () => {_adminController.downloadImage()},
                                 icon: Icon(
                                   Icons.download,
                                   color: ContextExtensions(context).iconColor,
@@ -159,8 +172,7 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           maintainAnimation: true,
                           maintainState: true,
                           child: IconButton(
-                              onPressed: () =>
-                                  {_adminController.showPrevAnecdote()},
+                              onPressed: () => {_adminController.showPrevAnecdote()},
                               icon: Icon(
                                 Icons.navigate_before,
                                 size: 80,
@@ -173,8 +185,7 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           maintainAnimation: true,
                           maintainState: true,
                           child: IconButton(
-                              onPressed: () =>
-                                  {_adminController.showNextAnecdote()},
+                              onPressed: () => {_adminController.showNextAnecdote()},
                               icon: Icon(
                                 Icons.navigate_next,
                                 size: 80,
