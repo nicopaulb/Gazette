@@ -22,8 +22,7 @@ class ProfileScreen extends StatelessWidget {
           iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
         ),
         body: Obx(
-          () => _profileController.isLoading.value ||
-                  _profileController.selectedUser.value == null
+          () => _profileController.isLoading.value || _profileController.selectedUser.value == null
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                   child: Column(
@@ -40,24 +39,21 @@ class ProfileScreen extends StatelessWidget {
                                   width: ContextExtensions(context).width(),
                                   height: 130,
                                   fit: BoxFit.cover,
-                                ).cornerRadiusWithClipRRectOnly(
-                                    topLeft: SVAppCommonRadius.toInt(),
-                                    topRight: SVAppCommonRadius.toInt()),
+                                ).cornerRadiusWithClipRRectOnly(topLeft: SVAppCommonRadius.toInt(), topRight: SVAppCommonRadius.toInt()),
                                 Positioned(
                                   bottom: 0,
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.white, width: 2),
-                                        borderRadius: radius(18)),
+                                    decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 2), borderRadius: radius(18)),
                                     child: CachedNetworkImage(
-                                            imageUrl:
-                                                _profileController.getAvatar(),
-                                            height: 88,
-                                            width: 88,
-                                            fit: BoxFit.cover)
-                                        .cornerRadiusWithClipRRect(
-                                            SVAppCommonRadius),
+                                      imageUrl: _profileController.getAvatar(),
+                                      height: 88,
+                                      width: 88,
+                                      fit: BoxFit.cover,
+                                      errorWidget: (context, url, error) => Image.asset(
+                                        'images/gazette/icons/ic_Profile.png',
+                                        color: SVAppColorPrimary,
+                                      ),
+                                    ).cornerRadiusWithClipRRect(SVAppCommonRadius),
                                   ),
                                 ),
                               ],
@@ -68,36 +64,25 @@ class ProfileScreen extends StatelessWidget {
                       16.height,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(_profileController.getName(),
-                              style: boldTextStyle(size: 20))
-                        ],
+                        children: [Text(_profileController.getName(), style: boldTextStyle(size: 20))],
                       ),
-                      Text(_profileController.getUsername(),
-                          style: secondaryTextStyle(color: svGetBodyColor())),
+                      Text(_profileController.getUsername(), style: secondaryTextStyle(color: svGetBodyColor())),
                       24.height,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Column(
                             children: [
-                              Text('Anecdotes',
-                                  style: secondaryTextStyle(
-                                      color: svGetBodyColor(), size: 12)),
+                              Text('Anecdotes', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
                               4.height,
-                              Text("${_profileController.getAnecdotesCount()}",
-                                  style: boldTextStyle(size: 18)),
+                              Text("${_profileController.getAnecdotesCount()}", style: boldTextStyle(size: 18)),
                             ],
                           ),
                           Column(
                             children: [
-                              Text('Mots',
-                                  style: secondaryTextStyle(
-                                      color: svGetBodyColor(), size: 12)),
+                              Text('Mots', style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
                               4.height,
-                              Text(
-                                  "${_profileController.getAnecdotesWordsCount()}",
-                                  style: boldTextStyle(size: 18)),
+                              Text("${_profileController.getAnecdotesWordsCount()}", style: boldTextStyle(size: 18)),
                             ],
                           )
                         ],
@@ -107,9 +92,7 @@ class ProfileScreen extends StatelessWidget {
                         constraints: BoxConstraints(maxWidth: 1000),
                         margin: EdgeInsets.all(16),
                         padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            color: context.cardColor,
-                            borderRadius: radius(SVAppContainerRadius)),
+                        decoration: BoxDecoration(color: context.cardColor, borderRadius: radius(SVAppContainerRadius)),
                         child: Column(
                           children: [
                             Column(
@@ -124,9 +107,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 Container(
                                   height: 2,
-                                  width:
-                                      ContextExtensions(context).width() / 2 -
-                                          32,
+                                  width: ContextExtensions(context).width() / 2 - 32,
                                   color: SVAppColorPrimary,
                                 ),
                               ],
@@ -137,15 +118,10 @@ class ProfileScreen extends StatelessWidget {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
-                                return CachedNetworkImage(
-                                        imageUrl: _profileController
-                                            .getAnecdoteImage(index),
-                                        height: 100,
-                                        fit: BoxFit.cover)
+                                return CachedNetworkImage(imageUrl: _profileController.getAnecdoteImage(index), height: 100, fit: BoxFit.cover)
                                     .cornerRadiusWithClipRRect(8);
                               },
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
                                 crossAxisSpacing: 16,
                                 mainAxisSpacing: 16,

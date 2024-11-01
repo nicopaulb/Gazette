@@ -149,7 +149,7 @@ class AdminController extends GetxController {
   }
 
   String getSelectedUserAvatar() {
-    return anecdotes[_selectedIndex].user?.getResizedAvatar(100, 100) ?? "";
+    return anecdotes[_selectedIndex].user?.getResizedAvatar() ?? "";
   }
 
   bool isFirstAnecdote() {

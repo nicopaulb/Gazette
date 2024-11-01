@@ -41,7 +41,7 @@ class ProfileController extends GetxController {
   }
 
   String getAvatar() {
-    return selectedUser.value?.getResizedAvatar(100, 100) ?? "";
+    return selectedUser.value?.getResizedAvatar() ?? "";
   }
 
   int getAnecdotesCount() {

@@ -67,7 +67,7 @@ class AnecdoteController extends GetxController {
   }
 
   String getUserAvatar(int index) {
-    return anecdotes[index].user?.getResizedAvatar(100, 100) ?? "";
+    return anecdotes[index].user?.getResizedAvatar() ?? "";
   }
 
   Newspaper? getNewspaper(int index) {
@@ -81,7 +81,11 @@ class AnecdoteController extends GetxController {
   }
 
   String getImage(int index) {
-    return anecdotes[index].getResizedImage(500, 500);
+    return anecdotes[index].getResizedImage(1000, 1000);
+  }
+
+  String getFullSizeImage(int index) {
+    return anecdotes[index].imageUri ?? "";
   }
 
   String getText(int index) {

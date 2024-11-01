@@ -28,7 +28,8 @@ class AddAnecdoteController extends GetxController {
 
   void pickerImage() async {
     final ImagePicker picker = ImagePicker();
-    XFile? picked = await picker.pickImage(source: ImageSource.gallery);
+    XFile? picked = await picker.pickImage(
+        source: ImageSource.gallery, maxWidth: 1500, maxHeight: 1500);
     if (picked != null && picked != selectedImage) {
       selectedImage = picked;
       selectedImageError = false;

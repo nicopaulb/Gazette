@@ -85,7 +85,8 @@ class Anecdote {
           "?thumb=" +
           width.toString() +
           "x" +
-          height.toString();
+          height.toString() +
+          "f";
     }
     return url;
   }

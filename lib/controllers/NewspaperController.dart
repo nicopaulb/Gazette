@@ -7,8 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class NewspaperController extends GetxController {
-  final NewspaperViewerController _newspaperViewerController =
-      Get.put(NewspaperViewerController());
+  final NewspaperViewerController _newspaperViewerController = Get.put(NewspaperViewerController());
   RxBool isLoading = false.obs;
   List<Newspaper> newspapers = <Newspaper>[];
   int _currentIndex = -1;
@@ -39,9 +38,7 @@ class NewspaperController extends GetxController {
   }
 
   String getName(int index) {
-    return new DateFormat.yMMMM("fr_FR")
-        .format(newspapers[index].date!)
-        .capitalizeFirstLetter();
+    return newspapers[index].number.toString() + ". " + new DateFormat.yMMMM("fr_FR").format(newspapers[index].date!).capitalizeFirstLetter();
   }
 
   String getCurrentName() {

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/ProfileController.dart';
+import 'package:gazette/utils/SVColors.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/home/components/SVHomeDrawerComponent.dart';
@@ -48,7 +49,11 @@ class SVHomeFragment extends StatelessWidget {
                 width: 24,
                 height: 24,
                 fit: BoxFit.cover,
-                imageUrl: user.getResizedAvatar(100, 100),
+                imageUrl: user.getResizedAvatar(),
+                errorWidget: (context, url, error) => Image.asset(
+                  'images/gazette/icons/ic_Profile.png',
+                  color: SVAppColorPrimary,
+                ),
               ),
             ),
           ).paddingRight(12),

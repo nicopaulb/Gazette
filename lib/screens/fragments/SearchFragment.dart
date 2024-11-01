@@ -44,9 +44,7 @@ class SearchFragment extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('En construction ;)', style: boldTextStyle())
-                .paddingAll(16)
-                .center(),
+            Text('En construction ;)', style: boldTextStyle()).paddingAll(16).center(),
             // ListView.separated(
             //   padding: EdgeInsets.all(16),
             //   shrinkWrap: true,

@@ -9,6 +9,7 @@ class Newspaper {
   final String collectionName;
   final DateTime? date;
   final String pdfFileName;
+  final int number;
   String? pdfUri;
   String? token;
 
@@ -18,6 +19,7 @@ class Newspaper {
     required this.updated,
     required this.collectionId,
     required this.collectionName,
+    required this.number,
     required this.date,
     required this.pdfFileName,
     required this.pdfUri,
@@ -31,6 +33,7 @@ class Newspaper {
       updated: DateTime.tryParse(json["updated"] ?? ""),
       collectionId: json["collectionId"],
       collectionName: json["collectionName"],
+      number: json["number"],
       date: DateTime.tryParse(json["date"] ?? ""),
       pdfFileName: json["pdf"],
       pdfUri: json["pdfUri"],
@@ -40,9 +43,7 @@ class Newspaper {
   factory Newspaper.fromRecord(RecordModel record) {
     Newspaper newspaper = Newspaper.fromJson(record.toJson());
     if (newspaper.pdfFileName.isNotEmpty) {
-      newspaper.pdfUri = PocketbaseService.to
-          .getFileUrl(record, newspaper.pdfFileName)
-          .toString();
+      newspaper.pdfUri = PocketbaseService.to.getFileUrl(record, newspaper.pdfFileName).toString();
     }
     return newspaper;
   }
@@ -53,6 +54,7 @@ class Newspaper {
         "updated": updated?.toIso8601String(),
         "collectionId": collectionId,
         "collectionName": collectionName,
+        "number": number.toString(),
         "date": date.toString(),
         "pdf": pdfFileName,
         "pdfUri": pdfUri

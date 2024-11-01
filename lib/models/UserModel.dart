@@ -70,15 +70,13 @@ class User {
         "priviliged": admin.toString()
       };
 
-  String getResizedAvatar(int width, int height) {
+  String getResizedAvatar() {
     String url = "";
     if (this.avatarUri != null) {
-      url = this.avatarUri.toString() +
-          "?thumb=" +
-          width.toString() +
-          "x" +
-          height.toString();
+      url = this.avatarUri.toString() + "?thumb=200x200";
+      return url;
+    } else {
+      return url;
     }
-    return url;
   }
 }

@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:gazette/models/UserModel.dart';
 import 'package:gazette/services/StorageService.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 class PocketbaseService extends GetxService {
@@ -50,9 +51,7 @@ class PocketbaseService extends GetxService {
 
   Future login(String username, password) async {
     try {
-      RecordAuth userData = await _client
-          .collection('users')
-          .authWithPassword(username, password);
+      RecordAuth userData = await _client.collection('users').authWithPassword(username, password);
       return userData;
     } on ClientException catch (e) {
       throw e;
@@ -67,8 +66,7 @@ class PocketbaseService extends GetxService {
   Future<List<User>> getAllUserDetails({bool useCache = true}) async {
     try {
       if (useCache && _cachedUsersData.isNotEmpty) {
-        return Future<List<User>>.value(
-            _cachedUsersData.values.toList().cast<User>());
+        return Future<List<User>>.value(_cachedUsersData.values.toList().cast<User>());
       }
       final results = await _client.collection('users').getFullList();
       return results.map((final result) {
@@ -103,11 +101,9 @@ class PocketbaseService extends GetxService {
   Future<List<Newspaper>> getAllNewspapers({bool useCache = false}) async {
     try {
       if (useCache && _cachedNewspapersData.isNotEmpty) {
-        return Future<List<Newspaper>>.value(
-            _cachedNewspapersData.values.toList().cast<Newspaper>());
+        return Future<List<Newspaper>>.value(_cachedNewspapersData.values.toList().cast<Newspaper>());
       }
-      final results =
-          await _client.collection('edition').getFullList(sort: "-date");
+      final results = await _client.collection('edition').getFullList(sort: "-date");
       return results.map((final result) {
         var newspaper = Newspaper.fromRecord(result);
         _cachedNewspapersData[newspaper.id] = newspaper;
@@ -141,12 +137,9 @@ class PocketbaseService extends GetxService {
     List<Anecdote> anecdotesList = [];
     try {
       if (useCache && _cachedAnecdotesData.isNotEmpty) {
-        return Future<List<Anecdote>>.value(
-            _cachedAnecdotesData.values.toList().cast<Anecdote>());
+        return Future<List<Anecdote>>.value(_cachedAnecdotesData.values.toList().cast<Anecdote>());
       }
-      final results = await _client
-          .collection('anecdotes')
-          .getFullList(sort: "-date", filter: "published = true");
+      final results = await _client.collection('anecdotes').getFullList(sort: "-date", filter: "published = true");
       for (RecordModel anecdoteRecord in results) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = await getUserDetails(anecdote.userId);
@@ -166,11 +159,7 @@ class PocketbaseService extends GetxService {
   Future<List<Anecdote>> getAnecdotesPerPage(int page, int perPage) async {
     List<Anecdote> anecdotesList = [];
     try {
-      final results = await _client.collection('anecdotes').getList(
-          perPage: perPage,
-          page: page,
-          sort: "-date",
-          filter: "published = true");
+      final results = await _client.collection('anecdotes').getList(perPage: perPage, page: page, sort: "-date", filter: "published = true");
 
       for (RecordModel anecdoteRecord in results.items) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
@@ -192,9 +181,7 @@ class PocketbaseService extends GetxService {
   Future<List<Anecdote>> getAllAnecdotesFromUser(User user) async {
     List<Anecdote> anecdotesList = [];
     try {
-      final results = await _client
-          .collection('anecdotes')
-          .getFullList(filter: 'published = true && user = "${user.id}"');
+      final results = await _client.collection('anecdotes').getFullList(filter: 'published = true && user = "${user.id}"');
 
       for (RecordModel anecdoteRecord in results) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
@@ -214,8 +201,7 @@ class PocketbaseService extends GetxService {
 
   Future<List<Anecdote>> getAllSubmittedAnecdotesFromCurrentUser() async {
     try {
-      final results = await _client.collection('anecdotes').getFullList(
-          filter: 'published = false && user = "${this.user!.id}"');
+      final results = await _client.collection('anecdotes').getFullList(filter: 'published = false && user = "${this.user!.id}"');
       return Future.wait(results.map((final result) async {
         var anecdote = Anecdote.fromRecord(result);
         anecdote.user = user;
@@ -231,9 +217,7 @@ class PocketbaseService extends GetxService {
     List<Anecdote> anecdotesList = [];
 
     try {
-      final results = await _client
-          .collection('anecdotes')
-          .getFullList(filter: 'published = false', sort: "+date");
+      final results = await _client.collection('anecdotes').getFullList(filter: 'published = false', sort: "+date");
 
       for (RecordModel anecdoteRecord in results) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
@@ -251,9 +235,7 @@ class PocketbaseService extends GetxService {
   Future<void> publishAnecdote(Anecdote anecdote) async {
     try {
       anecdote.published = true;
-      final result = await _client
-          .collection('anecdotes')
-          .update(anecdote.id, body: anecdote.toJson());
+      final result = await _client.collection('anecdotes').update(anecdote.id, body: anecdote.toJson());
       anecdote = Anecdote.fromRecord(result);
     } on ClientException catch (e) {
       Get.log(e.toString());
@@ -261,8 +243,7 @@ class PocketbaseService extends GetxService {
     }
   }
 
-  Future<Anecdote> createAnecdote(
-      String text, XFile image, DateTime date) async {
+  Future<Anecdote> createAnecdote(String text, XFile image, DateTime date) async {
     final result = await _client.collection("anecdotes").create(body: {
       "user": this.user!.id,
       "text": text,
@@ -272,7 +253,7 @@ class PocketbaseService extends GetxService {
       http.MultipartFile.fromBytes(
         "image",
         await image.readAsBytes(),
-        filename: image.name,
+        filename: "${new DateFormat.yMd("fr_FR").format(date).replaceAll("/", "-")}_${this.user!.firstname}",
       )
     ]);
     var anecdote = Anecdote.fromRecord(result);
@@ -280,6 +261,5 @@ class PocketbaseService extends GetxService {
     return anecdote;
   }
 
-  Uri getFileUrl(RecordModel recordModel, String fileName) =>
-      _client.files.getUrl(recordModel, fileName);
+  Uri getFileUrl(RecordModel recordModel, String fileName) => _client.files.getUrl(recordModel, fileName);
 }
