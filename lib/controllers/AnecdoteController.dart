@@ -12,7 +12,7 @@ class AnecdoteController extends GetxController {
   RxBool isLoading = false.obs;
   List<Anecdote> anecdotes = <Anecdote>[];
   int page = 1;
-  final int NB_PER_PAGE = 30;
+  final int NB_PER_PAGE = 15;
   bool canLoadMore = false;
 
   @override
@@ -28,8 +28,7 @@ class AnecdoteController extends GetxController {
   Future<void> loadFirstAnecdotes() async {
     isLoading.value = true;
     try {
-      anecdotes =
-          await PocketbaseService.to.getAnecdotesPerPage(page++, NB_PER_PAGE);
+      anecdotes = await PocketbaseService.to.getAnecdotesPerPage(page++, NB_PER_PAGE);
       canLoadMore = true;
       isLoading.value = false;
     } catch (e) {
@@ -42,8 +41,7 @@ class AnecdoteController extends GetxController {
     if (canLoadMore) {
       canLoadMore = false;
       try {
-        List<Anecdote> additionalAnecdotes =
-            await PocketbaseService.to.getAnecdotesPerPage(page++, NB_PER_PAGE);
+        List<Anecdote> additionalAnecdotes = await PocketbaseService.to.getAnecdotesPerPage(page++, NB_PER_PAGE);
         if (additionalAnecdotes.isNotEmpty) {
           anecdotes.addAll(additionalAnecdotes);
           update();
@@ -75,9 +73,7 @@ class AnecdoteController extends GetxController {
   }
 
   String getDate(int index) {
-    return new DateFormat.yMMMMd("fr_FR")
-        .format(anecdotes[index].date!)
-        .capitalizeFirstLetter();
+    return new DateFormat.yMMMMd("fr_FR").format(anecdotes[index].date!).capitalizeFirstLetter();
   }
 
   String getImage(int index) {

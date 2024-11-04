@@ -52,6 +52,7 @@ class PocketbaseService extends GetxService {
   Future login(String username, password) async {
     try {
       RecordAuth userData = await _client.collection('users').authWithPassword(username, password);
+      print(_client.authStore.isValid);
       return userData;
     } on ClientException catch (e) {
       throw e;
@@ -103,6 +104,7 @@ class PocketbaseService extends GetxService {
       if (useCache && _cachedNewspapersData.isNotEmpty) {
         return Future<List<Newspaper>>.value(_cachedNewspapersData.values.toList().cast<Newspaper>());
       }
+      print(_client.authStore.isValid);
       final results = await _client.collection('edition').getFullList(sort: "-date");
       return results.map((final result) {
         var newspaper = Newspaper.fromRecord(result);

@@ -42,15 +42,14 @@ class User {
         avatarUri: json["avatarUri"] ?? "",
         firstname: json["firstname"] ?? "",
         lastname: json["lastname"] ?? "",
-        admin: json["priviliged"].toString() == "true");
+        admin: json["priviliged"].toString() == "true",
+        token: json["token"]);
   }
 
   factory User.fromRecord(RecordModel record) {
     User user = User.fromJson(record.toJson());
     if (user.avatarFileName.isNotEmpty) {
-      user.avatarUri = PocketbaseService.to
-          .getFileUrl(record, user.avatarFileName)
-          .toString();
+      user.avatarUri = PocketbaseService.to.getFileUrl(record, user.avatarFileName).toString();
     }
     return user;
   }
