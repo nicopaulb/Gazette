@@ -110,9 +110,15 @@ class SVPostComponent extends StatelessWidget {
                                                     }
                                                   },
                                                   itemBuilder: (BuildContext context) {
-                                                    return const [
+                                                    return [
                                                       PopupMenuItem(
-                                                        child: Text("Ouvrir la version PDF"),
+                                                        child: Row(
+                                                          children: [
+                                                            Icon(Icons.picture_as_pdf),
+                                                            10.width,
+                                                            Text("Ouvrir la gazette"),
+                                                          ],
+                                                        ),
                                                         value: 'newspaper',
                                                       )
                                                     ];

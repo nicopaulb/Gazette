@@ -12,6 +12,8 @@ class Newspaper {
   final int number;
   String? pdfUri;
   String? token;
+  int? anecdoteCount;
+  int? userCount;
 
   Newspaper({
     required this.id,
@@ -24,20 +26,23 @@ class Newspaper {
     required this.pdfFileName,
     required this.pdfUri,
     this.token,
+    this.anecdoteCount,
+    this.userCount,
   });
 
   factory Newspaper.fromJson(Map<String, dynamic> json) {
     return Newspaper(
-      id: json["id"],
-      created: DateTime.tryParse(json["created"] ?? ""),
-      updated: DateTime.tryParse(json["updated"] ?? ""),
-      collectionId: json["collectionId"],
-      collectionName: json["collectionName"],
-      number: json["number"],
-      date: DateTime.tryParse(json["date"] ?? ""),
-      pdfFileName: json["pdf"],
-      pdfUri: json["pdfUri"],
-    );
+        id: json["id"],
+        created: DateTime.tryParse(json["created"] ?? ""),
+        updated: DateTime.tryParse(json["updated"] ?? ""),
+        collectionId: json["collectionId"],
+        collectionName: json["collectionName"],
+        number: json["number"],
+        date: DateTime.tryParse(json["date"] ?? ""),
+        pdfFileName: json["pdf"],
+        pdfUri: json["pdfUri"],
+        anecdoteCount: json["expand"]?["editionStats_via_edition"]?[0]?["anecdotesCount"],
+        userCount: json["expand"]?["editionStats_via_edition"]?[0]?["usersCount"]);
   }
 
   factory Newspaper.fromRecord(RecordModel record) {

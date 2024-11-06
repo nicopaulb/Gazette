@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'dart:html' as html;
 
 class NewspaperController extends GetxController {
   final NewspaperViewerController _newspaperViewerController = Get.put(NewspaperViewerController());
@@ -37,8 +38,20 @@ class NewspaperController extends GetxController {
     }
   }
 
+  String getNumber(int index) {
+    return newspapers[index].number.toString();
+  }
+
   String getName(int index) {
-    return newspapers[index].number.toString() + ". " + new DateFormat.yMMMM("fr_FR").format(newspapers[index].date!).capitalizeFirstLetter();
+    return new DateFormat.yMMMM("fr_FR").format(newspapers[index].date!).capitalizeFirstLetter();
+  }
+
+  int getAnecdotesCount(int index) {
+    return newspapers[index].anecdoteCount ?? 0;
+  }
+
+  int getUsersCount(int index) {
+    return newspapers[index].userCount ?? 0;
   }
 
   String getCurrentName() {
@@ -51,5 +64,13 @@ class NewspaperController extends GetxController {
 
   void startNewspaperViewer(int index) {
     _newspaperViewerController.newspaper = newspapers[index];
+  }
+
+  void download(int index) async {
+    if (newspapers[index].pdfUri != null) {
+      final anchor = html.AnchorElement(href: newspapers[index].pdfUri!);
+      anchor.setAttribute('download', newspapers[index].pdfUri!);
+      anchor.click();
+    }
   }
 }

@@ -31,34 +31,39 @@ class SVNewspaperFragment extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return Card(
                           child: ListTile(
-                              title: Text(_newspaperController.getName(index)),
-                              // subtitle: SizedBox(
-                              //   height: 40,
-                              //   child: ListView.builder(
-                              //       scrollDirection: Axis.horizontal,
-                              //       padding: const EdgeInsets.all(8.0),
-                              //       itemCount: 15,
-                              //       itemBuilder: (context, index) {
-                              //         return CachedNetworkImage(
-                              //           imageUrl:
-                              //               "***REMOVED***/api/files/_pb_users_auth_/nfv7go82lrwjuxj/lena_FjKTskZDW9.jpg?token=",
-                              //           imageBuilder: (context, imageProvider) => Container(
-                              //             width: 30,
-                              //             height: 30,
-                              //             decoration: BoxDecoration(
-                              //               shape: BoxShape.circle,
-                              //               image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                              //             ),
-                              //           ),
-                              //           fit: BoxFit.cover,
-                              //           errorWidget: (context, url, error) => Image.asset(
-                              //             'images/gazette/icons/ic_Profile.png',
-                              //             color: SVAppColorPrimary,
-                              //           ),
-                              //         );
-                              //       }),
-                              // ),
-                              trailing: Icon(Icons.visibility),
+                              leading: CircleAvatar(
+                                backgroundColor: SVAppColorPrimary,
+                                child: Text(_newspaperController.getNumber(index)),
+                              ),
+                              title: Text(
+                                _newspaperController.getName(index),
+                                style: boldTextStyle(),
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Icon(
+                                    Icons.comment,
+                                  ),
+                                  5.width,
+                                  SizedBox(width: 20, child: Text("${_newspaperController.getAnecdotesCount(index)}")),
+                                  10.width,
+                                  Icon(
+                                    Icons.person,
+                                  ),
+                                  5.width,
+                                  Text("${_newspaperController.getUsersCount(index)}"),
+                                ],
+                              ).paddingAll(8).visible(_newspaperController.getAnecdotesCount(index) != 0),
+                              trailing: SizedBox(
+                                width: 110,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(Icons.visibility),
+                                    InkWell(child: Icon(Icons.download), onTap: () => _newspaperController.download(index)),
+                                  ],
+                                ),
+                              ),
                               onTap: () {
                                 _newspaperController.startNewspaperViewer(index);
                                 NewspaperViewerScreen().launch(context);

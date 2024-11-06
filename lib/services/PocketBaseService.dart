@@ -103,7 +103,7 @@ class PocketbaseService extends GetxService {
       if (useCache && _cachedNewspapersData.isNotEmpty) {
         return Future<List<Newspaper>>.value(_cachedNewspapersData.values.toList().cast<Newspaper>());
       }
-      final results = await _client.collection('edition').getFullList(sort: "-date");
+      final results = await _client.collection('edition').getFullList(sort: "-date", expand: "editionStats_via_edition");
       return results.map((final result) {
         var newspaper = Newspaper.fromRecord(result);
         _cachedNewspapersData[newspaper.id] = newspaper;
@@ -125,6 +125,7 @@ class PocketbaseService extends GetxService {
       }
       final result = await _client.collection('edition').getOne(newspaperId);
       var newspaper = Newspaper.fromRecord(result);
+
       _cachedNewspapersData[newspaperId] = newspaper;
       return newspaper;
     } on ClientException catch (e) {
