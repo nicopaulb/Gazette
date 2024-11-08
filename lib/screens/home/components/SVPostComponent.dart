@@ -32,7 +32,7 @@ class SVPostComponent extends StatelessWidget {
                 children: [
                   Container(
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                       decoration: BoxDecoration(borderRadius: radius(SVAppCommonRadius), color: SVAppColorPrimary.withOpacity(0.8)),
                       child: Row(
                         children: [
@@ -66,7 +66,7 @@ class SVPostComponent extends StatelessWidget {
                                 itemCount: _anecdoteController.anecdotes.length,
                                 itemBuilder: (context, index) {
                                   return Container(
-                                    padding: EdgeInsets.symmetric(vertical: 16),
+                                    padding: EdgeInsets.only(top: 16),
                                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                                     decoration: BoxDecoration(borderRadius: radius(SVAppCommonRadius), color: context.cardColor),
                                     child: Column(
