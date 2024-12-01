@@ -262,5 +262,14 @@ class PocketbaseService extends GetxService {
     return anecdote;
   }
 
+  Future<void> deleteAnecdote(Anecdote anecdote) async {
+    try {
+      await _client.collection('anecdotes').delete(anecdote.id);
+    } on ClientException catch (e) {
+      Get.log(e.toString());
+      throw e.originalError;
+    }
+  }
+
   Uri getFileUrl(RecordModel recordModel, String fileName) => _client.files.getUrl(recordModel, fileName);
 }

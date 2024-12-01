@@ -21,6 +21,14 @@ class AdminAnecdoteScreen extends StatelessWidget {
                 elevation: 0,
                 centerTitle: true,
                 iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                    ),
+                    onPressed: () => _adminController.deleteSelectedAnecdote(),
+                  )
+                ],
               ),
               body: Container(
                 color: context.scaffoldBackgroundColor,

@@ -21,17 +21,28 @@ class AdminScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
-        actions: [
-          AppButton(
-            shapeBorder: RoundedRectangleBorder(borderRadius: radius(4)),
-            text: 'Publier',
-            textStyle: boldTextStyle(color: Colors.white, size: 12),
-            onTap: () => _adminController.publish(),
-            elevation: 0,
-            color: SVAppColorPrimary,
-            width: 100,
-            padding: EdgeInsets.all(0),
-          ).paddingAll(8),
+        actions: <Widget>[
+          PopupMenuButton<void Function()>(
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  enabled: true,
+                  onTap: () => _adminController.publish(),
+                  child: ListTile(
+                    leading: Icon(Icons.publish, color: Theme.of(context).primaryColor),
+                    title: Text('Publier'),
+                  ),
+                ),
+                PopupMenuItem(
+                  onTap: () => _adminController.generatePdf(),
+                  child: ListTile(
+                    leading: Icon(Icons.picture_as_pdf, color: Theme.of(context).primaryColor),
+                    title: Text('Générer'),
+                  ),
+                ),
+              ];
+            },
+          ),
         ],
       ),
       body: Container(
@@ -48,11 +59,7 @@ class AdminScreen extends StatelessWidget {
                           return Card(
                               child: ListTile(
                                   title: Text("Anecdote ${index + 1}"),
-                                  leading: CachedNetworkImage(
-                                      imageUrl:
-                                          _adminController.getImage(index),
-                                      width: 100,
-                                      height: 100),
+                                  leading: CachedNetworkImage(imageUrl: _adminController.getImage(index), width: 100, height: 100),
                                   onTap: () {
                                     _adminController.selectedIndex = index;
                                     AdminAnecdoteScreen().launch(context);
