@@ -262,6 +262,27 @@ class PocketbaseService extends GetxService {
     return anecdote;
   }
 
+  Future<Anecdote> updateAnecdote(Anecdote currentAnecdote, String text, XFile? image, DateTime date) async {
+    List<http.MultipartFile> file = [];
+    if (image != null) {
+      file.add(http.MultipartFile.fromBytes(
+        "image",
+        await image.readAsBytes(),
+        filename: "${new DateFormat.yMd("fr_FR").format(date).replaceAll("/", "-")}_${this.user!.firstname}",
+      ));
+    }
+    final result = await _client.collection("anecdotes").update(currentAnecdote.id,
+        body: {
+          "user": this.user!.id,
+          "text": text,
+          "date": date.toString(),
+        },
+        files: file);
+    var anecdote = Anecdote.fromRecord(result);
+    _cachedAnecdotesData[anecdote.id] = anecdote;
+    return anecdote;
+  }
+
   Future<void> deleteAnecdote(Anecdote anecdote) async {
     try {
       await _client.collection('anecdotes').delete(anecdote.id);

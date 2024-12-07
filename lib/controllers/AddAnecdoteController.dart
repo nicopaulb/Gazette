@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
+import 'package:gazette/utils/SVColors.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
@@ -16,10 +17,11 @@ class AddAnecdoteController extends GetxController {
   bool selectedImageError = false;
   List<Anecdote> submittedAnecdotes = [];
   final _pocketbaseService = PocketbaseService.to;
+  Anecdote? openedAnecdote = null;
 
   @override
   void onInit() {
-    getAnecdotesCount();
+    getSubmittedAnecdotes();
     afterBuildCreated(() {
       setStatusBarColor(svGetScaffoldColor());
     });
@@ -28,8 +30,7 @@ class AddAnecdoteController extends GetxController {
 
   void pickerImage() async {
     final ImagePicker picker = ImagePicker();
-    XFile? picked = await picker.pickImage(
-        source: ImageSource.gallery, maxWidth: 1500, maxHeight: 1500);
+    XFile? picked = await picker.pickImage(source: ImageSource.gallery, maxWidth: 1500, maxHeight: 1500);
     if (picked != null && picked != selectedImage) {
       selectedImage = picked;
       selectedImageError = false;
@@ -58,20 +59,22 @@ class AddAnecdoteController extends GetxController {
   }
 
   String getSelectedDate() {
-    return new DateFormat.yMd("fr_FR")
-        .format(selectedDate)
-        .capitalizeFirstLetter();
+    return new DateFormat.yMd("fr_FR").format(selectedDate).capitalizeFirstLetter();
   }
 
   String getSelectedImageName() {
-    return selectedImage?.name ?? "Aucune image sélectionné";
+    if (openedAnecdote == null) {
+      return selectedImage?.name ?? "Aucune image sélectionné";
+    } else {
+      return selectedImage?.name ?? openedAnecdote!.imageFileName;
+    }
   }
 
   Color? getSelectedImageNameColor() {
     return selectedImageError ? Colors.red : null;
   }
 
-  void sendAnecdote() async {
+  void sendNewAnecdote() async {
     if (selectedImage == null) {
       selectedImageError = true;
       update();
@@ -83,9 +86,9 @@ class AddAnecdoteController extends GetxController {
 
     isUploading.value = true;
     try {
-      await _pocketbaseService.createAnecdote(
-          contentTextController.text, selectedImage!, selectedDate);
-      resetForm();
+      submittedAnecdotes.add(await _pocketbaseService.createAnecdote(contentTextController.text, selectedImage!, selectedDate));
+      openedAnecdote = submittedAnecdotes.last;
+      updateForm();
       Get.showSnackbar(
         GetSnackBar(
           title: "Anecdote transmise",
@@ -97,17 +100,80 @@ class AddAnecdoteController extends GetxController {
         ),
       );
       isUploading.value = false;
-      getAnecdotesCount();
     } catch (e) {
       isUploading.value = false;
       Get.log('GotError : $e');
     }
   }
 
-  Future<void> getAnecdotesCount() async {
+  void sendUpdatedAnecdote() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    isUploading.value = true;
     try {
-      submittedAnecdotes =
-          await _pocketbaseService.getAllSubmittedAnecdotesFromCurrentUser();
+      Anecdote updatedAnecdote = await _pocketbaseService.updateAnecdote(openedAnecdote!, contentTextController.text, selectedImage, selectedDate);
+      submittedAnecdotes.remove(openedAnecdote);
+      submittedAnecdotes.add(updatedAnecdote);
+      openedAnecdote = updatedAnecdote;
+      updateForm();
+      Get.showSnackbar(
+        GetSnackBar(
+          title: "Anecdote corrigée",
+          message: 'Elle sera disponible dans la prochaine gazette !',
+          backgroundColor: Color.fromARGB(255, 7, 104, 3),
+          icon: const Icon(Icons.done, color: Color(0xFFFFFFFF)),
+          duration: const Duration(seconds: 10),
+          onTap: (snack) => Get.back(closeOverlays: true),
+        ),
+      );
+      isUploading.value = false;
+    } catch (e) {
+      isUploading.value = false;
+      Get.log('GotError : $e');
+    }
+  }
+
+  Future<void> deleteAnecdote() async {
+    Get.defaultDialog(
+        middleText: "Est-tu sûr de vouloir supprimer cette anecdote ?",
+        title: "Confirmation",
+        textConfirm: "Supprimer",
+        textCancel: "Annuler",
+        buttonColor: SVAppColorPrimary,
+        cancelTextColor: SVAppColorPrimary,
+        radius: 5,
+        onCancel: () {},
+        onConfirm: () async {
+          Get.close(1);
+          isUploading.value = true;
+          try {
+            await PocketbaseService.to.deleteAnecdote(openedAnecdote!);
+            submittedAnecdotes.remove(openedAnecdote);
+            openedAnecdote = null;
+            updateForm();
+            Get.showSnackbar(
+              GetSnackBar(
+                title: "Anecdote supprimée",
+                message: "Elle ne sera pas publiée",
+                backgroundColor: Color.fromARGB(255, 7, 104, 3),
+                icon: const Icon(Icons.done, color: Color(0xFFFFFFFF)),
+                duration: const Duration(seconds: 10),
+                onTap: (snack) => Get.back(closeOverlays: true),
+              ),
+            );
+            isUploading.value = false;
+          } catch (e) {
+            isUploading.value = false;
+            Get.log('GotError : $e');
+          }
+        });
+  }
+
+  Future<void> getSubmittedAnecdotes() async {
+    try {
+      submittedAnecdotes = await _pocketbaseService.getAllSubmittedAnecdotesFromCurrentUser();
       update();
     } catch (e) {
       Get.log('GotError : $e');
@@ -118,10 +184,30 @@ class AddAnecdoteController extends GetxController {
     return _pocketbaseService.user?.firstname ?? "";
   }
 
-  void resetForm() {
-    contentTextController.text = "";
+  void updateForm() {
+    contentTextController.text = openedAnecdote?.text ?? "";
     selectedImage = null;
     selectedImageError = false;
-    selectedDate = DateTime.now();
+    selectedDate = openedAnecdote?.date ?? new DateTime.now();
+    update();
+  }
+
+  void openAnecdote(int index) {
+    if (index < 0) {
+      // New anecdote selected
+      if (openedAnecdote != null) {
+        openedAnecdote = null;
+        updateForm();
+      }
+    } else {
+      if (openedAnecdote != submittedAnecdotes[index]) {
+        openedAnecdote = submittedAnecdotes[index];
+        updateForm();
+      }
+    }
+  }
+
+  bool isAnecdoteOpened(int index) {
+    return openedAnecdote == submittedAnecdotes[index];
   }
 }
