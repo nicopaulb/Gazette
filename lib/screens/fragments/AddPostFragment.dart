@@ -150,6 +150,7 @@ class AddPostFragment extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(10),
                                         child: Container(
                                             padding: EdgeInsets.all(17),
+                                            color: svGetScaffoldColor(),
                                             child: Image.asset('images/gazette/add.png', height: 35, width: 35, fit: BoxFit.fill, color: blackColor)),
                                       ),
                                     ),
