@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:gazette/screens/admin/AdminScreen.dart';
@@ -64,16 +65,14 @@ class AdminController extends GetxController {
   }
 
   Future<void> _drawAnecdotePortraitTop(
-      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, Anecdote anecdote) async {
+      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
-    var rspImage = await http.get(Uri.parse(anecdote.imageUri ?? ""));
 
     page.graphics.drawRectangle(bounds: Rect.fromLTWH(0, 0, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
-      page.graphics
-          .drawImage(PdfBitmap(rspImage.bodyBytes), Rect.fromLTWH(borderSize / 2, borderSize / 2, sectionInnerWidth / 2, sectionInnerHeight));
+      page.graphics.drawImage(PdfBitmap(image), Rect.fromLTWH(borderSize / 2, borderSize / 2, sectionInnerWidth / 2, sectionInnerHeight));
     } catch (error) {
       printError(info: "Invalid image");
     }
@@ -84,17 +83,16 @@ class AdminController extends GetxController {
     page.graphics.restore(saveBeforeTransform);
   }
 
-  Future<void> _drawAnecdotePortraitBottom(
-      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, double sectionSpacing, Anecdote anecdote) async {
+  Future<void> _drawAnecdotePortraitBottom(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
+      double sectionSpacing, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
-    var rspImage = await http.get(Uri.parse(anecdote.imageUri ?? ""));
 
     page.graphics.drawRectangle(
         bounds: Rect.fromLTWH(0, sectionHeight + sectionSpacing, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
-      page.graphics.drawImage(PdfBitmap(rspImage.bodyBytes),
+      page.graphics.drawImage(PdfBitmap(image),
           Rect.fromLTWH(sectionWidth / 2, sectionHeight + sectionSpacing + borderSize / 2, sectionInnerWidth / 2, sectionInnerHeight));
     } catch (error) {
       printError(info: "Invalid image");
@@ -141,7 +139,7 @@ class AdminController extends GetxController {
   }
 
   Future<void> _drawAnecdoteLandscapeTop(
-      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, Anecdote anecdote) async {
+      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
@@ -162,18 +160,17 @@ class AdminController extends GetxController {
     page.graphics.restore(saveBeforeTransform);
   }
 
-  Future<void> _drawAnecdoteLandscapeBottom(
-      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, double sectionSpacing, Anecdote anecdote) async {
+  Future<void> _drawAnecdoteLandscapeBottom(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
+      double sectionSpacing, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
-    var rspImage = await http.get(Uri.parse(anecdote.imageUri ?? ""));
     final double imageHeightFactor = 0.66;
 
     page.graphics.drawRectangle(
         bounds: Rect.fromLTWH(0, sectionHeight + sectionSpacing, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
-      page.graphics.drawImage(PdfBitmap(rspImage.bodyBytes),
+      page.graphics.drawImage(PdfBitmap(image),
           Rect.fromLTWH(borderSize / 2, sectionHeight + sectionSpacing + borderSize / 2, sectionInnerWidth, sectionInnerHeight * imageHeightFactor));
     } catch (error) {
       printError(info: "Invalid image");
@@ -252,20 +249,35 @@ class AdminController extends GetxController {
     PdfPage? currentPage = null;
     int pageNumber = 1;
     for (var anecdote in anecdotes) {
+      var imgBytes = (await http.get(Uri.parse(anecdote.imageUri ?? ""))).bodyBytes;
+      var img = await decodeImageFromList(imgBytes);
+
       if (currentPage == null) {
         currentPage = document.pages.add();
         final Size pageSize = currentPage.getClientSize();
         final double bodyHeight = pageSize.height - footerHeight;
         final double sectionHeight = bodyHeight / 2 - sectionSpacing / 2;
         final double sectionWidth = pageSize.width;
-        await _drawAnecdoteLandscapeTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, anecdote);
+
+        if (img.width > img.height) {
+          await _drawAnecdoteLandscapeTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, anecdote, imgBytes);
+        } else {
+          await _drawAnecdotePortraitTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, anecdote, imgBytes);
+        }
+
         _drawPageNumber(currentPage, circleSize, bodyHeight, pageNumber++);
       } else {
         final Size pageSize = currentPage.getClientSize();
         final double bodyHeight = pageSize.height - footerHeight;
         final double sectionHeight = bodyHeight / 2 - sectionSpacing / 2;
         final double sectionWidth = pageSize.width;
-        await _drawAnecdotePortraitBottom(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, sectionSpacing, anecdote);
+
+        if (img.width > img.height) {
+          await _drawAnecdoteLandscapeBottom(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, sectionSpacing, anecdote, imgBytes);
+        } else {
+          await _drawAnecdotePortraitBottom(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, sectionSpacing, anecdote, imgBytes);
+        }
+
         currentPage = null;
       }
     }
