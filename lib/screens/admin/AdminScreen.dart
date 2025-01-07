@@ -62,7 +62,7 @@ class AdminScreen extends StatelessWidget {
                                   leading: CachedNetworkImage(imageUrl: _adminController.getImage(index), width: 100, height: 100),
                                   onTap: () {
                                     _adminController.selectedIndex = index;
-                                    AdminAnecdoteScreen().launch(context);
+                                    Get.to(AdminAnecdoteScreen());
                                   }));
                         }),
           )),

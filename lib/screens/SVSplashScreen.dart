@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/screens/SVDashboardScreen.dart';
+import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
 import 'package:gazette/utils/SVCommon.dart';
@@ -21,12 +22,12 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
 
   Future<void> init() async {
     setStatusBarColor(Colors.transparent);
-    await 1.seconds.delay;
+    await Future.delayed(Duration(seconds: 1));
     finish(context);
     if (PocketbaseService.to.isAuth) {
-      SVDashboardScreen().launch(context, isNewTask: true);
+      Get.off(SVDashboardScreen());
     } else {
-      LogInScreen().launch(context, isNewTask: true);
+      Get.off(LogInScreen());
     }
   }
 
@@ -44,7 +45,7 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
                 child: Image.asset(
                   'images/gazette/logo.png',
                   //height: context.height(),
-                  width: context.width(),
+                  width: ContextExtensions(context).width(),
                   fit: BoxFit.fill,
                 ),
               ),

@@ -41,7 +41,7 @@ class SVHomeFragment extends StatelessWidget {
           InkWell(
             onTap: () {
               _profileController.updateUser(user.id);
-              ProfileScreen().launch(context);
+              Get.to(ProfileScreen());
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(60),

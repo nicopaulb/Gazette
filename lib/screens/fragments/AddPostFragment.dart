@@ -16,7 +16,7 @@ class AddPostFragment extends StatelessWidget {
       backgroundColor: context.cardColor,
       appBar: AppBar(
         iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
-        backgroundColor: context.cardColor,
+        backgroundColor: svGetScaffoldColor(),
         title: Text('Nouvelle anecdote', style: boldTextStyle(size: 20)),
         elevation: 0,
         centerTitle: true,

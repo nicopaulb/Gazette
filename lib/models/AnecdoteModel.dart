@@ -56,9 +56,7 @@ class Anecdote {
   factory Anecdote.fromRecord(RecordModel record) {
     Anecdote anecdote = Anecdote.fromJson(record.toJson());
     if (anecdote.imageFileName.isNotEmpty) {
-      anecdote.imageUri = PocketbaseService.to
-          .getFileUrl(record, anecdote.imageFileName)
-          .toString();
+      anecdote.imageUri = PocketbaseService.to.getFileUrl(record, anecdote.imageFileName).toString();
     }
     return anecdote;
   }
@@ -78,15 +76,10 @@ class Anecdote {
         "imageUri": imageUri
       };
 
-  String getResizedImage(int width, int height) {
+  String getResizedImage(int width, int height, bool resize) {
     String url = "";
     if (this.imageUri != null) {
-      url = this.imageUri.toString() +
-          "?thumb=" +
-          width.toString() +
-          "x" +
-          height.toString() +
-          "f";
+      url = this.imageUri.toString() + "?thumb=" + width.toString() + "x" + height.toString() + (resize ? "f" : "");
     }
     return url;
   }

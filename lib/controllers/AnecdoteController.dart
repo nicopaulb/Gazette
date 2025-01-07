@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/models/NewspaperModel.dart';
+import 'package:gazette/screens/auth/LogInScreen.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
@@ -18,6 +19,11 @@ class AnecdoteController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    PocketbaseService.to.isAuthValid().then((bool valid) {
+      if (!valid) {
+        Get.off(LogInScreen());
+      }
+    });
     scrollController.addListener(_scrollListener);
     loadFirstAnecdotes();
     afterBuildCreated(() {
@@ -77,7 +83,7 @@ class AnecdoteController extends GetxController {
   }
 
   String getImage(int index) {
-    return anecdotes[index].getResizedImage(1000, 1000);
+    return anecdotes[index].getResizedImage(1000, 1000, true);
   }
 
   String getFullSizeImage(int index) {

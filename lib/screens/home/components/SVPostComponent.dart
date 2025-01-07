@@ -78,7 +78,7 @@ class SVPostComponent extends StatelessWidget {
                                             GestureDetector(
                                               onTap: () {
                                                 _profileController.updateUser(_anecdoteController.getUserId(index));
-                                                ProfileScreen().launch(context);
+                                                Get.to(ProfileScreen());
                                               },
                                               child: Row(
                                                 children: [
@@ -106,7 +106,7 @@ class SVPostComponent extends StatelessWidget {
                                                     Newspaper? news = _anecdoteController.getNewspaper(index);
                                                     if (news != null) {
                                                       _newspaperViewerController.newspaper = news;
-                                                      NewspaperViewerScreen().launch(context);
+                                                      Get.to(NewspaperViewerScreen());
                                                     }
                                                   },
                                                   itemBuilder: (BuildContext context) {

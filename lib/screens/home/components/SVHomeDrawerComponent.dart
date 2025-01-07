@@ -45,7 +45,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
               onTap: () {
                 finish(context);
                 _profileController.updateUser(user.id);
-                ProfileScreen().launch(context);
+                Get.to(ProfileScreen());
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -83,7 +83,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             onTap: () {
               finish(context);
               _profileController.updateUser(user.id);
-              ProfileScreen().launch(context);
+              Get.to(ProfileScreen());
             },
           ),
           SettingItemWidget(
@@ -93,7 +93,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             leading: Image.asset('images/gazette/icons/ic_Settings.png', height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
             onTap: () {
               finish(context);
-              SettingScreen().launch(context);
+              Get.to(SettingScreen());
             },
           ),
           GetBuilder<HomeDrawerController>(
@@ -106,7 +106,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
                           Image.asset('images/gazette/icons/ic_Document.png', height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
                       onTap: () {
                         finish(context);
-                        AdminScreen().launch(context);
+                        Get.to(AdminScreen());
                       },
                     )
                   : Container()),
@@ -118,7 +118,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             onTap: () async {
               await PocketbaseService.to.logout();
               finish(context);
-              LogInScreen().launch(context);
+              Get.off(LogInScreen());
             },
           ),
         ]).expand(),

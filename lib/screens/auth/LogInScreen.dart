@@ -86,7 +86,7 @@ class LogInScreen extends StatelessWidget {
                                   if (await _loginController.onLogin(
                                           _loginController.usernameTextController.text, _loginController.passwordTextController.text) ==
                                       null) {
-                                    SVDashboardScreen().launch(context, isNewTask: true);
+                                    Get.off(SVDashboardScreen());
                                   }
                                 }
                               },
@@ -135,7 +135,7 @@ class LogInScreen extends StatelessWidget {
                                         if (await _loginController.onLogin(
                                                 _loginController.usernameTextController.text, _loginController.passwordTextController.text) ==
                                             null) {
-                                          SVDashboardScreen().launch(context, isNewTask: true);
+                                          Get.off(SVDashboardScreen());
                                         }
                                       }
                                     },

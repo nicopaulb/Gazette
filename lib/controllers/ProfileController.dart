@@ -23,8 +23,7 @@ class ProfileController extends GetxController {
     isLoading.value = true;
     selectedUser.value = await _pocketBaseService.getUserDetails(userId);
     try {
-      anecdotes =
-          await _pocketBaseService.getAllAnecdotesFromUser(selectedUser.value!);
+      anecdotes = await _pocketBaseService.getAllAnecdotesFromUser(selectedUser.value!);
     } catch (e) {
       Get.log('GotError : $e');
     }
@@ -58,6 +57,6 @@ class ProfileController extends GetxController {
   }
 
   String getAnecdoteImage(int index) {
-    return anecdotes[index].getResizedImage(500, 500);
+    return anecdotes[index].getResizedImage(500, 500, true);
   }
 }

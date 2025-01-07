@@ -43,6 +43,20 @@ class PocketbaseService extends GetxService {
     _authStore.save(token, model);
   }
 
+  Future<bool> isAuthValid() async {
+    if (_authStore.isValid) {
+      try {
+        await _client.collection('users').authRefresh();
+      } catch (e) {
+        _authStore.clear();
+        return false;
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void clearCachedData() {
     _cachedUsersData.clear();
     _cachedNewspapersData.clear();

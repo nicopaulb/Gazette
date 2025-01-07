@@ -10,6 +10,7 @@ import 'package:gazette/store/AppStore.dart';
 import 'package:gazette/utils/AppTheme.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:gazette/services/StorageService.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 AppStore appStore = AppStore();
 
@@ -24,6 +25,7 @@ void main() async {
   initializeDateFormatting('fr_FR');
 
   appStore.toggleDarkMode(value: false);
+  setUrlStrategy(XDPathUrlStrategy());
   runApp(const MyApp());
 }
 
@@ -53,5 +55,23 @@ class MyApp extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class XDPathUrlStrategy extends HashUrlStrategy {
+  XDPathUrlStrategy([
+    super.platformLocation,
+  ]) : _basePath = stripTrailingSlash(extractPathname(checkBaseHref(
+          platformLocation.getBaseHref(),
+        )));
+
+  final String _basePath;
+
+  @override
+  String prepareExternalUrl(String internalUrl) {
+    if (internalUrl.isNotEmpty && !internalUrl.startsWith('/')) {
+      internalUrl = '/$internalUrl';
+    }
+    return '$_basePath/';
   }
 }

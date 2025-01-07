@@ -66,7 +66,7 @@ class SVNewspaperFragment extends StatelessWidget {
                               ),
                               onTap: () {
                                 _newspaperController.startNewspaperViewer(index);
-                                NewspaperViewerScreen().launch(context);
+                                Get.to(NewspaperViewerScreen());
                               }));
                     })));
   }

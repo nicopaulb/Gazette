@@ -12,7 +12,7 @@ class AddAnecdoteController extends GetxController {
   XFile? selectedImage;
   DateTime selectedDate = DateTime.now();
   final contentTextController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   RxBool isUploading = false.obs;
   bool selectedImageError = false;
   List<Anecdote> submittedAnecdotes = [];

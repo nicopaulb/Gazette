@@ -10,7 +10,7 @@ class LoginController extends GetxController {
   Rxn<String> error = Rxn<String>();
   final usernameTextController = TextEditingController(text: "");
   final passwordTextController = TextEditingController(text: "");
-  final formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   int tentative = 0;
 
   @override
@@ -32,8 +32,7 @@ class LoginController extends GetxController {
           error.value = "Nom d'utilisateur ou mot de passe incorrect";
           tentative++;
           if (tentative > 3) {
-            await Future.delayed(
-                Duration(seconds: pow(tentative - 3, 2).round()));
+            await Future.delayed(Duration(seconds: pow(tentative - 3, 2).round()));
           }
       }
       rv = e.statusCode;
