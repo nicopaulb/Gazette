@@ -40,6 +40,13 @@ class AdminScreen extends StatelessWidget {
                     title: Text('Générer'),
                   ),
                 ),
+                PopupMenuItem(
+                  onTap: () => _adminController.downloadAllImages(),
+                  child: ListTile(
+                    leading: Icon(Icons.image, color: Theme.of(context).primaryColor),
+                    title: Text('Télécharger'),
+                  ),
+                ),
               ];
             },
           ),

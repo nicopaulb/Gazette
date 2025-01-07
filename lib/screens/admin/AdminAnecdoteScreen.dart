@@ -96,11 +96,11 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           "Image : ",
                           style: boldTextStyle(),
                         ),
-                        CachedNetworkImage(height: 100, width: 100, fit: BoxFit.cover, imageUrl: _adminController.getSelectedImage()),
+                        CachedNetworkImage(height: 200, width: 300, fit: BoxFit.fitHeight, imageUrl: _adminController.getSelectedImage()),
                         Row(
                           children: [
                             IconButton(
-                                onPressed: () => {_adminController.copyImage()},
+                                onPressed: () => {_adminController.copyImageAnecdote()},
                                 icon: Icon(
                                   Icons.copy,
                                   color: ContextExtensions(context).iconColor,

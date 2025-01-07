@@ -311,57 +311,83 @@ class AdminController extends GetxController {
     Get.back();
   }
 
-  void copyName() async {
+  void _copyText(String text) async {
     if (_clipboard != null) {
       final item = DataWriterItem();
-      item.add(Formats.plainText(getSelectedName()));
-      await _clipboard!.write([item]);
+      item.add(Formats.plainText(text));
+      try {
+        await _clipboard!.write([item]);
+      } catch (e) {
+        Get.showSnackbar(
+          GetSnackBar(
+            title: "Erreur de copie",
+            message: "Impossible de copier le texte",
+            backgroundColor: Colors.red,
+            icon: const Icon(Icons.done, color: Color(0xFFFFFFFF)),
+            duration: const Duration(seconds: 3),
+            onTap: (snack) => Get.back(closeOverlays: true),
+          ),
+        );
+      }
     }
   }
 
-  void copyDate() async {
-    if (_clipboard != null) {
-      final item = DataWriterItem();
-      item.add(Formats.plainText(getSelectedDate()));
-      await _clipboard!.write([item]);
-    }
-  }
-
-  void copyText() async {
-    if (_clipboard != null) {
-      final item = DataWriterItem();
-      item.add(Formats.plainText(getSelectedText()));
-      await _clipboard!.write([item]);
-    }
-  }
-
-  void copyImage() async {
+  void _copyImage(String? uri, String name) async {
     if (_clipboard != null) {
       http.Response response = await http.get(
-        Uri.parse(anecdotes[_selectedIndex].imageUri ?? ""),
+        Uri.parse(uri ?? ""),
       );
       final item = DataWriterItem(suggestedName: '${anecdotes[_selectedIndex].id}.png');
       item.add(Formats.png(response.bodyBytes));
-      await _clipboard!.write([item]);
+      try {
+        await _clipboard!.write([item]);
+      } catch (e) {
+        Get.showSnackbar(
+          GetSnackBar(
+            title: "Erreur de copie",
+            message: "Impossible de copier l'image",
+            backgroundColor: Colors.red,
+            icon: const Icon(Icons.done, color: Color(0xFFFFFFFF)),
+            duration: const Duration(seconds: 3),
+            onTap: (snack) => Get.back(closeOverlays: true),
+          ),
+        );
+      }
     }
   }
 
+  void copyName() async {
+    _copyText(getSelectedName());
+  }
+
+  void copyDate() async {
+    _copyText(getSelectedDate());
+  }
+
+  void copyText() async {
+    _copyText(getSelectedText());
+  }
+
+  void copyImageAnecdote() async {
+    _copyImage(anecdotes[_selectedIndex].imageUri, '${anecdotes[_selectedIndex].id}.png');
+  }
+
   void copyUserAvatar() async {
-    if (_clipboard != null) {
-      http.Response response = await http.get(
-        Uri.parse(anecdotes[_selectedIndex].user!.avatarUri ?? ""),
-      );
-      final item = DataWriterItem(suggestedName: '${anecdotes[_selectedIndex].user!.username}.png');
-      item.add(Formats.png(response.bodyBytes));
-      await _clipboard!.write([item]);
-    }
+    _copyImage(anecdotes[_selectedIndex].user!.avatarUri, '${anecdotes[_selectedIndex].user!.username}.png');
   }
 
   Future<void> downloadImage() async {
     await WebImageDownloader.downloadImageFromWeb(anecdotes[_selectedIndex].imageUri ?? "",
-        name: new DateFormat.yMd("fr_FR").format(anecdotes[_selectedIndex].date!).replaceAll("/", "-") +
+        name: new DateFormat("yyyy-MM-dd", "fr-FR").format(anecdotes[_selectedIndex].date!).replaceAll("/", "-") +
             " " +
             anecdotes[_selectedIndex].user!.firstname);
+  }
+
+  Future<void> downloadAllImages() async {
+    for (var anecdote in anecdotes) {
+      await WebImageDownloader.downloadImageFromWeb(anecdote.imageUri ?? "",
+          name: new DateFormat("yyyy-MM-dd", "fr-FR").format(anecdote.date!).replaceAll("/", "-") + " " + anecdote.user!.firstname);
+    }
   }
 
   Future<void> downloadUserAvatar() async {
@@ -373,7 +399,7 @@ class AdminController extends GetxController {
   }
 
   String getImage(int index) {
-    return anecdotes[index].getResizedImage(100, 100);
+    return anecdotes[index].getResizedImage(200, 200, false);
   }
 
   String getSelectedId() {
