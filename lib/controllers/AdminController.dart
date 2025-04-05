@@ -238,7 +238,7 @@ class AdminController extends GetxController {
     final double circleSize = 30;
     final double footerHeight = 60;
     final double sectionSpacing = 30;
-    final double borderSize = 2;
+    final double borderSize = 1;
     final double avatarSize = 60;
 
     final PdfColor lightOrangeColor = PdfColor(217, 105, 77);
@@ -247,7 +247,7 @@ class AdminController extends GetxController {
     fontAsset = await rootBundle.load('fonts/MyriadPro-Regular.ttf');
 
     PdfPage? currentPage = null;
-    int pageNumber = 1;
+    int pageNumber = 3;
     for (var anecdote in anecdotes) {
       var imgBytes = (await http.get(Uri.parse(anecdote.imageUri ?? ""))).bodyBytes;
       var img = await decodeImageFromList(imgBytes);
