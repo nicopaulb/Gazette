@@ -234,10 +234,14 @@ class AdminController extends GetxController {
   Future<void> generatePdf() async {
     //Create a new PDF document.
     final PdfDocument document = PdfDocument();
+    document.pageSettings.margins.top = 20;
+    document.pageSettings.margins.bottom = 20;
+    document.pageSettings.margins.right = 30;
+    document.pageSettings.margins.left = 30;
 
     final double circleSize = 30;
-    final double footerHeight = 60;
-    final double sectionSpacing = 30;
+    final double footerHeight = 40;
+    final double sectionSpacing = 20;
     final double borderSize = 1;
     final double avatarSize = 60;
 
@@ -265,7 +269,7 @@ class AdminController extends GetxController {
           await _drawAnecdotePortraitTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, anecdote, imgBytes);
         }
 
-        _drawPageNumber(currentPage, circleSize, bodyHeight, pageNumber++);
+        _drawPageNumber(currentPage, circleSize, bodyHeight - sectionSpacing / 4, pageNumber++);
       } else {
         final Size pageSize = currentPage.getClientSize();
         final double bodyHeight = pageSize.height - footerHeight;
