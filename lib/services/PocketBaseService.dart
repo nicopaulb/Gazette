@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 
 class PocketbaseService extends GetxService {
   static PocketbaseService get to => Get.find();
-  final _pocketBaseUrl = "***REMOVED***";
 
   late PocketBase _client;
   late AuthStore _authStore;
@@ -22,6 +21,10 @@ class PocketbaseService extends GetxService {
 
   Future<PocketbaseService> init() async {
     _initializeAuthStore();
+    const _pocketBaseUrl = String.fromEnvironment('DB_URL');
+    if (_pocketBaseUrl.isEmpty) {
+      throw AssertionError('DB_URL is not set');
+    }
     _client = PocketBase(_pocketBaseUrl, authStore: _authStore);
     // Listen to authStore changes
     _client.authStore.onChange.listen((AuthStoreEvent event) {
