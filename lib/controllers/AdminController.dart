@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:get/get.dart';
+import 'package:intl/find_locale.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:super_clipboard/super_clipboard.dart';
@@ -64,8 +65,17 @@ class AdminController extends GetxController {
         });
   }
 
-  Future<void> _drawAnecdotePortraitTop(
-      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, Anecdote anecdote, Uint8List image) async {
+  void _drawTextString(PdfPage page, String s, double fontSize, {PdfPen? pen, PdfBrush? brush, Rect? bounds, PdfStringFormat? format}) {
+    Size textSize = Size(0, 0);
+    do {
+      fontSize--;
+      textSize = PdfTrueTypeFont(fontAsset!.buffer.asUint8List(), fontSize).measureString(s, layoutArea: bounds!.size, format: format);
+    } while (textSize.height > bounds.height || textSize.width > bounds.width);
+    page.graphics.drawString(s, PdfTrueTypeFont(fontAsset!.buffer.asUint8List(), fontSize), pen: pen, brush: brush, bounds: bounds, format: format);
+  }
+
+  Future<void> _drawAnecdotePortraitTop(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
+      double textFontSize, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
@@ -79,12 +89,12 @@ class AdminController extends GetxController {
 
     PdfGraphicsState saveBeforeTransform = page.graphics.save();
     page.graphics.translateTransform(sectionWidth / 2, borderSize / 2);
-    await _drawAnecdotePortraitContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, anecdote);
+    await _drawAnecdotePortraitContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
   }
 
   Future<void> _drawAnecdotePortraitBottom(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
-      double sectionSpacing, Anecdote anecdote, Uint8List image) async {
+      double textFontSize, double sectionSpacing, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
@@ -100,7 +110,7 @@ class AdminController extends GetxController {
 
     PdfGraphicsState saveBeforeTransform = page.graphics.save();
     page.graphics.translateTransform(borderSize / 2, sectionHeight + sectionSpacing + borderSize / 2);
-    await _drawAnecdotePortraitContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, anecdote);
+    await _drawAnecdotePortraitContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
   }
 
@@ -109,6 +119,7 @@ class AdminController extends GetxController {
     double avatarSize,
     double sectionInnerWidth,
     double sectionInnerHeight,
+    double textFontSize,
     Anecdote anecdote,
   ) async {
     final columnWidth = sectionInnerWidth / 2;
@@ -132,19 +143,19 @@ class AdminController extends GetxController {
         brush: PdfSolidBrush(darkOrangeColor),
         format: PdfStringFormat(alignment: PdfTextAlignment.center, lineAlignment: PdfVerticalAlignment.middle),
         bounds: Rect.fromLTWH(0, 15 + avatarSize + 12 + 16, columnWidth, 0));
-    page.graphics.drawString(anecdote.text, PdfTrueTypeFont(fontAsset!.buffer.asUint8List(), 12),
+    _drawTextString(page, anecdote.text, textFontSize,
         brush: PdfSolidBrush(darkOrangeColor),
         format: PdfStringFormat(alignment: PdfTextAlignment.left, lineAlignment: PdfVerticalAlignment.top),
         bounds: Rect.fromLTWH(15, 15 + avatarSize + 12 + 16 + 35, columnWidth - 30, sectionInnerHeight - (15 + avatarSize + 12 + 16 + 35)));
   }
 
-  Future<void> _drawAnecdoteLandscapeTop(
-      PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize, Anecdote anecdote, Uint8List image) async {
+  Future<void> _drawAnecdoteLandscapeTop(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
+      double textFontSize, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
     var rspImage = await http.get(Uri.parse(anecdote.imageUri ?? ""));
-    final double imageHeightFactor = 0.66;
+    final double imageHeightFactor = 0.72;
 
     page.graphics.drawRectangle(bounds: Rect.fromLTWH(0, 0, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
@@ -156,16 +167,16 @@ class AdminController extends GetxController {
 
     PdfGraphicsState saveBeforeTransform = page.graphics.save();
     page.graphics.translateTransform(borderSize / 2, sectionHeight * imageHeightFactor);
-    await _drawAnecdoteLandscapeContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, imageHeightFactor, anecdote);
+    await _drawAnecdoteLandscapeContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, imageHeightFactor, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
   }
 
   Future<void> _drawAnecdoteLandscapeBottom(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
-      double sectionSpacing, Anecdote anecdote, Uint8List image) async {
+      double textFontSize, double sectionSpacing, Anecdote anecdote, Uint8List image) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
-    final double imageHeightFactor = 0.66;
+    final double imageHeightFactor = 0.72;
 
     page.graphics.drawRectangle(
         bounds: Rect.fromLTWH(0, sectionHeight + sectionSpacing, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
@@ -178,7 +189,7 @@ class AdminController extends GetxController {
 
     PdfGraphicsState saveBeforeTransform = page.graphics.save();
     page.graphics.translateTransform(borderSize / 2, sectionHeight + sectionSpacing + borderSize / 2 + sectionHeight * imageHeightFactor);
-    await _drawAnecdoteLandscapeContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, imageHeightFactor, anecdote);
+    await _drawAnecdoteLandscapeContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, imageHeightFactor, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
   }
 
@@ -188,34 +199,36 @@ class AdminController extends GetxController {
     double sectionInnerWidth,
     double sectionInnerHeight,
     double imageHeightFactor,
+    double textFontSize,
     Anecdote anecdote,
   ) async {
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
     var avatarRsp = await http.get(Uri.parse(anecdote.user?.avatarUri ?? ""));
     final double avatarWidthFactor = 0.25;
+    final double textLayoutAreaWidth = sectionInnerWidth * (1 - avatarWidthFactor) - 5;
+    final double textLayoutAreaHeight = (1 - imageHeightFactor) * sectionInnerHeight;
 
     PdfGraphicsState saveBeforeAvatar = page.graphics.save();
     page.graphics
-        .setClip(path: PdfPath()..addEllipse(Rect.fromLTWH((sectionInnerWidth * avatarWidthFactor - avatarSize) / 2, 12, avatarSize, avatarSize)));
+        .setClip(path: PdfPath()..addEllipse(Rect.fromLTWH((sectionInnerWidth * avatarWidthFactor - avatarSize) / 2, 6, avatarSize, avatarSize)));
     page.graphics.drawImage(
       PdfBitmap(avatarRsp.bodyBytes),
-      Rect.fromLTWH((sectionInnerWidth * avatarWidthFactor - avatarSize) / 2, 12, avatarSize, avatarSize),
+      Rect.fromLTWH((sectionInnerWidth * avatarWidthFactor - avatarSize) / 2, 6, avatarSize, avatarSize),
     );
     page.graphics.restore(saveBeforeAvatar);
     page.graphics.drawString('${anecdote.user?.firstname} ${anecdote.user?.lastname}', PdfTrueTypeFont(fontAsset!.buffer.asUint8List(), 12),
         brush: PdfSolidBrush(darkOrangeColor),
         format: PdfStringFormat(alignment: PdfTextAlignment.center, lineAlignment: PdfVerticalAlignment.middle),
-        bounds: Rect.fromLTWH(0, 12 + avatarSize + 12, sectionInnerWidth * avatarWidthFactor, 0));
+        bounds: Rect.fromLTWH(0, avatarSize + 12 + 4, sectionInnerWidth * avatarWidthFactor, 0));
     page.graphics.drawString('le ${new DateFormat.MMMMd("fr_FR").format(anecdote.date!)}',
         PdfTrueTypeFont(fontAsset!.buffer.asUint8List(), 12, style: PdfFontStyle.italic),
         brush: PdfSolidBrush(darkOrangeColor),
         format: PdfStringFormat(alignment: PdfTextAlignment.center, lineAlignment: PdfVerticalAlignment.middle),
-        bounds: Rect.fromLTWH(0, 12 + avatarSize + 12 + 16, sectionInnerWidth * avatarWidthFactor, 0));
-    page.graphics.drawString(anecdote.text, PdfTrueTypeFont(fontAsset!.buffer.asUint8List(), 12),
+        bounds: Rect.fromLTWH(0, avatarSize + 12 + 20, sectionInnerWidth * avatarWidthFactor, 0));
+    _drawTextString(page, anecdote.text, textFontSize,
         brush: PdfSolidBrush(darkOrangeColor),
         format: PdfStringFormat(alignment: PdfTextAlignment.left, lineAlignment: PdfVerticalAlignment.middle),
-        bounds: Rect.fromLTWH(
-            sectionInnerWidth * avatarWidthFactor, 0, sectionInnerWidth * (1 - avatarWidthFactor) - 5, (1 - imageHeightFactor) * sectionInnerHeight));
+        bounds: Rect.fromLTWH(sectionInnerWidth * avatarWidthFactor, 0, textLayoutAreaWidth, textLayoutAreaHeight));
   }
 
   void _drawPageNumber(PdfPage page, double circleSize, double bodyHeight, int pageNumber) {
@@ -244,6 +257,7 @@ class AdminController extends GetxController {
     final double sectionSpacing = 20;
     final double borderSize = 1;
     final double avatarSize = 60;
+    final double textFontSize = 12;
 
     final PdfColor lightOrangeColor = PdfColor(217, 105, 77);
     final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
@@ -264,9 +278,9 @@ class AdminController extends GetxController {
         final double sectionWidth = pageSize.width;
 
         if (img.width > img.height) {
-          await _drawAnecdoteLandscapeTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, anecdote, imgBytes);
+          await _drawAnecdoteLandscapeTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, textFontSize, anecdote, imgBytes);
         } else {
-          await _drawAnecdotePortraitTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, anecdote, imgBytes);
+          await _drawAnecdotePortraitTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, textFontSize, anecdote, imgBytes);
         }
 
         _drawPageNumber(currentPage, circleSize, bodyHeight - sectionSpacing / 4, pageNumber++);
@@ -277,9 +291,11 @@ class AdminController extends GetxController {
         final double sectionWidth = pageSize.width;
 
         if (img.width > img.height) {
-          await _drawAnecdoteLandscapeBottom(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, sectionSpacing, anecdote, imgBytes);
+          await _drawAnecdoteLandscapeBottom(
+              currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, textFontSize, sectionSpacing, anecdote, imgBytes);
         } else {
-          await _drawAnecdotePortraitBottom(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, sectionSpacing, anecdote, imgBytes);
+          await _drawAnecdotePortraitBottom(
+              currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, textFontSize, sectionSpacing, anecdote, imgBytes);
         }
 
         currentPage = null;
