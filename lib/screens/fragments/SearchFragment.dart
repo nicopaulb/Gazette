@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/utils/SVCommon.dart';
 
 class SearchFragment extends StatelessWidget {

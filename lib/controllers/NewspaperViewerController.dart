@@ -1,7 +1,6 @@
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/utils/SVCommon.dart';
 import 'package:get/get.dart';
-import 'package:gazette/services/PocketBaseService.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -17,9 +16,7 @@ class NewspaperViewerController extends GetxController {
   }
 
   String getName() {
-    return new DateFormat.yMMMM("fr_FR")
-        .format(newspaper.date!)
-        .capitalizeFirstLetter();
+    return new DateFormat.yMMMM("fr_FR").format(newspaper.date!).capitalizeFirstLetter();
   }
 
   String getPdfUri() {

@@ -161,9 +161,7 @@ class PocketbaseService extends GetxService {
       for (RecordModel anecdoteRecord in results) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = await getUserDetails(anecdote.userId);
-        if (anecdote.newspaperId != null) {
-          anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
-        }
+        anecdote.newspaper = await getNewspaper(anecdote.newspaperId);
         _cachedAnecdotesData[anecdote.id] = anecdote;
         anecdotesList.add(anecdote);
       }
@@ -183,7 +181,7 @@ class PocketbaseService extends GetxService {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = await getUserDetails(anecdote.userId);
         if (anecdote.newspaperId.isNotEmpty) {
-          anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
+          anecdote.newspaper = await getNewspaper(anecdote.newspaperId);
         }
         _cachedAnecdotesData[anecdote.id] = anecdote;
         anecdotesList.add(anecdote);
@@ -205,7 +203,7 @@ class PocketbaseService extends GetxService {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
         anecdote.user = user;
         if (anecdote.newspaper != null) {
-          anecdote.newspaper = await getNewspaper(anecdote.newspaperId!);
+          anecdote.newspaper = await getNewspaper(anecdote.newspaperId);
         }
         anecdotesList.add(anecdote);
       }

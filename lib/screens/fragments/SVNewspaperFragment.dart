@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/NewspaperController.dart';
-import 'package:gazette/controllers/NewspaperViewerController.dart';
 import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
 import 'package:gazette/utils/SVColors.dart';
 import 'package:get/get.dart';

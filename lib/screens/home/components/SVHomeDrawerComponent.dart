@@ -10,10 +10,8 @@ import 'package:gazette/services/PocketBaseService.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:gazette/models/SVDrawerModels.dart';
 import 'package:gazette/utils/SVColors.dart';
 import 'package:gazette/utils/SVCommon.dart';
-import 'package:gazette/models/UserModel.dart';
 
 class SVHomeDrawerComponent extends StatefulWidget {
   @override
@@ -22,7 +20,6 @@ class SVHomeDrawerComponent extends StatefulWidget {
 
 class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
   final ProfileController _profileController = Get.put(ProfileController());
-  final HomeDrawerController _homeDrawerController = Get.put(HomeDrawerController());
   final user = PocketbaseService.to.user!;
   int selectedIndex = -1;
 

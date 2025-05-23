@@ -1,16 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/services.dart';
-import 'package:gazette/screens/admin/AdminScreen.dart';
 import 'package:gazette/utils/SVColors.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:get/get.dart';
-import 'package:intl/find_locale.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:super_clipboard/super_clipboard.dart';
@@ -258,9 +254,6 @@ class AdminController extends GetxController {
     final double borderSize = 1;
     final double avatarSize = 60;
     final double textFontSize = 12;
-
-    final PdfColor lightOrangeColor = PdfColor(217, 105, 77);
-    final PdfColor darkOrangeColor = PdfColor(147, 100, 66);
 
     fontAsset = await rootBundle.load('fonts/MyriadPro-Regular.ttf');
 
