@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-const SVAppColorPrimary = Color(0xFFDC6A4F);
+const AppColorPrimary = Color(0xFFDC6A4F);
 
 //Section BG / page BG
-const SVAppLayoutBackground = Color(0xFFF4F7F6);
-const SVAppSectionBackground = Color(0xFFFFFFFF);
-const SVAppBorderColor = Color(0xFFD9DFEB);
+const AppLayoutBackground = Color(0xFFF4F7F6);
+const AppSectionBackground = Color(0xFFFFFFFF);
+const AppBorderColor = Color(0xFFD9DFEB);
 // Tertiary
 
-const SVBodyWhite = Color(0xFF6F7F92);
-const SVBodyDark = Color(0xFFF5F5F5);
-const SVDividerColor = Color(0xFFE1E5EF);
+const BodyWhite = Color(0xFF6F7F92);
+const BodyDark = Color(0xFFF5F5F5);
+const DividerColor = Color(0xFFE1E5EF);
 
 const appBackgroundColorDark = Color(0xFF121212);
 const cardBackgroundBlackDark = Color(0xFF1F1F1F);

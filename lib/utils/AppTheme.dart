@@ -2,35 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/Colors.dart';
 
 class AppTheme {
   AppTheme._();
 
   static final ThemeData lightTheme = ThemeData(
-    scaffoldBackgroundColor: SVAppLayoutBackground,
-    primaryColor: SVAppColorPrimary,
-    primaryColorDark: SVAppColorPrimary,
+    scaffoldBackgroundColor: AppLayoutBackground,
+    primaryColor: AppColorPrimary,
+    primaryColorDark: AppColorPrimary,
     hoverColor: Colors.white54,
     dividerColor: viewLineColor,
     fontFamily: GoogleFonts.inter().fontFamily,
     appBarTheme: AppBarTheme(
-      color: SVAppLayoutBackground,
+      color: AppLayoutBackground,
       iconTheme: IconThemeData(color: textPrimaryColor),
       systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
     ),
     textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black),
     cardTheme: CardTheme(color: Colors.white),
-    cardColor: SVAppSectionBackground,
+    cardColor: AppSectionBackground,
     iconTheme: IconThemeData(color: textPrimaryColor),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: whiteColor),
     textTheme: TextTheme(
-      labelLarge: TextStyle(color: SVAppColorPrimary),
+      labelLarge: TextStyle(color: AppColorPrimary),
       titleLarge: TextStyle(color: textPrimaryColor),
       titleSmall: TextStyle(color: textSecondaryColor),
     ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    colorScheme: ColorScheme.light(primary: SVAppColorPrimary).copyWith(error: Colors.red),
+    colorScheme: ColorScheme.light(primary: AppColorPrimary).copyWith(error: Colors.red),
   ).copyWith(
     pageTransitionsTheme: PageTransitionsTheme(builders: <TargetPlatform, PageTransitionsBuilder>{
       TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
@@ -55,8 +55,7 @@ class AppTheme {
     hoverColor: Colors.black12,
     fontFamily: GoogleFonts.inter().fontFamily,
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: appBackgroundColorDark),
-    primaryTextTheme:
-        TextTheme(titleLarge: primaryTextStyle(color: Colors.white), labelSmall: primaryTextStyle(color: Colors.white)),
+    primaryTextTheme: TextTheme(titleLarge: primaryTextStyle(color: Colors.white), labelSmall: primaryTextStyle(color: Colors.white)),
     cardTheme: CardTheme(color: cardBackgroundBlackDark),
     cardColor: cardBackgroundBlackDark,
     iconTheme: IconThemeData(color: whiteColor),

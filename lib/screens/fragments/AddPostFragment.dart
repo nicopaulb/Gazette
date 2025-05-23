@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AddAnecdoteController.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/utils/SVCommon.dart';
-import 'package:gazette/utils/SVConstants.dart';
-import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/Common.dart';
+import 'package:gazette/utils/Constants.dart';
+import 'package:gazette/utils/Colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class AddPostFragment extends StatelessWidget {
@@ -16,7 +16,7 @@ class AddPostFragment extends StatelessWidget {
       backgroundColor: context.cardColor,
       appBar: AppBar(
         iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
-        backgroundColor: svGetScaffoldColor(),
+        backgroundColor: getScaffoldColor(),
         title: Text('Nouvelle anecdote', style: boldTextStyle(size: 20)),
         elevation: 0,
         centerTitle: true,
@@ -40,7 +40,7 @@ class AddPostFragment extends StatelessWidget {
                   ? _addAnecdoteController.sendNewAnecdote()
                   : _addAnecdoteController.sendUpdatedAnecdote(),
               elevation: 0,
-              color: SVAppColorPrimary,
+              color: AppColorPrimary,
               width: 100,
               padding: EdgeInsets.all(0),
             ).paddingAll(8),
@@ -56,7 +56,7 @@ class AddPostFragment extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(16),
                     margin: EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: svGetScaffoldColor(), borderRadius: radius(SVAppCommonRadius)),
+                    decoration: BoxDecoration(color: getScaffoldColor(), borderRadius: radius(AppCommonRadius)),
                     child: Form(
                       key: _addAnecdoteController.formKey,
                       child: TextFormField(
@@ -72,7 +72,7 @@ class AddPostFragment extends StatelessWidget {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Il était une fois...',
-                          hintStyle: secondaryTextStyle(size: 14, color: svGetBodyColor()),
+                          hintStyle: secondaryTextStyle(size: 14, color: getBodyColor()),
                         ),
                       ),
                     ),
@@ -80,7 +80,7 @@ class AddPostFragment extends StatelessWidget {
                   Container(
                       padding: EdgeInsets.all(4),
                       margin: EdgeInsets.all(16),
-                      decoration: BoxDecoration(color: svGetScaffoldColor(), borderRadius: radius(SVAppCommonRadius)),
+                      decoration: BoxDecoration(color: getScaffoldColor(), borderRadius: radius(AppCommonRadius)),
                       child: ListTile(
                         onTap: () {
                           _addAnecdoteController.pickerImage();
@@ -107,7 +107,7 @@ class AddPostFragment extends StatelessWidget {
                   Container(
                       padding: EdgeInsets.all(4),
                       margin: EdgeInsets.all(16),
-                      decoration: BoxDecoration(color: svGetScaffoldColor(), borderRadius: radius(SVAppCommonRadius)),
+                      decoration: BoxDecoration(color: getScaffoldColor(), borderRadius: radius(AppCommonRadius)),
                       child: ListTile(
                         onTap: () {
                           _addAnecdoteController.pickerDate(context);
@@ -142,9 +142,7 @@ class AddPostFragment extends StatelessWidget {
                                     width: 75,
                                     height: 75,
                                     decoration: BoxDecoration(
-                                        border: _addAnecdoteController.openedAnecdote == null
-                                            ? Border.all(color: SVAppColorPrimary, width: 6)
-                                            : null,
+                                        border: _addAnecdoteController.openedAnecdote == null ? Border.all(color: AppColorPrimary, width: 6) : null,
                                         borderRadius: BorderRadius.circular(16)),
                                     child: InkWell(
                                       onTap: () => _addAnecdoteController.openAnecdote(-1),
@@ -152,16 +150,15 @@ class AddPostFragment extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(10),
                                         child: Container(
                                             padding: EdgeInsets.all(17),
-                                            color: svGetScaffoldColor(),
-                                            child: Image.asset('images/gazette/add.png',
-                                                height: 35, width: 35, fit: BoxFit.fill, color: blackColor)),
+                                            color: getScaffoldColor(),
+                                            child: Image.asset('images/gazette/add.png', height: 35, width: 35, fit: BoxFit.fill, color: blackColor)),
                                       ),
                                     ),
                                   ),
                                   5.width,
                                   VerticalDivider(
                                     thickness: 1,
-                                    color: svGetBodyColor(),
+                                    color: getBodyColor(),
                                   ),
                                   Expanded(
                                     child: ListView.builder(
@@ -175,7 +172,7 @@ class AddPostFragment extends StatelessWidget {
                                             margin: EdgeInsets.symmetric(horizontal: 5),
                                             decoration: BoxDecoration(
                                                 border: _addAnecdoteController.isAnecdoteOpened(index)
-                                                    ? Border.all(color: SVAppColorPrimary, width: 6)
+                                                    ? Border.all(color: AppColorPrimary, width: 6)
                                                     : null,
                                                 borderRadius: BorderRadius.circular(16)),
                                             child: InkWell(
@@ -183,8 +180,7 @@ class AddPostFragment extends StatelessWidget {
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(10),
                                                 child: CachedNetworkImage(
-                                                    imageUrl:
-                                                        _addAnecdoteController.submittedAnecdotes[index].imageUri ?? "",
+                                                    imageUrl: _addAnecdoteController.submittedAnecdotes[index].imageUri ?? "",
                                                     fit: BoxFit.cover,
                                                     width: 75,
                                                     height: 75),

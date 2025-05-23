@@ -1,5 +1,5 @@
 import 'package:gazette/models/NewspaperModel.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -10,7 +10,7 @@ class NewspaperViewerController extends GetxController {
   @override
   void onInit() {
     afterBuildCreated(() {
-      setStatusBarColor(svGetScaffoldColor());
+      setStatusBarColor(getScaffoldColor());
     });
     super.onInit();
   }

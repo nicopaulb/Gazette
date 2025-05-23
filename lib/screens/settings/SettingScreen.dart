@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/SettingController.dart';
-import 'package:gazette/utils/SVColors.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Colors.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -11,9 +11,9 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: svGetScaffoldColor(),
+      backgroundColor: getScaffoldColor(),
       appBar: AppBar(
-        backgroundColor: svGetScaffoldColor(),
+        backgroundColor: getScaffoldColor(),
         title: Text('Paramètres', style: boldTextStyle(size: 20)),
         elevation: 0,
         centerTitle: true,
@@ -37,7 +37,7 @@ class SettingScreen extends StatelessWidget {
                         _settingController.setDarkMode(value);
                       },
                       value: _settingController.isDarkMode(),
-                      activeColor: SVAppColorPrimary,
+                      activeColor: AppColorPrimary,
                     )
                   ],
                 ),

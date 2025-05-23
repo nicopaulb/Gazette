@@ -1,6 +1,6 @@
-import 'package:gazette/utils/SVConstants.dart';
+import 'package:gazette/utils/Constants.dart';
 
-class SVNotificationModel {
+class NotificationModel {
   String? name;
   String? secondName;
   String? profileImage;
@@ -10,71 +10,64 @@ class SVNotificationModel {
   bool? isOfficial;
   String? birthDate;
 
-  SVNotificationModel(
-      {this.name,
-      this.profileImage,
-      this.time,
-      this.notificationType,
-      this.postImage,
-      this.isOfficial,
-      this.secondName,
-      this.birthDate});
+  NotificationModel(
+      {this.name, this.profileImage, this.time, this.notificationType, this.postImage, this.isOfficial, this.secondName, this.birthDate});
 }
 
-List<SVNotificationModel> getNotificationsToday() {
-  List<SVNotificationModel> list = [];
+List<NotificationModel> getNotificationsToday() {
+  List<NotificationModel> list = [];
 
-  list.add(SVNotificationModel(
+  list.add(NotificationModel(
     name: 'Jane_Cooper',
     time: '2 min',
     profileImage: 'images/gazette/faces/face_1.png',
-    notificationType: SVNotificationType.like,
+    notificationType: NotificationType.like,
     postImage: 'images/gazette/posts/post_one.png',
     isOfficial: false,
   ));
-  list.add(SVNotificationModel(
+  list.add(NotificationModel(
     name: 'Bea_Mine',
     time: '2 min',
     profileImage: 'images/gazette/faces/face_2.png',
-    notificationType: SVNotificationType.request,
+    notificationType: NotificationType.request,
     isOfficial: false,
   ));
 
   return list;
 }
 
-List<SVNotificationModel> getNotificationsThisMonth() {
-  List<SVNotificationModel> list = [];
+List<NotificationModel> getNotificationsThisMonth() {
+  List<NotificationModel> list = [];
 
-  list.add(SVNotificationModel(
+  list.add(NotificationModel(
     name: 'Anne Ortha',
     time: '2 week',
     profileImage: 'images/gazette/faces/face_3.png',
-    notificationType: SVNotificationType.like,
+    notificationType: NotificationType.like,
     postImage: 'images/gazette/posts/post_two.png',
     isOfficial: true,
   ));
-  list.add(SVNotificationModel(
+  list.add(NotificationModel(
     name: 'Anne Ortha',
     secondName: 'Dee Zynah',
     time: '2 week',
     profileImage: 'images/gazette/faces/face_1.png',
-    notificationType: SVNotificationType.birthday,
+    notificationType: NotificationType.birthday,
     isOfficial: true,
     birthDate: '25 March',
   ));
-  list.add(SVNotificationModel(
+  list.add(NotificationModel(
     name: 'Bea_Mine',
     time: '2 week',
     profileImage: 'images/gazette/faces/face_2.png',
-    notificationType: SVNotificationType.request,
+    notificationType: NotificationType.request,
     isOfficial: false,
   ));
-  list.add(SVNotificationModel(
+  list.add(NotificationModel(
     name: 'B. Homesoon',
     time: '2 week',
     profileImage: 'images/gazette/faces/face_4.png',
-    notificationType: SVNotificationType.newPost,
+    notificationType: NotificationType.newPost,
     postImage: 'images/gazette/posts/post_three.png',
     isOfficial: true,
   ));
@@ -82,15 +75,15 @@ List<SVNotificationModel> getNotificationsThisMonth() {
   return list;
 }
 
-List<SVNotificationModel> getNotificationsEarlier() {
-  List<SVNotificationModel> list = [];
+List<NotificationModel> getNotificationsEarlier() {
+  List<NotificationModel> list = [];
 
-  list.add(SVNotificationModel(
+  list.add(NotificationModel(
     name: 'Anne Ortha',
     secondName: 'Dee Zynah',
     time: '2 week',
     profileImage: 'images/gazette/faces/face_5.png',
-    notificationType: SVNotificationType.birthday,
+    notificationType: NotificationType.birthday,
     isOfficial: true,
     birthDate: '05 Feb',
   ));

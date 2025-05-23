@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
-import 'package:gazette/utils/SVColors.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Colors.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,7 +23,7 @@ class AddAnecdoteController extends GetxController {
   void onInit() {
     getSubmittedAnecdotes();
     afterBuildCreated(() {
-      setStatusBarColor(svGetScaffoldColor());
+      setStatusBarColor(getScaffoldColor());
     });
     super.onInit();
   }
@@ -86,8 +86,7 @@ class AddAnecdoteController extends GetxController {
 
     isUploading.value = true;
     try {
-      submittedAnecdotes
-          .add(await _pocketbaseService.createAnecdote(contentTextController.text, selectedImage!, selectedDate));
+      submittedAnecdotes.add(await _pocketbaseService.createAnecdote(contentTextController.text, selectedImage!, selectedDate));
       openedAnecdote = submittedAnecdotes.last;
       updateForm();
       Get.showSnackbar(
@@ -114,8 +113,7 @@ class AddAnecdoteController extends GetxController {
 
     isUploading.value = true;
     try {
-      Anecdote updatedAnecdote = await _pocketbaseService.updateAnecdote(
-          openedAnecdote!, contentTextController.text, selectedImage, selectedDate);
+      Anecdote updatedAnecdote = await _pocketbaseService.updateAnecdote(openedAnecdote!, contentTextController.text, selectedImage, selectedDate);
       submittedAnecdotes.remove(openedAnecdote);
       submittedAnecdotes.add(updatedAnecdote);
       openedAnecdote = updatedAnecdote;
@@ -143,8 +141,8 @@ class AddAnecdoteController extends GetxController {
         title: "Confirmation",
         textConfirm: "Supprimer",
         textCancel: "Annuler",
-        buttonColor: SVAppColorPrimary,
-        cancelTextColor: SVAppColorPrimary,
+        buttonColor: AppColorPrimary,
+        cancelTextColor: AppColorPrimary,
         radius: 5,
         onCancel: () {},
         onConfirm: () async {

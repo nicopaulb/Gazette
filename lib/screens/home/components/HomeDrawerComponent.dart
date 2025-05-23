@@ -10,22 +10,24 @@ import 'package:gazette/services/PocketBaseService.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:gazette/utils/SVColors.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Colors.dart';
+import 'package:gazette/utils/Common.dart';
 
-class SVHomeDrawerComponent extends StatefulWidget {
+class HomeDrawerComponent extends StatefulWidget {
   @override
-  State<SVHomeDrawerComponent> createState() => _SVHomeDrawerComponentState();
+  State<HomeDrawerComponent> createState() => _HomeDrawerComponentState();
 }
 
-class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
+class _HomeDrawerComponentState extends State<HomeDrawerComponent> {
   final ProfileController _profileController = Get.put(ProfileController());
+  final HomeDrawerController _homeDrawerController = Get.put(HomeDrawerController());
   final user = PocketbaseService.to.user!;
   int selectedIndex = -1;
 
   @override
   void initState() {
     setStatusBarColor(Colors.transparent);
+    _homeDrawerController;
     super.initState();
   }
 
@@ -54,7 +56,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
                     fit: BoxFit.cover,
                     errorWidget: (context, url, error) => Image.asset(
                       'images/gazette/icons/ic_Profile.png',
-                      color: SVAppColorPrimary,
+                      color: AppColorPrimary,
                     ),
                   ).cornerRadiusWithClipRRect(8),
                   16.width,
@@ -76,8 +78,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             decoration: BoxDecoration(color: context.cardColor),
             title: "Profil",
             titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Profile.png',
-                height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
+            leading: Image.asset('images/gazette/icons/ic_Profile.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
             onTap: () {
               finish(context);
               _profileController.updateUser(user.id);
@@ -88,8 +89,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             decoration: BoxDecoration(color: context.cardColor),
             title: "Paramètres",
             titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Settings.png',
-                height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
+            leading: Image.asset('images/gazette/icons/ic_Settings.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
             onTap: () {
               finish(context);
               Get.to(SettingScreen());
@@ -101,8 +101,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
                       decoration: BoxDecoration(color: context.cardColor),
                       title: "Administration",
                       titleTextStyle: boldTextStyle(size: 14),
-                      leading: Image.asset('images/gazette/icons/ic_Document.png',
-                          height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
+                      leading: Image.asset('images/gazette/icons/ic_Document.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
                       onTap: () {
                         finish(context);
                         Get.to(AdminScreen());
@@ -113,8 +112,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
             decoration: BoxDecoration(color: context.cardColor),
             title: "Se déconnecter",
             titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Logout.png',
-                height: 22, width: 22, fit: BoxFit.cover, color: SVAppColorPrimary),
+            leading: Image.asset('images/gazette/icons/ic_Logout.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
             onTap: () async {
               await PocketbaseService.to.logout();
               finish(context);
@@ -125,7 +123,7 @@ class _SVHomeDrawerComponentState extends State<SVHomeDrawerComponent> {
         Divider(indent: 16, endIndent: 16),
         SnapHelperWidget<PackageInfo>(
           future: PackageInfo.fromPlatform(),
-          onSuccess: (data) => Text(data.version, style: boldTextStyle(color: svGetBodyColor())),
+          onSuccess: (data) => Text(data.version, style: boldTextStyle(color: getBodyColor())),
         ),
         20.height,
       ],

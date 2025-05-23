@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +27,7 @@ class AnecdoteController extends GetxController {
     scrollController.addListener(_scrollListener);
     loadFirstAnecdotes();
     afterBuildCreated(() {
-      setStatusBarColor(svGetScaffoldColor());
+      setStatusBarColor(getScaffoldColor());
     });
   }
 

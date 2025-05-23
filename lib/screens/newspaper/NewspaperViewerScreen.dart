@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gazette/controllers/NewspaperViewerController.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class NewspaperViewerScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class NewspaperViewerScreen extends StatelessWidget {
     return GetBuilder<NewspaperViewerController>(
         builder: (_) => Scaffold(
               appBar: AppBar(
-                backgroundColor: svGetScaffoldColor(),
+                backgroundColor: getScaffoldColor(),
                 title: Text(_newspaperViewerController.getName(), style: boldTextStyle(size: 20)),
                 elevation: 0,
                 centerTitle: true,

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AdminController.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -12,11 +12,10 @@ class AdminAnecdoteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<AdminController>(
         builder: (_) => Scaffold(
-              backgroundColor: svGetScaffoldColor(),
+              backgroundColor: getScaffoldColor(),
               appBar: AppBar(
-                backgroundColor: svGetScaffoldColor(),
-                title: Text("Anecdote ${_adminController.selectedIndex + 1}/${_adminController.anecdotes.length}",
-                    style: boldTextStyle(size: 20)),
+                backgroundColor: getScaffoldColor(),
+                title: Text("Anecdote ${_adminController.selectedIndex + 1}/${_adminController.anecdotes.length}", style: boldTextStyle(size: 20)),
                 elevation: 0,
                 centerTitle: true,
                 iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
@@ -40,11 +39,7 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           "Avatar : ",
                           style: boldTextStyle(),
                         ),
-                        CachedNetworkImage(
-                            height: 50,
-                            width: 50,
-                            fit: BoxFit.cover,
-                            imageUrl: _adminController.getSelectedUserAvatar()),
+                        CachedNetworkImage(height: 50, width: 50, fit: BoxFit.cover, imageUrl: _adminController.getSelectedUserAvatar()),
                         Row(
                           children: [
                             IconButton(
@@ -99,11 +94,7 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           "Image : ",
                           style: boldTextStyle(),
                         ),
-                        CachedNetworkImage(
-                            height: 200,
-                            width: 300,
-                            fit: BoxFit.fitHeight,
-                            imageUrl: _adminController.getSelectedImage()),
+                        CachedNetworkImage(height: 200, width: 300, fit: BoxFit.fitHeight, imageUrl: _adminController.getSelectedImage()),
                         Row(
                           children: [
                             IconButton(

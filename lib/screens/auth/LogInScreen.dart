@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gazette/controllers/LoginController.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/utils/SVColors.dart';
-import 'package:gazette/utils/SVCommon.dart';
-import 'package:gazette/screens/SVDashboardScreen.dart';
+import 'package:gazette/utils/Colors.dart';
+import 'package:gazette/utils/Common.dart';
+import 'package:gazette/screens/DashboardScreen.dart';
 
 class LogInScreen extends StatelessWidget {
   final LoginController _loginController = Get.put(LoginController());
@@ -14,7 +14,7 @@ class LogInScreen extends StatelessWidget {
     var width = MediaQuery.sizeOf(context).width;
     var height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      backgroundColor: svGetScaffoldColor(),
+      backgroundColor: getScaffoldColor(),
       body: Center(
         child: Container(
           height: height,
@@ -83,10 +83,10 @@ class LogInScreen extends StatelessWidget {
                               obscureText: true,
                               onFieldSubmitted: (value) async {
                                 if (_loginController.formKey.currentState!.validate()) {
-                                  if (await _loginController.onLogin(_loginController.usernameTextController.text,
-                                          _loginController.passwordTextController.text) ==
+                                  if (await _loginController.onLogin(
+                                          _loginController.usernameTextController.text, _loginController.passwordTextController.text) ==
                                       null) {
-                                    Get.off(SVDashboardScreen());
+                                    Get.off(DashboardScreen());
                                   }
                                 }
                               },
@@ -127,22 +127,21 @@ class LogInScreen extends StatelessWidget {
                                     style: ButtonStyle(
                                         fixedSize: WidgetStatePropertyAll(Size.fromHeight(70)),
                                         foregroundColor: WidgetStatePropertyAll<Color>(whiteColor),
-                                        backgroundColor: WidgetStatePropertyAll<Color>(SVAppColorPrimary),
+                                        backgroundColor: WidgetStatePropertyAll<Color>(AppColorPrimary),
                                         shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8.0),
-                                            side: BorderSide(color: SVAppColorPrimary)))),
+                                            borderRadius: BorderRadius.circular(8.0), side: BorderSide(color: AppColorPrimary)))),
                                     onPressed: () async {
                                       if (_loginController.formKey.currentState!.validate()) {
-                                        if (await _loginController.onLogin(_loginController.usernameTextController.text,
-                                                _loginController.passwordTextController.text) ==
+                                        if (await _loginController.onLogin(
+                                                _loginController.usernameTextController.text, _loginController.passwordTextController.text) ==
                                             null) {
-                                          Get.off(SVDashboardScreen());
+                                          Get.off(DashboardScreen());
                                         }
                                       }
                                     },
                                     child: Text("Connexion", style: primaryTextStyle(size: 20, color: whiteColor)),
                                     // decoration: BoxDecoration(
-                                    //     color: SVAppColorPrimary,
+                                    //     color: AppColorPrimary,
                                     //     borderRadius: radius(8))),
                                   )),
                                 ],

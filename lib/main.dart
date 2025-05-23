@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
-import 'package:gazette/screens/SVSplashScreen.dart';
+import 'package:gazette/screens/SplashScreen.dart';
 import 'package:gazette/store/AppStore.dart';
 import 'package:gazette/utils/AppTheme.dart';
 import 'package:gazette/services/PocketBaseService.dart';
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: appStore.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-        home: SVSplashScreen(),
+        home: SplashScreen(),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

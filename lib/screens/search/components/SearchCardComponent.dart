@@ -1,12 +1,12 @@
 // import 'package:flutter/material.dart';
 // import 'package:nb_utils/nb_utils.dart';
-// import 'package:gazette/models/SVSearchModel.dart';
-// import 'package:gazette/utils/SVCommon.dart';
+// import 'package:gazette/models/SearchModel.dart';
+// import 'package:gazette/utils/Common.dart';
 
-// class SVSearchCardComponent extends StatelessWidget {
-//   final SVSearchModel element;
+// class SearchCardComponent extends StatelessWidget {
+//   final SearchModel element;
 
-//   SVSearchCardComponent({required this.element});
+//   SearchCardComponent({required this.element});
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@
 //                 ),
 //                 6.height,
 //                 Text(element.subTitle.validate(),
-//                     style: secondaryTextStyle(color: svGetBodyColor())),
+//                     style: secondaryTextStyle(color: GetBodyColor())),
 //               ],
 //               crossAxisAlignment: CrossAxisAlignment.start,
 //             ),

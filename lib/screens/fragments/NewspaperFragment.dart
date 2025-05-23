@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/NewspaperController.dart';
 import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
-import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/Colors.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Common.dart';
 
-class SVNewspaperFragment extends StatelessWidget {
+class NewspaperFragment extends StatelessWidget {
   final NewspaperController _newspaperController = Get.put(NewspaperController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: svGetScaffoldColor(),
+        backgroundColor: getScaffoldColor(),
         appBar: AppBar(
-          backgroundColor: svGetScaffoldColor(),
+          backgroundColor: getScaffoldColor(),
           title: Text('Gazette PDF', style: boldTextStyle(size: 20)),
           elevation: 0,
           centerTitle: true,
@@ -30,7 +30,7 @@ class SVNewspaperFragment extends StatelessWidget {
                       return Card(
                           child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: SVAppColorPrimary,
+                                backgroundColor: AppColorPrimary,
                                 child: Text(_newspaperController.getNumber(index)),
                               ),
                               title: Text(
@@ -58,8 +58,7 @@ class SVNewspaperFragment extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Icon(Icons.visibility),
-                                    InkWell(
-                                        child: Icon(Icons.download), onTap: () => _newspaperController.download(index)),
+                                    InkWell(child: Icon(Icons.download), onTap: () => _newspaperController.download(index)),
                                   ],
                                 ),
                               ),

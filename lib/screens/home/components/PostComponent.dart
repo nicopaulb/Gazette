@@ -6,13 +6,13 @@ import 'package:gazette/controllers/ProfileController.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
-import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/Colors.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/utils/SVCommon.dart';
-import 'package:gazette/utils/SVConstants.dart';
+import 'package:gazette/utils/Common.dart';
+import 'package:gazette/utils/Constants.dart';
 
-class SVPostComponent extends StatelessWidget {
+class PostComponent extends StatelessWidget {
   final AnecdoteController _anecdoteController = Get.put(AnecdoteController());
   final ProfileController _profileController = Get.put(ProfileController());
   final NewspaperViewerController _newspaperViewerController = Get.put(NewspaperViewerController());
@@ -33,8 +33,7 @@ class SVPostComponent extends StatelessWidget {
                   Container(
                       padding: EdgeInsets.symmetric(vertical: 16),
                       margin: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                      decoration: BoxDecoration(
-                          borderRadius: radius(SVAppCommonRadius), color: SVAppColorPrimary.withOpacity(0.8)),
+                      decoration: BoxDecoration(borderRadius: radius(AppCommonRadius), color: AppColorPrimary.withOpacity(0.8)),
                       child: Row(
                         children: [
                           20.width,
@@ -69,8 +68,7 @@ class SVPostComponent extends StatelessWidget {
                                   return Container(
                                     padding: EdgeInsets.only(top: 16),
                                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                    decoration: BoxDecoration(
-                                        borderRadius: radius(SVAppCommonRadius), color: context.cardColor),
+                                    decoration: BoxDecoration(borderRadius: radius(AppCommonRadius), color: context.cardColor),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -91,9 +89,9 @@ class SVPostComponent extends StatelessWidget {
                                                     fit: BoxFit.cover,
                                                     errorWidget: (context, url, error) => Image.asset(
                                                       'images/gazette/icons/ic_Profile.png',
-                                                      color: SVAppColorPrimary,
+                                                      color: AppColorPrimary,
                                                     ),
-                                                  ).cornerRadiusWithClipRRect(SVAppCommonRadius),
+                                                  ).cornerRadiusWithClipRRect(AppCommonRadius),
                                                   12.width,
                                                   Text(_anecdoteController.getUserName(index), style: boldTextStyle()),
                                                 ],
@@ -101,8 +99,7 @@ class SVPostComponent extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
-                                                Text(_anecdoteController.getDate(index),
-                                                    style: secondaryTextStyle(color: svGetBodyColor(), size: 12)),
+                                                Text(_anecdoteController.getDate(index), style: secondaryTextStyle(color: getBodyColor(), size: 12)),
                                                 PopupMenuButton(
                                                   onSelected: (item) {
                                                     Newspaper? news = _anecdoteController.getNewspaper(index);
@@ -131,8 +128,7 @@ class SVPostComponent extends StatelessWidget {
                                           ],
                                         ),
                                         16.height,
-                                        svRobotoText(
-                                                text: _anecdoteController.getText(index), textAlign: TextAlign.start)
+                                        robotoText(text: _anecdoteController.getText(index), textAlign: TextAlign.start)
                                             .paddingSymmetric(horizontal: 16),
                                         16.height,
                                         GestureDetector(
@@ -151,18 +147,15 @@ class SVPostComponent extends StatelessWidget {
                                                           child: CachedNetworkImage(
                                                             imageUrl: _anecdoteController.getFullSizeImage(index),
                                                             fit: BoxFit.contain,
-                                                            progressIndicatorBuilder:
-                                                                (context, url, downloadProgress) => Center(
+                                                            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
                                                               child: SizedBox(
                                                                 height: 100,
                                                                 width: 100,
                                                                 child: CircularProgressIndicator(
-                                                                    value: downloadProgress.progress,
-                                                                    color: SVAppColorPrimary),
+                                                                    value: downloadProgress.progress, color: AppColorPrimary),
                                                               ),
                                                             ),
-                                                            errorWidget: (context, url, error) =>
-                                                                Icon(Icons.error, color: SVAppColorPrimary, size: 50),
+                                                            errorWidget: (context, url, error) => Icon(Icons.error, color: AppColorPrimary, size: 50),
                                                           )),
                                                     )),
                                               );
@@ -176,13 +169,11 @@ class SVPostComponent extends StatelessWidget {
                                                 child: SizedBox(
                                                   height: 50,
                                                   width: 50,
-                                                  child: CircularProgressIndicator(
-                                                      value: downloadProgress.progress, color: SVAppColorPrimary),
+                                                  child: CircularProgressIndicator(value: downloadProgress.progress, color: AppColorPrimary),
                                                 ),
                                               ),
-                                              errorWidget: (context, url, error) =>
-                                                  Icon(Icons.error, color: SVAppColorPrimary, size: 30),
-                                            ).cornerRadiusWithClipRRect(SVAppCommonRadius).center()),
+                                              errorWidget: (context, url, error) => Icon(Icons.error, color: AppColorPrimary, size: 30),
+                                            ).cornerRadiusWithClipRRect(AppCommonRadius).center()),
                                       ],
                                     ),
                                   );

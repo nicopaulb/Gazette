@@ -1,17 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/ProfileController.dart';
-import 'package:gazette/utils/SVColors.dart';
+import 'package:gazette/utils/Colors.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/screens/home/components/SVHomeDrawerComponent.dart';
-import 'package:gazette/screens/home/components/SVPostComponent.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/screens/home/components/HomeDrawerComponent.dart';
+import 'package:gazette/screens/home/components/PostComponent.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:gazette/models/UserModel.dart';
 
-class SVHomeFragment extends StatelessWidget {
+class HomeFragment extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final User user = PocketbaseService.to.user!;
   final ProfileController _profileController = Get.put(ProfileController());
@@ -20,9 +20,9 @@ class SVHomeFragment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: svGetScaffoldColor(),
+      backgroundColor: getScaffoldColor(),
       appBar: AppBar(
-        backgroundColor: svGetScaffoldColor(),
+        backgroundColor: getScaffoldColor(),
         elevation: 0,
         leading: IconButton(
           icon: Image.asset(
@@ -52,7 +52,7 @@ class SVHomeFragment extends StatelessWidget {
                 imageUrl: user.getResizedAvatar(),
                 errorWidget: (context, url, error) => Image.asset(
                   'images/gazette/icons/ic_Profile.png',
-                  color: SVAppColorPrimary,
+                  color: AppColorPrimary,
                 ),
               ),
             ),
@@ -61,9 +61,9 @@ class SVHomeFragment extends StatelessWidget {
       ),
       drawer: Drawer(
         backgroundColor: context.cardColor,
-        child: SVHomeDrawerComponent(),
+        child: HomeDrawerComponent(),
       ),
-      body: SVPostComponent(),
+      body: PostComponent(),
     );
   }
 }

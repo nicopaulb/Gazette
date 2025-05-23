@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AdminController.dart';
 import 'package:gazette/screens/admin/AdminAnecdoteScreen.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -12,9 +12,9 @@ class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: svGetScaffoldColor(),
+      backgroundColor: getScaffoldColor(),
       appBar: AppBar(
-        backgroundColor: svGetScaffoldColor(),
+        backgroundColor: getScaffoldColor(),
         title: Text('Administration', style: boldTextStyle(size: 20)),
         elevation: 0,
         centerTitle: true,
@@ -64,8 +64,7 @@ class AdminScreen extends StatelessWidget {
                           return Card(
                               child: ListTile(
                                   title: Text("Anecdote ${index + 1}"),
-                                  leading: CachedNetworkImage(
-                                      imageUrl: _adminController.getImage(index), width: 100, height: 100),
+                                  leading: CachedNetworkImage(imageUrl: _adminController.getImage(index), width: 100, height: 100),
                                   onTap: () {
                                     _adminController.selectedIndex = index;
                                     Get.to(AdminAnecdoteScreen());

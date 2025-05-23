@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:gazette/screens/SVDashboardScreen.dart';
+import 'package:gazette/screens/DashboardScreen.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
-import 'package:gazette/utils/SVCommon.dart';
+import 'package:gazette/utils/Common.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 
-class SVSplashScreen extends StatefulWidget {
-  const SVSplashScreen({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SVSplashScreen> createState() => _SVSplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SVSplashScreenState extends State<SVSplashScreen> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     init();
@@ -25,7 +25,7 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
     await Future.delayed(Duration(seconds: 1));
     finish(context);
     if (PocketbaseService.to.isAuth) {
-      Get.off(SVDashboardScreen());
+      Get.off(DashboardScreen());
     } else {
       Get.off(LogInScreen());
     }
@@ -34,7 +34,7 @@ class _SVSplashScreenState extends State<SVSplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: svGetScaffoldColor(),
+        backgroundColor: getScaffoldColor(),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

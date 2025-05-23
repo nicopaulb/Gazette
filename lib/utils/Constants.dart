@@ -1,17 +1,17 @@
 import 'package:google_fonts/google_fonts.dart';
 
-const double SVAppContainerRadius = 32;
-const double SVAppCommonRadius = 12;
-const svAppName = "Gazette";
+const double AppContainerRadius = 32;
+const double AppCommonRadius = 12;
+const AppName = "Gazette";
 
-class SVNotificationType {
+class NotificationType {
   static String like = 'like';
   static String request = 'request';
   static String birthday = 'birthday';
   static String newPost = 'newPost';
 }
 
-class SVPostType {
+class PostType {
   static String video = 'video';
   static String camera = 'camera';
   static String voice = 'voice';
@@ -19,4 +19,4 @@ class SVPostType {
   static String text = 'text';
 }
 
-var svFontRoboto = GoogleFonts.roboto().fontFamily;
+var fontRoboto = GoogleFonts.roboto().fontFamily;
