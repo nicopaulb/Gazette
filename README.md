@@ -4,7 +4,7 @@ Require a Pocketbase instance. Import the pocketbase configuration file `pocketb
 
 Run with : `flutter run  --dart-define DB_URL=https://your.pocketbase.url.com`
 
-# Sreenshots
+# Screenshots
 <img src="https://github.com/user-attachments/assets/589d9fd9-c9d4-4716-a013-0618a947c1c5" width="200">
 <img src="https://github.com/user-attachments/assets/ce8af9a7-7b93-4b3e-a985-6555529e293f" width="200">
 <img src="https://github.com/user-attachments/assets/ce3bd377-c102-4943-87cd-4dab50146e73" width="200">
