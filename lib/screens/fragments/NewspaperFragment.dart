@@ -58,7 +58,8 @@ class NewspaperFragment extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Icon(Icons.visibility),
-                                    InkWell(child: Icon(Icons.download), onTap: () => _newspaperController.download(index)),
+                                    InkWell(
+                                        child: Icon(Icons.download), onTap: () => _newspaperController.download(index)),
                                   ],
                                 ),
                               ),

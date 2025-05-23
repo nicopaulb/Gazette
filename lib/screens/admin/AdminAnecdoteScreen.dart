@@ -15,7 +15,8 @@ class AdminAnecdoteScreen extends StatelessWidget {
               backgroundColor: getScaffoldColor(),
               appBar: AppBar(
                 backgroundColor: getScaffoldColor(),
-                title: Text("Anecdote ${_adminController.selectedIndex + 1}/${_adminController.anecdotes.length}", style: boldTextStyle(size: 20)),
+                title: Text("Anecdote ${_adminController.selectedIndex + 1}/${_adminController.anecdotes.length}",
+                    style: boldTextStyle(size: 20)),
                 elevation: 0,
                 centerTitle: true,
                 iconTheme: IconThemeData(color: ContextExtensions(context).iconColor),
@@ -39,7 +40,11 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           "Avatar : ",
                           style: boldTextStyle(),
                         ),
-                        CachedNetworkImage(height: 50, width: 50, fit: BoxFit.cover, imageUrl: _adminController.getSelectedUserAvatar()),
+                        CachedNetworkImage(
+                            height: 50,
+                            width: 50,
+                            fit: BoxFit.cover,
+                            imageUrl: _adminController.getSelectedUserAvatar()),
                         Row(
                           children: [
                             IconButton(
@@ -94,7 +99,11 @@ class AdminAnecdoteScreen extends StatelessWidget {
                           "Image : ",
                           style: boldTextStyle(),
                         ),
-                        CachedNetworkImage(height: 200, width: 300, fit: BoxFit.fitHeight, imageUrl: _adminController.getSelectedImage()),
+                        CachedNetworkImage(
+                            height: 200,
+                            width: 300,
+                            fit: BoxFit.fitHeight,
+                            imageUrl: _adminController.getSelectedImage()),
                         Row(
                           children: [
                             IconButton(

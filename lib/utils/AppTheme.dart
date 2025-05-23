@@ -55,7 +55,8 @@ class AppTheme {
     hoverColor: Colors.black12,
     fontFamily: GoogleFonts.inter().fontFamily,
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: appBackgroundColorDark),
-    primaryTextTheme: TextTheme(titleLarge: primaryTextStyle(color: Colors.white), labelSmall: primaryTextStyle(color: Colors.white)),
+    primaryTextTheme:
+        TextTheme(titleLarge: primaryTextStyle(color: Colors.white), labelSmall: primaryTextStyle(color: Colors.white)),
     cardTheme: CardTheme(color: cardBackgroundBlackDark),
     cardColor: cardBackgroundBlackDark,
     iconTheme: IconThemeData(color: whiteColor),
