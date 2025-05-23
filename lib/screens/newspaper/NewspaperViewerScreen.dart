@@ -6,8 +6,7 @@ import 'package:gazette/utils/SVCommon.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class NewspaperViewerScreen extends StatelessWidget {
-  final NewspaperViewerController _newspaperViewerController =
-      Get.put(NewspaperViewerController());
+  final NewspaperViewerController _newspaperViewerController = Get.put(NewspaperViewerController());
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +14,7 @@ class NewspaperViewerScreen extends StatelessWidget {
         builder: (_) => Scaffold(
               appBar: AppBar(
                 backgroundColor: svGetScaffoldColor(),
-                title: Text(_newspaperViewerController.getName(),
-                    style: boldTextStyle(size: 20)),
+                title: Text(_newspaperViewerController.getName(), style: boldTextStyle(size: 20)),
                 elevation: 0,
                 centerTitle: true,
               ),

@@ -39,11 +39,13 @@ class ProfileScreen extends StatelessWidget {
                                   width: ContextExtensions(context).width(),
                                   height: 130,
                                   fit: BoxFit.cover,
-                                ).cornerRadiusWithClipRRectOnly(topLeft: SVAppCommonRadius.toInt(), topRight: SVAppCommonRadius.toInt()),
+                                ).cornerRadiusWithClipRRectOnly(
+                                    topLeft: SVAppCommonRadius.toInt(), topRight: SVAppCommonRadius.toInt()),
                                 Positioned(
                                   bottom: 0,
                                   child: Container(
-                                    decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 2), borderRadius: radius(18)),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.white, width: 2), borderRadius: radius(18)),
                                     child: CachedNetworkImage(
                                       imageUrl: _profileController.getAvatar(),
                                       height: 88,
@@ -118,7 +120,10 @@ class ProfileScreen extends StatelessWidget {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
-                                return CachedNetworkImage(imageUrl: _profileController.getAnecdoteImage(index), height: 100, fit: BoxFit.cover)
+                                return CachedNetworkImage(
+                                        imageUrl: _profileController.getAnecdoteImage(index),
+                                        height: 100,
+                                        fit: BoxFit.cover)
                                     .cornerRadiusWithClipRRect(8);
                               },
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

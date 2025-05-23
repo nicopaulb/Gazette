@@ -48,8 +48,7 @@ class SettingScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text("Supprimer les données en cache",
-                        style: boldTextStyle(size: 14)),
+                    Text("Supprimer les données en cache", style: boldTextStyle(size: 14)),
                     IconButton(
                         onPressed: () => {_settingController.clearCache()},
                         icon: Icon(

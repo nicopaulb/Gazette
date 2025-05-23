@@ -24,13 +24,11 @@ mixin _$AppStore on AppStoreBase, Store {
     });
   }
 
-  final _$toggleDarkModeAsyncAction =
-      AsyncAction('AppStoreBase.toggleDarkMode');
+  final _$toggleDarkModeAsyncAction = AsyncAction('AppStoreBase.toggleDarkMode');
 
   @override
   Future<void> toggleDarkMode({bool? value}) {
-    return _$toggleDarkModeAsyncAction
-        .run(() => super.toggleDarkMode(value: value));
+    return _$toggleDarkModeAsyncAction.run(() => super.toggleDarkMode(value: value));
   }
 
   @override

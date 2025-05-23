@@ -33,7 +33,8 @@ class SVPostComponent extends StatelessWidget {
                   Container(
                       padding: EdgeInsets.symmetric(vertical: 16),
                       margin: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                      decoration: BoxDecoration(borderRadius: radius(SVAppCommonRadius), color: SVAppColorPrimary.withOpacity(0.8)),
+                      decoration: BoxDecoration(
+                          borderRadius: radius(SVAppCommonRadius), color: SVAppColorPrimary.withOpacity(0.8)),
                       child: Row(
                         children: [
                           20.width,
@@ -68,7 +69,8 @@ class SVPostComponent extends StatelessWidget {
                                   return Container(
                                     padding: EdgeInsets.only(top: 16),
                                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                    decoration: BoxDecoration(borderRadius: radius(SVAppCommonRadius), color: context.cardColor),
+                                    decoration: BoxDecoration(
+                                        borderRadius: radius(SVAppCommonRadius), color: context.cardColor),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -129,7 +131,8 @@ class SVPostComponent extends StatelessWidget {
                                           ],
                                         ),
                                         16.height,
-                                        svRobotoText(text: _anecdoteController.getText(index), textAlign: TextAlign.start)
+                                        svRobotoText(
+                                                text: _anecdoteController.getText(index), textAlign: TextAlign.start)
                                             .paddingSymmetric(horizontal: 16),
                                         16.height,
                                         GestureDetector(
@@ -148,12 +151,14 @@ class SVPostComponent extends StatelessWidget {
                                                           child: CachedNetworkImage(
                                                             imageUrl: _anecdoteController.getFullSizeImage(index),
                                                             fit: BoxFit.contain,
-                                                            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                                                            progressIndicatorBuilder:
+                                                                (context, url, downloadProgress) => Center(
                                                               child: SizedBox(
                                                                 height: 100,
                                                                 width: 100,
                                                                 child: CircularProgressIndicator(
-                                                                    value: downloadProgress.progress, color: SVAppColorPrimary),
+                                                                    value: downloadProgress.progress,
+                                                                    color: SVAppColorPrimary),
                                                               ),
                                                             ),
                                                             errorWidget: (context, url, error) =>
@@ -171,10 +176,12 @@ class SVPostComponent extends StatelessWidget {
                                                 child: SizedBox(
                                                   height: 50,
                                                   width: 50,
-                                                  child: CircularProgressIndicator(value: downloadProgress.progress, color: SVAppColorPrimary),
+                                                  child: CircularProgressIndicator(
+                                                      value: downloadProgress.progress, color: SVAppColorPrimary),
                                                 ),
                                               ),
-                                              errorWidget: (context, url, error) => Icon(Icons.error, color: SVAppColorPrimary, size: 30),
+                                              errorWidget: (context, url, error) =>
+                                                  Icon(Icons.error, color: SVAppColorPrimary, size: 30),
                                             ).cornerRadiusWithClipRRect(SVAppCommonRadius).center()),
                                       ],
                                     ),

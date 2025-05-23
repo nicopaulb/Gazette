@@ -86,7 +86,8 @@ class AddAnecdoteController extends GetxController {
 
     isUploading.value = true;
     try {
-      submittedAnecdotes.add(await _pocketbaseService.createAnecdote(contentTextController.text, selectedImage!, selectedDate));
+      submittedAnecdotes
+          .add(await _pocketbaseService.createAnecdote(contentTextController.text, selectedImage!, selectedDate));
       openedAnecdote = submittedAnecdotes.last;
       updateForm();
       Get.showSnackbar(
@@ -113,7 +114,8 @@ class AddAnecdoteController extends GetxController {
 
     isUploading.value = true;
     try {
-      Anecdote updatedAnecdote = await _pocketbaseService.updateAnecdote(openedAnecdote!, contentTextController.text, selectedImage, selectedDate);
+      Anecdote updatedAnecdote = await _pocketbaseService.updateAnecdote(
+          openedAnecdote!, contentTextController.text, selectedImage, selectedDate);
       submittedAnecdotes.remove(openedAnecdote);
       submittedAnecdotes.add(updatedAnecdote);
       openedAnecdote = updatedAnecdote;

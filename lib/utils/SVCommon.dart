@@ -22,26 +22,16 @@ InputDecoration svInputDecoration(BuildContext context,
     prefixIcon: prefixIcon,
     errorMaxLines: 2,
     errorStyle: primaryTextStyle(color: Colors.red, size: 12),
-    enabledBorder:
-        UnderlineInputBorder(borderSide: BorderSide(color: SVAppBorderColor)),
-    focusedBorder:
-        UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
-    border:
-        UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
-    focusedErrorBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.red, width: 1.0)),
-    errorBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.red, width: 1.0)),
+    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: SVAppBorderColor)),
+    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
+    border: UnderlineInputBorder(borderSide: BorderSide(color: SVAppColorPrimary)),
+    focusedErrorBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 1.0)),
+    errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 1.0)),
     alignLabelWithHint: true,
   );
 }
 
-Widget svRobotoText(
-    {required String text,
-    Color? color,
-    FontStyle? fontStyle,
-    Function? onTap,
-    TextAlign? textAlign}) {
+Widget svRobotoText({required String text, Color? color, FontStyle? fontStyle, Function? onTap, TextAlign? textAlign}) {
   return Text(
     text,
     style: secondaryTextStyle(
@@ -50,8 +40,7 @@ Widget svRobotoText(
       fontStyle: fontStyle ?? FontStyle.normal,
     ),
     textAlign: textAlign ?? TextAlign.center,
-  ).onTap(onTap,
-      splashColor: Colors.transparent, highlightColor: Colors.transparent);
+  ).onTap(onTap, splashColor: Colors.transparent, highlightColor: Colors.transparent);
 }
 
 Color svGetBodyColor() {
@@ -68,8 +57,7 @@ Color svGetScaffoldColor() {
     return SVAppLayoutBackground;
 }
 
-Widget svHeaderContainer(
-    {required Widget child, required BuildContext context}) {
+Widget svHeaderContainer({required Widget child, required BuildContext context}) {
   return Stack(
     alignment: Alignment.bottomCenter,
     children: [
@@ -77,8 +65,7 @@ Widget svHeaderContainer(
         width: context.width(),
         decoration: BoxDecoration(
             color: SVAppColorPrimary,
-            borderRadius: radiusOnly(
-                topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
+            borderRadius: radiusOnly(topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
         padding: EdgeInsets.all(24),
         child: child,
       ),
@@ -86,8 +73,7 @@ Widget svHeaderContainer(
         height: 20,
         decoration: BoxDecoration(
             color: context.cardColor,
-            borderRadius: radiusOnly(
-                topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
+            borderRadius: radiusOnly(topLeft: SVAppContainerRadius, topRight: SVAppContainerRadius)),
       )
     ],
   );
