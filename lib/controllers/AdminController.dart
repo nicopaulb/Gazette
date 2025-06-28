@@ -276,7 +276,7 @@ class AdminController extends GetxController {
           await _drawAnecdotePortraitTop(currentPage, sectionWidth, sectionHeight, borderSize, avatarSize, textFontSize, anecdote, imgBytes);
         }
 
-        _drawPageNumber(currentPage, circleSize, bodyHeight - sectionSpacing / 4, pageNumber++);
+        //_drawPageNumber(currentPage, circleSize, bodyHeight - sectionSpacing / 4, pageNumber++);
       } else {
         final Size pageSize = currentPage.getClientSize();
         final double bodyHeight = pageSize.height - footerHeight;
