@@ -33,8 +33,7 @@ class PostComponent extends StatelessWidget {
                   Container(
                       padding: EdgeInsets.symmetric(vertical: 16),
                       margin: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                      decoration:
-                          BoxDecoration(borderRadius: radius(AppCommonRadius), color: AppColorPrimary.withOpacity(0.8)),
+                      decoration: BoxDecoration(borderRadius: radius(AppCommonRadius), color: AppColorPrimary.withOpacity(0.8)),
                       child: Row(
                         children: [
                           20.width,
@@ -69,8 +68,7 @@ class PostComponent extends StatelessWidget {
                                   return Container(
                                     padding: EdgeInsets.only(top: 16),
                                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                    decoration:
-                                        BoxDecoration(borderRadius: radius(AppCommonRadius), color: context.cardColor),
+                                    decoration: BoxDecoration(borderRadius: radius(AppCommonRadius), color: context.cardColor),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -101,8 +99,7 @@ class PostComponent extends StatelessWidget {
                                             ),
                                             Row(
                                               children: [
-                                                Text(_anecdoteController.getDate(index),
-                                                    style: secondaryTextStyle(color: getBodyColor(), size: 12)),
+                                                Text(_anecdoteController.getDate(index), style: secondaryTextStyle(color: getBodyColor(), size: 12)),
                                                 PopupMenuButton(
                                                   onSelected: (item) {
                                                     Newspaper? news = _anecdoteController.getNewspaper(index);
@@ -150,18 +147,15 @@ class PostComponent extends StatelessWidget {
                                                           child: CachedNetworkImage(
                                                             imageUrl: _anecdoteController.getFullSizeImage(index),
                                                             fit: BoxFit.contain,
-                                                            progressIndicatorBuilder:
-                                                                (context, url, downloadProgress) => Center(
+                                                            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
                                                               child: SizedBox(
                                                                 height: 100,
                                                                 width: 100,
                                                                 child: CircularProgressIndicator(
-                                                                    value: downloadProgress.progress,
-                                                                    color: AppColorPrimary),
+                                                                    value: downloadProgress.progress, color: AppColorPrimary),
                                                               ),
                                                             ),
-                                                            errorWidget: (context, url, error) =>
-                                                                Icon(Icons.error, color: AppColorPrimary, size: 50),
+                                                            errorWidget: (context, url, error) => Icon(Icons.error, color: AppColorPrimary, size: 50),
                                                           )),
                                                     )),
                                               );
@@ -175,12 +169,10 @@ class PostComponent extends StatelessWidget {
                                                 child: SizedBox(
                                                   height: 50,
                                                   width: 50,
-                                                  child: CircularProgressIndicator(
-                                                      value: downloadProgress.progress, color: AppColorPrimary),
+                                                  child: CircularProgressIndicator(value: downloadProgress.progress, color: AppColorPrimary),
                                                 ),
                                               ),
-                                              errorWidget: (context, url, error) =>
-                                                  Icon(Icons.error, color: AppColorPrimary, size: 30),
+                                              errorWidget: (context, url, error) => Icon(Icons.error, color: AppColorPrimary, size: 30),
                                             ).cornerRadiusWithClipRRect(AppCommonRadius).center()),
                                       ],
                                     ),

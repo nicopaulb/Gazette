@@ -120,8 +120,7 @@ class PocketbaseService extends GetxService {
       if (useCache && _cachedNewspapersData.isNotEmpty) {
         return Future<List<Newspaper>>.value(_cachedNewspapersData.values.toList().cast<Newspaper>());
       }
-      final results =
-          await _client.collection('edition').getFullList(sort: "-date", expand: "editionStats_via_edition");
+      final results = await _client.collection('edition').getFullList(sort: "-date", expand: "editionStats_via_edition");
       return results.map((final result) {
         var newspaper = Newspaper.fromRecord(result);
         _cachedNewspapersData[newspaper.id] = newspaper;
@@ -176,9 +175,7 @@ class PocketbaseService extends GetxService {
   Future<List<Anecdote>> getAnecdotesPerPage(int page, int perPage) async {
     List<Anecdote> anecdotesList = [];
     try {
-      final results = await _client
-          .collection('anecdotes')
-          .getList(perPage: perPage, page: page, sort: "-date", filter: "published = true");
+      final results = await _client.collection('anecdotes').getList(perPage: perPage, page: page, sort: "-date", filter: "published = true");
 
       for (RecordModel anecdoteRecord in results.items) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);
@@ -200,8 +197,7 @@ class PocketbaseService extends GetxService {
   Future<List<Anecdote>> getAllAnecdotesFromUser(User user) async {
     List<Anecdote> anecdotesList = [];
     try {
-      final results =
-          await _client.collection('anecdotes').getFullList(filter: 'published = true && user = "${user.id}"');
+      final results = await _client.collection('anecdotes').getFullList(filter: 'published = true && user = "${user.id}"');
 
       for (RecordModel anecdoteRecord in results) {
         var anecdote = Anecdote.fromRecord(anecdoteRecord);

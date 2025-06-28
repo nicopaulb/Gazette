@@ -43,48 +43,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Home.png',
-                    height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor)
-                .paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Home.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
             label: '',
-            activeIcon:
-                Image.asset('images/gazette/icons/ic_HomeSelected.png', height: 24, width: 24, fit: BoxFit.cover)
-                    .paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_HomeSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Search.png',
-                    height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor)
-                .paddingTop(12),
+            icon:
+                Image.asset('images/gazette/icons/ic_Search.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
             label: '',
-            activeIcon:
-                Image.asset('images/gazette/icons/ic_SearchSelected.png', height: 24, width: 24, fit: BoxFit.cover)
-                    .paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_SearchSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Plus.png',
-                    height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor)
-                .paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Plus.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
             label: '',
-            activeIcon:
-                Image.asset('images/gazette/icons/ic_PlusSelected.png', height: 24, width: 24, fit: BoxFit.cover)
-                    .paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_PlusSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Newspaper.png',
-                    height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor)
+            icon: Image.asset('images/gazette/icons/ic_Newspaper.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor)
                 .paddingTop(12),
             label: '',
-            activeIcon:
-                Image.asset('images/gazette/icons/ic_NewspaperSelected.png', height: 24, width: 24, fit: BoxFit.cover)
-                    .paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_NewspaperSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Calendar.png', height: 24, width: 24, fit: BoxFit.cover)
-                .paddingTop(12),
+            icon: Image.asset('images/gazette/icons/ic_Calendar.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
             label: '',
-            activeIcon:
-                Image.asset('images/gazette/icons/ic_CalendarSelected2.png', height: 24, width: 24, fit: BoxFit.cover)
-                    .paddingTop(12),
+            activeIcon: Image.asset('images/gazette/icons/ic_CalendarSelected2.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
           ),
         ],
         onTap: (val) {

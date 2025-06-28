@@ -78,8 +78,7 @@ class _HomeDrawerComponentState extends State<HomeDrawerComponent> {
             decoration: BoxDecoration(color: context.cardColor),
             title: "Profil",
             titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Profile.png',
-                height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
+            leading: Image.asset('images/gazette/icons/ic_Profile.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
             onTap: () {
               finish(context);
               _profileController.updateUser(user.id);
@@ -90,8 +89,7 @@ class _HomeDrawerComponentState extends State<HomeDrawerComponent> {
             decoration: BoxDecoration(color: context.cardColor),
             title: "Paramètres",
             titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Settings.png',
-                height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
+            leading: Image.asset('images/gazette/icons/ic_Settings.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
             onTap: () {
               finish(context);
               Get.to(SettingScreen());
@@ -103,8 +101,7 @@ class _HomeDrawerComponentState extends State<HomeDrawerComponent> {
                       decoration: BoxDecoration(color: context.cardColor),
                       title: "Administration",
                       titleTextStyle: boldTextStyle(size: 14),
-                      leading: Image.asset('images/gazette/icons/ic_Document.png',
-                          height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
+                      leading: Image.asset('images/gazette/icons/ic_Document.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
                       onTap: () {
                         finish(context);
                         Get.to(AdminScreen());
@@ -115,8 +112,7 @@ class _HomeDrawerComponentState extends State<HomeDrawerComponent> {
             decoration: BoxDecoration(color: context.cardColor),
             title: "Se déconnecter",
             titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Logout.png',
-                height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
+            leading: Image.asset('images/gazette/icons/ic_Logout.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
             onTap: () async {
               await PocketbaseService.to.logout();
               finish(context);

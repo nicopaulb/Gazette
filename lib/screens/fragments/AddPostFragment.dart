@@ -142,9 +142,7 @@ class AddPostFragment extends StatelessWidget {
                                     width: 75,
                                     height: 75,
                                     decoration: BoxDecoration(
-                                        border: _addAnecdoteController.openedAnecdote == null
-                                            ? Border.all(color: AppColorPrimary, width: 6)
-                                            : null,
+                                        border: _addAnecdoteController.openedAnecdote == null ? Border.all(color: AppColorPrimary, width: 6) : null,
                                         borderRadius: BorderRadius.circular(16)),
                                     child: InkWell(
                                       onTap: () => _addAnecdoteController.openAnecdote(-1),
@@ -153,8 +151,7 @@ class AddPostFragment extends StatelessWidget {
                                         child: Container(
                                             padding: EdgeInsets.all(17),
                                             color: getScaffoldColor(),
-                                            child: Image.asset('images/gazette/add.png',
-                                                height: 35, width: 35, fit: BoxFit.fill, color: blackColor)),
+                                            child: Image.asset('images/gazette/add.png', height: 35, width: 35, fit: BoxFit.fill, color: blackColor)),
                                       ),
                                     ),
                                   ),
@@ -183,8 +180,7 @@ class AddPostFragment extends StatelessWidget {
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(10),
                                                 child: CachedNetworkImage(
-                                                    imageUrl:
-                                                        _addAnecdoteController.submittedAnecdotes[index].imageUri ?? "",
+                                                    imageUrl: _addAnecdoteController.submittedAnecdotes[index].imageUri ?? "",
                                                     fit: BoxFit.cover,
                                                     width: 75,
                                                     height: 75),

@@ -11,14 +11,7 @@ class NotificationModel {
   String? birthDate;
 
   NotificationModel(
-      {this.name,
-      this.profileImage,
-      this.time,
-      this.notificationType,
-      this.postImage,
-      this.isOfficial,
-      this.secondName,
-      this.birthDate});
+      {this.name, this.profileImage, this.time, this.notificationType, this.postImage, this.isOfficial, this.secondName, this.birthDate});
 }
 
 List<NotificationModel> getNotificationsToday() {

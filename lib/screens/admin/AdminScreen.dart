@@ -64,8 +64,7 @@ class AdminScreen extends StatelessWidget {
                           return Card(
                               child: ListTile(
                                   title: Text("Anecdote ${index + 1}"),
-                                  leading: CachedNetworkImage(
-                                      imageUrl: _adminController.getImage(index), width: 100, height: 100),
+                                  leading: CachedNetworkImage(imageUrl: _adminController.getImage(index), width: 100, height: 100),
                                   onTap: () {
                                     _adminController.selectedIndex = index;
                                     Get.to(AdminAnecdoteScreen());

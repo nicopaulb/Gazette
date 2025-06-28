@@ -83,8 +83,8 @@ class LogInScreen extends StatelessWidget {
                               obscureText: true,
                               onFieldSubmitted: (value) async {
                                 if (_loginController.formKey.currentState!.validate()) {
-                                  if (await _loginController.onLogin(_loginController.usernameTextController.text,
-                                          _loginController.passwordTextController.text) ==
+                                  if (await _loginController.onLogin(
+                                          _loginController.usernameTextController.text, _loginController.passwordTextController.text) ==
                                       null) {
                                     Get.off(DashboardScreen());
                                   }
@@ -129,12 +129,11 @@ class LogInScreen extends StatelessWidget {
                                         foregroundColor: WidgetStatePropertyAll<Color>(whiteColor),
                                         backgroundColor: WidgetStatePropertyAll<Color>(AppColorPrimary),
                                         shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8.0),
-                                            side: BorderSide(color: AppColorPrimary)))),
+                                            borderRadius: BorderRadius.circular(8.0), side: BorderSide(color: AppColorPrimary)))),
                                     onPressed: () async {
                                       if (_loginController.formKey.currentState!.validate()) {
-                                        if (await _loginController.onLogin(_loginController.usernameTextController.text,
-                                                _loginController.passwordTextController.text) ==
+                                        if (await _loginController.onLogin(
+                                                _loginController.usernameTextController.text, _loginController.passwordTextController.text) ==
                                             null) {
                                           Get.off(DashboardScreen());
                                         }
