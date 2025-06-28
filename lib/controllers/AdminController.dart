@@ -393,13 +393,17 @@ class AdminController extends GetxController {
     await WebImageDownloader.downloadImageFromWeb(anecdotes[_selectedIndex].imageUri ?? "",
         name: new DateFormat("yyyy-MM-dd", "fr-FR").format(anecdotes[_selectedIndex].date!).replaceAll("/", "-") +
             " " +
-            anecdotes[_selectedIndex].user!.firstname);
+            anecdotes[_selectedIndex].user!.firstname,
+        imageType: ImageType.jpeg,
+        imageQuality: 0.95);
   }
 
   Future<void> downloadAllImages() async {
     for (var anecdote in anecdotes) {
       await WebImageDownloader.downloadImageFromWeb(anecdote.imageUri ?? "",
-          name: new DateFormat("yyyy-MM-dd", "fr-FR").format(anecdote.date!).replaceAll("/", "-") + " " + anecdote.user!.firstname);
+          name: new DateFormat("yyyy-MM-dd", "fr-FR").format(anecdote.date!).replaceAll("/", "-") + " " + anecdote.user!.firstname,
+          imageType: ImageType.jpeg,
+          imageQuality: 0.95);
     }
   }
 
