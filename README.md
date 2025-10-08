@@ -13,3 +13,5 @@ Run with : `flutter run  --dart-define DB_URL=https://your.pocketbase.url.com`
 
 </br>
 <img src="https://github.com/user-attachments/assets/c230abb3-676e-43ca-a960-74e197e4c325" width="1000">
+
+More info at https://blog.beniserv.fr/posts/gazette/
