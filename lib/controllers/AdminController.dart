@@ -253,7 +253,7 @@ class AdminController extends GetxController {
     final double sectionSpacing = 20;
     final double borderSize = 1;
     final double avatarSize = 60;
-    final double textFontSize = 13;
+    final double textFontSize = 15;
 
     fontAsset = await rootBundle.load('fonts/MyriadPro-Regular.ttf');
 

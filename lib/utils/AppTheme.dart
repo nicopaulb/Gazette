@@ -20,7 +20,7 @@ class AppTheme {
       systemOverlayStyle: SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark),
     ),
     textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black),
-    cardTheme: CardTheme(color: Colors.white),
+    cardTheme: CardThemeData(color: Colors.white),
     cardColor: AppSectionBackground,
     iconTheme: IconThemeData(color: textPrimaryColor),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: whiteColor),
@@ -56,7 +56,7 @@ class AppTheme {
     fontFamily: GoogleFonts.inter().fontFamily,
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: appBackgroundColorDark),
     primaryTextTheme: TextTheme(titleLarge: primaryTextStyle(color: Colors.white), labelSmall: primaryTextStyle(color: Colors.white)),
-    cardTheme: CardTheme(color: cardBackgroundBlackDark),
+    cardTheme: CardThemeData(color: cardBackgroundBlackDark),
     cardColor: cardBackgroundBlackDark,
     iconTheme: IconThemeData(color: whiteColor),
     textTheme: TextTheme(
