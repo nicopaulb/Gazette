@@ -69,7 +69,7 @@ class AddPostFragment extends StatelessWidget {
                         },
                         autofocus: false,
                         maxLines: 8,
-                        maxLength: 500,
+                        maxLength: 330,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Il était une fois...',
