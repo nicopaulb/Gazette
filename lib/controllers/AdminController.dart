@@ -141,7 +141,7 @@ class AdminController extends GetxController {
         bounds: Rect.fromLTWH(0, 15 + avatarSize + 12 + 16, columnWidth, 0));
     _drawTextString(page, anecdote.text, textFontSize,
         brush: PdfSolidBrush(darkOrangeColor),
-        format: PdfStringFormat(alignment: PdfTextAlignment.left, lineAlignment: PdfVerticalAlignment.top),
+        format: PdfStringFormat(alignment: PdfTextAlignment.justify, lineAlignment: PdfVerticalAlignment.top),
         bounds: Rect.fromLTWH(15, 15 + avatarSize + 12 + 16 + 35, columnWidth - 30, sectionInnerHeight - (15 + avatarSize + 12 + 16 + 35)));
   }
 
@@ -223,7 +223,7 @@ class AdminController extends GetxController {
         bounds: Rect.fromLTWH(0, avatarSize + 12 + 20, sectionInnerWidth * avatarWidthFactor, 0));
     _drawTextString(page, anecdote.text, textFontSize,
         brush: PdfSolidBrush(darkOrangeColor),
-        format: PdfStringFormat(alignment: PdfTextAlignment.left, lineAlignment: PdfVerticalAlignment.middle),
+        format: PdfStringFormat(alignment: PdfTextAlignment.justify, lineAlignment: PdfVerticalAlignment.middle),
         bounds: Rect.fromLTWH(sectionInnerWidth * avatarWidthFactor, 0, textLayoutAreaWidth, textLayoutAreaHeight));
   }
 
