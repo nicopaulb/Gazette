@@ -220,9 +220,7 @@ class PocketbaseService extends GetxService {
     DateTime limit = DateTime(now.year, now.day < 3 ? now.month - 1 : now.month, 2);
 
     try {
-      final results = await _client
-          .collection('anecdotes')
-          .getFullList(filter: 'published = false && date > "${limit.toIso8601String()}" && user = "${this.user!.id}"');
+      final results = await _client.collection('anecdotes').getFullList(filter: 'published = false && user = "${this.user!.id}"');
       return Future.wait(results.map((final result) async {
         var anecdote = Anecdote.fromRecord(result);
         anecdote.user = user;
