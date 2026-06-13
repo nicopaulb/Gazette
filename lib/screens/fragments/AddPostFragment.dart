@@ -84,7 +84,7 @@ class AddPostFragment extends StatelessWidget {
                       decoration: BoxDecoration(color: getScaffoldColor(), borderRadius: radius(AppCommonRadius)),
                       child: ListTile(
                         onTap: () {
-                          _addAnecdoteController.pickerImage();
+                          _addAnecdoteController.pickerImage(context);
                         },
                         title: Text(
                           "Image",
@@ -101,7 +101,7 @@ class AddPostFragment extends StatelessWidget {
                             color: ContextExtensions(context).iconColor,
                           ),
                           onPressed: () async {
-                            _addAnecdoteController.pickerImage();
+                            _addAnecdoteController.pickerImage(context);
                           },
                         ),
                       )),

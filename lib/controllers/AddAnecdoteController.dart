@@ -5,6 +5,7 @@ import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:intl/intl.dart';
 
@@ -28,13 +29,34 @@ class AddAnecdoteController extends GetxController {
     super.onInit();
   }
 
-  void pickerImage() async {
+  void pickerImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
     XFile? picked = await picker.pickImage(source: ImageSource.gallery, maxWidth: 1500, maxHeight: 1500);
-    if (picked != null && picked != selectedImage) {
-      selectedImage = picked;
-      selectedImageError = false;
-      update();
+
+    if (picked != null) {
+      final decodedImage = await decodeImageFromList(await picked.readAsBytes());
+      final aspectRatio = (decodedImage.height > decodedImage.width) ? 0.724 : 2.014;
+
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: picked.path,
+        compressQuality: 100,
+        uiSettings: [
+          WebUiSettings(
+              context: context,
+              presentStyle: WebPresentStyle.page,
+              viewwMode: WebViewMode.mode_1,
+              initialAspectRatio: aspectRatio,
+              cropBoxResizable: false,
+              movable: false,
+              dragMode: WebDragMode.none)
+        ],
+      );
+
+      if (croppedFile != null) {
+        selectedImage = XFile(croppedFile.path, name: picked.name);
+        selectedImageError = false;
+        update();
+      }
     }
   }
 

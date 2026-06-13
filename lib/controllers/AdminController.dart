@@ -76,7 +76,6 @@ class AdminController extends GetxController {
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
 
-    page.graphics.drawRectangle(bounds: Rect.fromLTWH(0, 0, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
       page.graphics.drawImage(PdfBitmap(image), Rect.fromLTWH(borderSize / 2, borderSize / 2, sectionInnerWidth / 2, sectionInnerHeight));
     } catch (error) {
@@ -87,6 +86,8 @@ class AdminController extends GetxController {
     page.graphics.translateTransform(sectionWidth / 2, borderSize / 2);
     await _drawAnecdotePortraitContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
+
+    page.graphics.drawRectangle(bounds: Rect.fromLTWH(0, 0, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
   }
 
   Future<void> _drawAnecdotePortraitBottom(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
@@ -95,8 +96,6 @@ class AdminController extends GetxController {
     final double sectionInnerWidth = sectionWidth - borderSize;
     final double sectionInnerHeight = sectionHeight - borderSize;
 
-    page.graphics.drawRectangle(
-        bounds: Rect.fromLTWH(0, sectionHeight + sectionSpacing, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
       page.graphics.drawImage(PdfBitmap(image),
           Rect.fromLTWH(sectionWidth / 2, sectionHeight + sectionSpacing + borderSize / 2, sectionInnerWidth / 2, sectionInnerHeight));
@@ -108,6 +107,9 @@ class AdminController extends GetxController {
     page.graphics.translateTransform(borderSize / 2, sectionHeight + sectionSpacing + borderSize / 2);
     await _drawAnecdotePortraitContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
+
+    page.graphics.drawRectangle(
+        bounds: Rect.fromLTWH(0, sectionHeight + sectionSpacing, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
   }
 
   Future<void> _drawAnecdotePortraitContent(
@@ -153,7 +155,6 @@ class AdminController extends GetxController {
     var rspImage = await http.get(Uri.parse(anecdote.imageUri ?? ""));
     final double imageHeightFactor = 0.72;
 
-    page.graphics.drawRectangle(bounds: Rect.fromLTWH(0, 0, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
       page.graphics.drawImage(
           PdfBitmap(rspImage.bodyBytes), Rect.fromLTWH(borderSize / 2, borderSize / 2, sectionInnerWidth, sectionInnerHeight * imageHeightFactor));
@@ -165,6 +166,8 @@ class AdminController extends GetxController {
     page.graphics.translateTransform(borderSize / 2, sectionHeight * imageHeightFactor);
     await _drawAnecdoteLandscapeContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, imageHeightFactor, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
+
+    page.graphics.drawRectangle(bounds: Rect.fromLTWH(0, 0, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
   }
 
   Future<void> _drawAnecdoteLandscapeBottom(PdfPage page, double sectionWidth, double sectionHeight, double borderSize, double avatarSize,
@@ -174,8 +177,6 @@ class AdminController extends GetxController {
     final double sectionInnerHeight = sectionHeight - borderSize;
     final double imageHeightFactor = 0.72;
 
-    page.graphics.drawRectangle(
-        bounds: Rect.fromLTWH(0, sectionHeight + sectionSpacing, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
     try {
       page.graphics.drawImage(PdfBitmap(image),
           Rect.fromLTWH(borderSize / 2, sectionHeight + sectionSpacing + borderSize / 2, sectionInnerWidth, sectionInnerHeight * imageHeightFactor));
@@ -187,6 +188,9 @@ class AdminController extends GetxController {
     page.graphics.translateTransform(borderSize / 2, sectionHeight + sectionSpacing + borderSize / 2 + sectionHeight * imageHeightFactor);
     await _drawAnecdoteLandscapeContent(page, avatarSize, sectionInnerWidth, sectionInnerHeight, imageHeightFactor, textFontSize, anecdote);
     page.graphics.restore(saveBeforeTransform);
+
+    page.graphics.drawRectangle(
+        bounds: Rect.fromLTWH(0, sectionHeight + sectionSpacing, sectionWidth, sectionHeight), pen: PdfPen(darkOrangeColor, width: borderSize));
   }
 
   Future<void> _drawAnecdoteLandscapeContent(
@@ -243,10 +247,10 @@ class AdminController extends GetxController {
   Future<void> generatePdf() async {
     //Create a new PDF document.
     final PdfDocument document = PdfDocument();
-    document.pageSettings.margins.top = 20;
+    document.pageSettings.margins.top = 25;
     document.pageSettings.margins.bottom = 20;
-    document.pageSettings.margins.right = 30;
-    document.pageSettings.margins.left = 30;
+    document.pageSettings.margins.right = 35;
+    document.pageSettings.margins.left = 35;
 
     final double circleSize = 30;
     final double footerHeight = 40;
