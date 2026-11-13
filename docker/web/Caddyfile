@@ -1,0 +1,14 @@
+# Static server for the Flutter web build (TLS is handled by the front Caddy)
+{
+	auto_https off
+	admin off
+}
+
+:80 {
+	root * /srv
+	encode zstd gzip
+	try_files {path} /index.html
+	header /index.html Cache-Control "no-cache"
+	header /flutter_service_worker.js Cache-Control "no-cache"
+	file_server
+}

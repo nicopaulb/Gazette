@@ -1,0 +1,27 @@
+# Copy .env.example to .env and set GAZETTE_URL before building.
+services:
+  pocketbase:
+    build: ./docker/pocketbase
+    restart: unless-stopped
+    volumes:
+      - pb_data:/pb/pb_data
+    # Only reachable from the host (Caddy, SSH tunnel for the admin dashboard)
+    ports:
+      - "127.0.0.1:8090:8090"
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+      args:
+        DB_URL: ${GAZETTE_URL:?GAZETTE_URL must be set in .env}
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /config
+      - /data
+    ports:
+      - "127.0.0.1:8080:80"
+
+volumes:
+  pb_data:
