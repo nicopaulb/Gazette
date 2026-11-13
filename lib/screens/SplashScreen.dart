@@ -23,8 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> init() async {
     setStatusBarColor(Colors.transparent);
     await Future.delayed(Duration(seconds: 1));
+    // Refreshes the session and fetches the file token before any image is shown
+    bool isLogged = PocketbaseService.to.isAuth && await PocketbaseService.to.isAuthValid();
     finish(context);
-    if (PocketbaseService.to.isAuth) {
+    if (isLogged) {
       Get.off(DashboardScreen());
     } else {
       Get.off(LogInScreen());

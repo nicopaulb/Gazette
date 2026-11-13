@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,12 @@ class PocketbaseService extends GetxService {
   final Map<String, Anecdote> _cachedAnecdotesData = {};
   User? user;
   bool get isAuth => user != null;
+
+  // Token required to access protected files (images, avatars, PDF).
+  // Its lifetime is set by the "fileToken" duration of the users collection.
+  String? _fileToken;
+  Timer? _fileTokenTimer;
+  static const Duration _fileTokenRefreshPeriod = Duration(hours: 1);
 
   Future<PocketbaseService> init() async {
     _initializeAuthStore();
@@ -50,6 +58,7 @@ class PocketbaseService extends GetxService {
     if (_authStore.isValid) {
       try {
         await _client.collection('users').authRefresh();
+        await refreshFileToken();
       } catch (e) {
         _authStore.clear();
         return false;
@@ -58,6 +67,33 @@ class PocketbaseService extends GetxService {
     } else {
       return false;
     }
+  }
+
+  Future<void> refreshFileToken() async {
+    _fileToken = await _client.files.getToken();
+    _fileTokenTimer ??= Timer.periodic(_fileTokenRefreshPeriod, (_) async {
+      try {
+        _fileToken = await _client.files.getToken();
+      } on ClientException catch (e) {
+        Get.log(e.toString());
+      }
+    });
+  }
+
+  void _clearFileToken() {
+    _fileTokenTimer?.cancel();
+    _fileTokenTimer = null;
+    _fileToken = null;
+  }
+
+  // Adds the file access token (and optional thumb size) to a file URL.
+  String signFileUrl(String? url, {String? thumb}) {
+    if (url == null || url.isEmpty) return "";
+    final uri = Uri.parse(url);
+    final params = Map<String, String>.from(uri.queryParameters);
+    if (thumb != null) params["thumb"] = thumb;
+    if (_fileToken != null) params["token"] = _fileToken!;
+    return uri.replace(queryParameters: params).toString();
   }
 
   void clearCachedData() {
@@ -69,6 +105,7 @@ class PocketbaseService extends GetxService {
   Future login(String username, password) async {
     try {
       RecordAuth userData = await _client.collection('users').authWithPassword(username, password);
+      await refreshFileToken();
       return userData;
     } on ClientException catch (e) {
       throw e;
@@ -77,6 +114,7 @@ class PocketbaseService extends GetxService {
 
   Future logout() async {
     _client.authStore.clear();
+    _clearFileToken();
     StorageService.to.user = null;
   }
 

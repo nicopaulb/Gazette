@@ -10,7 +10,8 @@ class Newspaper {
   final DateTime? date;
   final String pdfFileName;
   final int number;
-  String? pdfUri;
+  // URL without file token, the token is added on read by pdfUri
+  String? pdfBaseUri;
   String? token;
   int? anecdoteCount;
   int? userCount;
@@ -24,11 +25,13 @@ class Newspaper {
     required this.number,
     required this.date,
     required this.pdfFileName,
-    required this.pdfUri,
+    required this.pdfBaseUri,
     this.token,
     this.anecdoteCount,
     this.userCount,
   });
+
+  String? get pdfUri => pdfBaseUri == null ? null : PocketbaseService.to.signFileUrl(pdfBaseUri);
 
   factory Newspaper.fromJson(Map<String, dynamic> json) {
     return Newspaper(
@@ -40,7 +43,7 @@ class Newspaper {
         number: json["number"],
         date: DateTime.tryParse(json["date"] ?? ""),
         pdfFileName: json["pdf"],
-        pdfUri: json["pdfUri"],
+        pdfBaseUri: json["pdfUri"],
         anecdoteCount: json["expand"]?["editionStats_via_edition"]?[0]?["anecdotesCount"],
         userCount: json["expand"]?["editionStats_via_edition"]?[0]?["usersCount"]);
   }
@@ -48,7 +51,7 @@ class Newspaper {
   factory Newspaper.fromRecord(RecordModel record) {
     Newspaper newspaper = Newspaper.fromJson(record.toJson());
     if (newspaper.pdfFileName.isNotEmpty) {
-      newspaper.pdfUri = PocketbaseService.to.getFileUrl(record, newspaper.pdfFileName).toString();
+      newspaper.pdfBaseUri = PocketbaseService.to.getFileUrl(record, newspaper.pdfFileName).toString();
     }
     return newspaper;
   }
@@ -62,6 +65,6 @@ class Newspaper {
         "number": number.toString(),
         "date": date.toString(),
         "pdf": pdfFileName,
-        "pdfUri": pdfUri
+        "pdfUri": pdfBaseUri
       };
 }

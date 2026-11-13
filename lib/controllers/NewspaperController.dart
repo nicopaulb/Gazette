@@ -69,7 +69,7 @@ class NewspaperController extends GetxController {
   void download(int index) async {
     if (newspapers[index].pdfUri != null) {
       final anchor = html.AnchorElement(href: newspapers[index].pdfUri!);
-      anchor.setAttribute('download', newspapers[index].pdfUri!);
+      anchor.setAttribute('download', newspapers[index].pdfFileName);
       anchor.click();
     }
   }

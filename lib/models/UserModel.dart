@@ -12,7 +12,8 @@ class User {
   final String firstname;
   final String lastname;
   final bool admin;
-  String? avatarUri;
+  // URL without file token, the token is added on read by avatarUri
+  String? avatarBaseUri;
   String? token;
 
   User({
@@ -25,10 +26,12 @@ class User {
     required this.firstname,
     required this.lastname,
     required this.avatarFileName,
-    required this.avatarUri,
+    required this.avatarBaseUri,
     required this.admin,
     this.token,
   });
+
+  String? get avatarUri => avatarBaseUri == null ? null : PocketbaseService.to.signFileUrl(avatarBaseUri);
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -39,7 +42,7 @@ class User {
         collectionName: json["collectionName"],
         username: json["username"],
         avatarFileName: json["avatar"] ?? "",
-        avatarUri: json["avatarUri"] ?? "",
+        avatarBaseUri: json["avatarUri"] ?? "",
         firstname: json["firstname"] ?? "",
         lastname: json["lastname"] ?? "",
         admin: json["priviliged"].toString() == "true",
@@ -49,7 +52,7 @@ class User {
   factory User.fromRecord(RecordModel record) {
     User user = User.fromJson(record.toJson());
     if (user.avatarFileName.isNotEmpty) {
-      user.avatarUri = PocketbaseService.to.getFileUrl(record, user.avatarFileName).toString();
+      user.avatarBaseUri = PocketbaseService.to.getFileUrl(record, user.avatarFileName).toString();
     }
     return user;
   }
@@ -65,17 +68,11 @@ class User {
         "firstname": firstname,
         "lastname": lastname,
         "avatar": avatarFileName,
-        "avatarUri": avatarUri.toString(),
+        "avatarUri": avatarBaseUri.toString(),
         "priviliged": admin.toString()
       };
 
   String getResizedAvatar() {
-    String url = "";
-    if (this.avatarUri != null) {
-      url = this.avatarUri.toString() + "?thumb=200x200";
-      return url;
-    } else {
-      return url;
-    }
+    return PocketbaseService.to.signFileUrl(avatarBaseUri, thumb: "200x200");
   }
 }

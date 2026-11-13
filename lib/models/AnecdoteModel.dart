@@ -15,7 +15,8 @@ class Anecdote {
   final String imageFileName;
   bool published;
   final String newspaperId;
-  String? imageUri;
+  // URL without file token, the token is added on read by imageUri
+  String? imageBaseUri;
   User? user;
   Newspaper? newspaper;
   String? token;
@@ -32,9 +33,11 @@ class Anecdote {
     required this.imageFileName,
     required this.published,
     required this.newspaperId,
-    required this.imageUri,
+    required this.imageBaseUri,
     this.token,
   });
+
+  String? get imageUri => imageBaseUri == null ? null : PocketbaseService.to.signFileUrl(imageBaseUri);
 
   factory Anecdote.fromJson(Map<String, dynamic> json) {
     return Anecdote(
@@ -49,14 +52,14 @@ class Anecdote {
       imageFileName: json["image"],
       published: json["published"],
       newspaperId: json["edition"],
-      imageUri: json["imageUri"],
+      imageBaseUri: json["imageUri"],
     );
   }
 
   factory Anecdote.fromRecord(RecordModel record) {
     Anecdote anecdote = Anecdote.fromJson(record.toJson());
     if (anecdote.imageFileName.isNotEmpty) {
-      anecdote.imageUri = PocketbaseService.to.getFileUrl(record, anecdote.imageFileName).toString();
+      anecdote.imageBaseUri = PocketbaseService.to.getFileUrl(record, anecdote.imageFileName).toString();
     }
     return anecdote;
   }
@@ -73,14 +76,11 @@ class Anecdote {
         "image": imageFileName,
         "published": published.toString(),
         "edition": newspaperId,
-        "imageUri": imageUri
+        "imageUri": imageBaseUri
       };
 
   String getResizedImage(int width, int height, bool resize) {
-    String url = "";
-    if (this.imageUri != null) {
-      url = this.imageUri.toString() + "?thumb=" + width.toString() + "x" + height.toString() + (resize ? "f" : "");
-    }
-    return url;
+    return PocketbaseService.to
+        .signFileUrl(imageBaseUri, thumb: width.toString() + "x" + height.toString() + (resize ? "f" : ""));
   }
 }
