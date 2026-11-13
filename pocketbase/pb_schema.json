@@ -301,13 +301,12 @@
         "mimeTypes": [
           "image/jpeg",
           "image/png",
-          "image/svg+xml",
           "image/gif",
           "image/webp"
         ],
         "name": "avatar",
         "presentable": false,
-        "protected": false,
+        "protected": true,
         "required": false,
         "system": false,
         "thumbs": [
@@ -402,7 +401,7 @@
       "duration": 604800
     },
     "fileToken": {
-      "duration": 120
+      "duration": 21600
     },
     "verificationTemplate": {
       "subject": "Verify your {APP_NAME} email",
@@ -815,11 +814,11 @@
   },
   {
     "id": "jq5irnwhnubv3kh",
-    "listRule": "@request.auth.id != \"\"",
-    "viewRule": "@request.auth.id != \"\"",
-    "createRule": "@request.auth.id = @request.body.user.id",
-    "updateRule": "@request.auth.id != \"\"",
-    "deleteRule": "@request.auth.priviliged = true",
+    "listRule": "@request.auth.id != \"\" && (published = true || user = @request.auth.id || @request.auth.priviliged = true)",
+    "viewRule": "@request.auth.id != \"\" && (published = true || user = @request.auth.id || @request.auth.priviliged = true)",
+    "createRule": "@request.auth.id != \"\" && @request.body.user = @request.auth.id && (@request.body.published:isset = false || @request.body.published = false) && @request.body.edition:isset = false",
+    "updateRule": "@request.auth.priviliged = true || (user = @request.auth.id && published = false && (@request.body.user:isset = false || @request.body.user = @request.auth.id) && (@request.body.published:isset = false || @request.body.published = false) && @request.body.edition:isset = false)",
+    "deleteRule": "@request.auth.priviliged = true || (user = @request.auth.id && published = false)",
     "name": "anecdotes",
     "type": "base",
     "fields": [
@@ -880,10 +879,15 @@
         "id": "dyxbltqz",
         "maxSelect": 1,
         "maxSize": 5242880,
-        "mimeTypes": [],
+        "mimeTypes": [
+          "image/jpeg",
+          "image/png",
+          "image/gif",
+          "image/webp"
+        ],
         "name": "image",
         "presentable": false,
-        "protected": false,
+        "protected": true,
         "required": true,
         "system": false,
         "thumbs": [
@@ -990,10 +994,12 @@
         "id": "pnpmx2xn",
         "maxSelect": 1,
         "maxSize": 20000000,
-        "mimeTypes": [],
+        "mimeTypes": [
+          "application/pdf"
+        ],
         "name": "pdf",
         "presentable": false,
-        "protected": false,
+        "protected": true,
         "required": false,
         "system": false,
         "thumbs": null,
@@ -1025,8 +1031,8 @@
   },
   {
     "id": "eqogekvlsx0jeel",
-    "listRule": "",
-    "viewRule": "",
+    "listRule": "@request.auth.priviliged = true",
+    "viewRule": "@request.auth.priviliged = true",
     "createRule": null,
     "updateRule": null,
     "deleteRule": null,
@@ -1093,7 +1099,7 @@
         "mimeTypes": [],
         "name": "image",
         "presentable": false,
-        "protected": false,
+        "protected": true,
         "required": true,
         "system": false,
         "thumbs": [
@@ -1109,8 +1115,8 @@
   },
   {
     "id": "6svjkwfi0n07ayc",
-    "listRule": "",
-    "viewRule": "",
+    "listRule": "@request.auth.id != \"\"",
+    "viewRule": "@request.auth.id != \"\"",
     "createRule": null,
     "updateRule": null,
     "deleteRule": null,
