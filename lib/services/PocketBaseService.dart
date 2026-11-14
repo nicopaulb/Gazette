@@ -215,7 +215,7 @@ class PocketbaseService extends GetxService {
     }
   }
 
-  Future<List<Anecdote>> getCalendarAnecdotes() async {
+  Future<List<Anecdote>> getPublishedAnecdotes() async {
     // The general anecdote cache also contains drafts and partial feed pages.
     // Fetch the complete published history with relations in each batch.
     final records = await _client.collection('anecdotes').getFullList(

@@ -4,6 +4,7 @@ import 'package:gazette/controllers/AnecdoteController.dart';
 import 'package:gazette/controllers/ProfileController.dart';
 import 'package:gazette/screens/home/components/HomeDrawerComponent.dart';
 import 'package:gazette/screens/home/components/PostComponent.dart';
+import 'package:gazette/screens/fragments/SearchFragment.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:gazette/utils/Colors.dart';
@@ -21,7 +22,8 @@ class HomeFragment extends StatelessWidget {
         backgroundColor: getScaffoldColor(),
         appBar: AppBar(
           backgroundColor: getScaffoldColor(),
-          iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onSurface),
+          iconTheme:
+              IconThemeData(color: Theme.of(context).colorScheme.onSurface),
           elevation: 0,
           leading: IconButton(
             tooltip: 'Ouvrir le menu',
@@ -34,6 +36,11 @@ class HomeFragment extends StatelessWidget {
                   .titleLarge
                   ?.copyWith(fontWeight: FontWeight.w700)),
           actions: [
+            IconButton(
+              tooltip: 'Rechercher des anecdotes',
+              icon: const Icon(Icons.search),
+              onPressed: () => Get.to(() => const SearchFragment()),
+            ),
             IconButton(
               tooltip: 'Actualiser le fil',
               icon: const Icon(Icons.refresh),

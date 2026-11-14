@@ -4,10 +4,13 @@ import 'package:gazette/controllers/NewspaperViewerController.dart';
 import 'package:gazette/models/AnecdoteModel.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:gazette/screens/components/RecoveryMessage.dart';
+import 'package:gazette/screens/components/AnecdoteFiltersPanel.dart';
+import 'package:gazette/screens/fragments/SearchFragment.dart';
 import 'package:gazette/screens/home/components/FeedPostCard.dart';
 import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:gazette/utils/Colors.dart';
+import 'package:gazette/utils/AnecdoteFilters.dart';
 import 'package:gazette/utils/Common.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +24,14 @@ class _CalendarFragmentState extends State<CalendarFragment> {
   late DateTime _selectedDay;
   late DateTime _month;
   Map<DateTime, List<Anecdote>> _byDay = {};
+  Map<DateTime, List<Anecdote>> _visibleByDay = {};
+  List<Anecdote> _visibleUndated = [];
+  Map<String, String> _authors = {};
+  Map<String, String> _gazetteOptions = {};
+  Set<String> _visibleGazetteIds = {};
+  String? _authorId;
+  String? _gazetteId;
+  bool get _filtersActive => _authorId != null || _gazetteId != null;
   Map<DateTime, List<Newspaper>> _gazettesByMonth = {};
   List<Newspaper> _gazettes = [];
   Map<String, DateTimeRange> _gazetteCoverage = {};
@@ -48,7 +59,7 @@ class _CalendarFragmentState extends State<CalendarFragment> {
     });
     final gazettesRequest = _loadGazettes();
     try {
-      final anecdotes = await PocketbaseService.to.getCalendarAnecdotes();
+      final anecdotes = await PocketbaseService.to.getPublishedAnecdotes();
       if (!mounted) return;
       final byDay = <DateTime, List<Anecdote>>{};
       final undated = <Anecdote>[];
@@ -142,6 +153,90 @@ class _CalendarFragmentState extends State<CalendarFragment> {
     }
     _gazetteCoverage = coverage;
     _gazettesByMonth = byMonth;
+    _applyFilters(validate: true);
+    if (_hasLoaded && _filtersActive) _jumpToMatchingDay();
+  }
+
+  void _applyFilters({bool validate = false}) {
+    final all = [..._byDay.values.expand((posts) => posts), ..._undated];
+    _authors = anecdoteAuthorOptions(all);
+    final papers = <String, Newspaper>{
+      for (final anecdote in all)
+        if (anecdote.newspaper != null)
+          anecdote.newspaper!.id: anecdote.newspaper!,
+      for (final gazette in _gazettes) gazette.id: gazette,
+    }.values.toList()
+      ..sort((a, b) => b.number.compareTo(a.number));
+    _gazetteOptions = {
+      for (final gazette in papers) gazette.id: 'Gazette n° ${gazette.number}'
+    };
+    if (validate) {
+      if (!_authors.containsKey(_authorId)) _authorId = null;
+      if (!_gazetteOptions.containsKey(_gazetteId)) _gazetteId = null;
+    }
+    final filters = AnecdoteFilters(authorId: _authorId, gazetteId: _gazetteId);
+    _visibleByDay = {};
+    for (final entry in _byDay.entries) {
+      final matches = entry.value.where(filters.matches).toList();
+      if (matches.isNotEmpty) _visibleByDay[entry.key] = matches;
+    }
+    _visibleUndated = _undated.where(filters.matches).toList();
+    _visibleGazetteIds = {
+      for (final anecdote in [
+        ..._visibleByDay.values.expand((posts) => posts),
+        ..._visibleUndated
+      ])
+        if (anecdote.newspaperId.isNotEmpty) anecdote.newspaperId,
+    };
+  }
+
+  void _updateFilters(VoidCallback update) {
+    setState(() {
+      update();
+      _applyFilters();
+      _jumpToMatchingDay();
+    });
+  }
+
+  void _jumpToMatchingDay() {
+    if (_showUndated && _visibleUndated.isNotEmpty) return;
+    if (_visibleByDay.containsKey(_selectedDay)) {
+      _showUndated = false;
+      return;
+    }
+    final inMonth = _visibleByDay.keys
+        .where((day) => day.year == _month.year && day.month == _month.month);
+    if (inMonth.isNotEmpty || _visibleByDay.isNotEmpty) {
+      _selectedDay =
+          inMonth.isNotEmpty ? inMonth.first : _visibleByDay.keys.first;
+      _month = DateTime(_selectedDay.year, _selectedDay.month);
+      _showUndated = false;
+    } else {
+      _showUndated = _visibleUndated.isNotEmpty;
+    }
+  }
+
+  DateTime? _populatedMonth(int direction) {
+    final months = _visibleByDay.keys
+        .map((day) => DateTime(day.year, day.month))
+        .toSet()
+        .toList()
+      ..sort();
+    final matches = months
+        .where((month) =>
+            direction < 0 ? month.isBefore(_month) : month.isAfter(_month))
+        .toList();
+    return matches.isEmpty
+        ? null
+        : direction < 0
+            ? matches.last
+            : matches.first;
+  }
+
+  void _jumpMonth(DateTime month) {
+    final day = _visibleByDay.keys.firstWhere(
+        (day) => day.year == month.year && day.month == month.month);
+    _selectDay(day);
   }
 
   String? _coverageLabel(Newspaper gazette) {
@@ -163,7 +258,7 @@ class _CalendarFragmentState extends State<CalendarFragment> {
 
   void _changeMonth(int offset) {
     final next = DateTime(_month.year, _month.month + offset);
-    final days = _byDay.keys
+    final days = _visibleByDay.keys
         .where((day) => day.year == next.year && day.month == next.month)
         .toList()
       ..sort();
@@ -193,9 +288,10 @@ class _CalendarFragmentState extends State<CalendarFragment> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final posts =
-        _showUndated ? _undated : _byDay[_selectedDay] ?? <Anecdote>[];
-    final monthCount = _byDay.entries
+    final posts = _showUndated
+        ? _visibleUndated
+        : _visibleByDay[_selectedDay] ?? <Anecdote>[];
+    final monthCount = _visibleByDay.entries
         .where((entry) =>
             entry.key.year == _month.year && entry.key.month == _month.month)
         .fold<int>(0, (sum, entry) => sum + entry.value.length);
@@ -209,6 +305,12 @@ class _CalendarFragmentState extends State<CalendarFragment> {
                 ?.copyWith(fontWeight: FontWeight.w700)),
         centerTitle: true,
         actions: [
+          IconButton(
+            tooltip: 'Rechercher des anecdotes',
+            onPressed: () => Get.to(() => SearchFragment(
+                initialAuthorId: _authorId, initialGazetteId: _gazetteId)),
+            icon: const Icon(Icons.search),
+          ),
           IconButton(
               tooltip: 'Aujourd’hui',
               onPressed: () => _selectDay(DateUtils.dateOnly(DateTime.now())),
@@ -247,6 +349,25 @@ class _CalendarFragmentState extends State<CalendarFragment> {
                                 child: RecoveryMessage(
                                     message: _error!, onRetry: _load)),
                           SliverPadding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            sliver: SliverToBoxAdapter(
+                                child: AnecdoteFiltersPanel(
+                              key: const PageStorageKey('calendar-filters'),
+                              authors: _authors,
+                              gazettes: _gazetteOptions,
+                              authorId: _authorId,
+                              gazetteId: _gazetteId,
+                              onAuthorChanged: (value) =>
+                                  _updateFilters(() => _authorId = value),
+                              onGazetteChanged: (value) =>
+                                  _updateFilters(() => _gazetteId = value),
+                              onReset: () => _updateFilters(() {
+                                _authorId = null;
+                                _gazetteId = null;
+                              }),
+                            )),
+                          ),
+                          SliverPadding(
                             padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
                             sliver: SliverToBoxAdapter(
                                 child: _calendar(context, monthCount)),
@@ -276,10 +397,11 @@ class _CalendarFragmentState extends State<CalendarFragment> {
                                 ])),
                           ),
                           if (posts.isEmpty)
-                            const SliverToBoxAdapter(
+                            SliverToBoxAdapter(
                                 child: RecoveryMessage(
-                                    message:
-                                        'Aucune anecdote publiée à cette date.'))
+                                    message: _filtersActive
+                                        ? 'Aucune anecdote ne correspond aux filtres à cette date.'
+                                        : 'Aucune anecdote publiée à cette date.'))
                           else
                             SliverPadding(
                               padding:
@@ -311,7 +433,13 @@ class _CalendarFragmentState extends State<CalendarFragment> {
     final cells = ((leading + daysInMonth) / 7).ceil() * 7;
     final today = DateUtils.dateOnly(DateTime.now());
     final monthLabel = DateFormat.yMMMM('fr_FR').format(_month);
-    final gazettes = _gazettesByMonth[_month] ?? <Newspaper>[];
+    final gazettes = (_gazettesByMonth[_month] ?? <Newspaper>[])
+        .where((gazette) =>
+            (_gazetteId == null || gazette.id == _gazetteId) &&
+            (_authorId == null || _visibleGazetteIds.contains(gazette.id)))
+        .toList();
+    final previousPopulated = _populatedMonth(-1);
+    final nextPopulated = _populatedMonth(1);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -350,8 +478,12 @@ class _CalendarFragmentState extends State<CalendarFragment> {
         else if (gazettes.isEmpty && !_loading)
           Padding(
             padding: const EdgeInsets.only(bottom: 16),
-            child: Text('Aucune gazette pour ce mois.',
-                textAlign: TextAlign.center, style: theme.textTheme.bodySmall),
+            child: Text(
+                _filtersActive
+                    ? 'Aucune gazette correspondant aux filtres pour ce mois.'
+                    : 'Aucune gazette pour ce mois.',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodySmall),
           ),
         Row(
             children: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
@@ -377,7 +509,7 @@ class _CalendarFragmentState extends State<CalendarFragment> {
             if (number < 1 || number > daysInMonth)
               return const SizedBox.shrink();
             final day = DateTime(_month.year, _month.month, number);
-            final anecdotes = _byDay[day] ?? <Anecdote>[];
+            final anecdotes = _visibleByDay[day] ?? <Anecdote>[];
             final count = anecdotes.length;
             final authors = <String, Anecdote>{
               for (final anecdote in anecdotes)
@@ -453,12 +585,28 @@ class _CalendarFragmentState extends State<CalendarFragment> {
             runSpacing: 8,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Text(
-                  '$monthCount ${monthCount == 1 ? 'anecdote ce mois-ci' : 'anecdotes ce mois-ci'}',
-                  style: theme.textTheme.bodySmall),
-              if (_undated.isNotEmpty)
+              Row(children: [
+                IconButton(
+                    tooltip: 'Mois précédent avec des anecdotes',
+                    onPressed: previousPopulated == null
+                        ? null
+                        : () => _jumpMonth(previousPopulated),
+                    icon: const Icon(Icons.skip_previous_outlined)),
+                Expanded(
+                    child: Text(
+                        '$monthCount ${monthCount == 1 ? 'anecdote ce mois-ci' : 'anecdotes ce mois-ci'}',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodySmall)),
+                IconButton(
+                    tooltip: 'Mois suivant avec des anecdotes',
+                    onPressed: nextPopulated == null
+                        ? null
+                        : () => _jumpMonth(nextPopulated),
+                    icon: const Icon(Icons.skip_next_outlined)),
+              ]),
+              if (_visibleUndated.isNotEmpty)
                 ChoiceChip(
-                  label: Text('Sans date (${_undated.length})'),
+                  label: Text('Sans date (${_visibleUndated.length})'),
                   selected: _showUndated,
                   onSelected: (selected) =>
                       setState(() => _showUndated = selected),

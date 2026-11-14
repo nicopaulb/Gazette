@@ -5,6 +5,7 @@ import 'package:gazette/screens/admin/AdminScreen.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
 import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/screens/settings/SettingScreen.dart';
+import 'package:gazette/screens/fragments/SearchFragment.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -162,6 +163,15 @@ class _HomeDrawerComponentState extends State<HomeDrawerComponent> {
                               ],
                             ],
                           ),
+                        ),
+                        const _SectionLabel('Parcourir'),
+                        _MenuItem(
+                          icon: Icons.search,
+                          title: 'Rechercher',
+                          subtitle: 'Trouver une anecdote',
+                          onTap: _signingOut
+                              ? null
+                              : () => _open(() => const SearchFragment()),
                         ),
                         const _SectionLabel('Mon compte'),
                         _MenuItem(
