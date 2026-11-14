@@ -1,194 +1,141 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gazette/controllers/AnecdoteController.dart';
-import 'package:gazette/controllers/NewspaperViewerController.dart';
-import 'package:gazette/controllers/ProfileController.dart';
-import 'package:gazette/models/NewspaperModel.dart';
-import 'package:gazette/screens/newspaper/NewspaperViewerScreen.dart';
-import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
-import 'package:gazette/utils/Colors.dart';
+import 'package:gazette/screens/components/RecoveryMessage.dart';
+import 'package:gazette/screens/home/components/FeedPostCard.dart';
+import 'package:gazette/screens/home/components/HomeStatsComponent.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:gazette/utils/Common.dart';
-import 'package:gazette/utils/Constants.dart';
 
 class PostComponent extends StatelessWidget {
-  final AnecdoteController _anecdoteController = Get.put(AnecdoteController());
-  final ProfileController _profileController = Get.put(ProfileController());
-  final NewspaperViewerController _newspaperViewerController = Get.put(NewspaperViewerController());
+  final AnecdoteController _controller = Get.put(AnecdoteController());
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: _anecdoteController.scrollController,
-      child: Column(
-        children: [
-          16.height,
-          Center(
-            child: Container(
-              alignment: Alignment.center,
-              constraints: BoxConstraints(maxWidth: 600),
-              child: Column(
-                children: [
-                  Container(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                      decoration: BoxDecoration(borderRadius: radius(AppCommonRadius), color: AppColorPrimary.withOpacity(0.8)),
-                      child: Row(
-                        children: [
-                          20.width,
-                          Icon(
-                            Icons.info_rounded,
-                            color: Colors.white,
-                          ),
-                          20.width,
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                  "Bienvenue sur la première version de la Gazette numérique !\nN'hesitez pas à adresser vos retours et suggestions à l'équipe de la Gazette.",
-                                  style: primaryTextStyle(color: Colors.white, size: 14)),
-                            ),
-                          )
-                        ],
-                      )),
-                  Obx(() => _anecdoteController.isLoading.value
-                      ? Column(
-                          children: [
-                            50.height,
-                            const Center(child: CircularProgressIndicator()),
-                          ],
-                        )
-                      : _anecdoteController.anecdotes.isEmpty
-                          ? const Center(child: Text("Erreur lors de la récuparation des anecdotes"))
-                          : GetBuilder<AnecdoteController>(
-                              builder: (_) => ListView.builder(
-                                itemCount: _anecdoteController.anecdotes.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    padding: EdgeInsets.only(top: 16),
-                                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                    decoration: BoxDecoration(borderRadius: radius(AppCommonRadius), color: context.cardColor),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                _profileController.updateUser(_anecdoteController.getUserId(index));
-                                                Get.to(ProfileScreen());
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  CachedNetworkImage(
-                                                    imageUrl: _anecdoteController.getUserAvatar(index),
-                                                    height: 56,
-                                                    width: 56,
-                                                    fit: BoxFit.cover,
-                                                    errorWidget: (context, url, error) => Image.asset(
-                                                      'images/gazette/icons/ic_Profile.png',
-                                                      color: AppColorPrimary,
-                                                    ),
-                                                  ).cornerRadiusWithClipRRect(AppCommonRadius),
-                                                  12.width,
-                                                  Text(_anecdoteController.getUserName(index), style: boldTextStyle()),
-                                                ],
-                                              ).paddingSymmetric(horizontal: 16),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(_anecdoteController.getDate(index), style: secondaryTextStyle(color: getBodyColor(), size: 12)),
-                                                PopupMenuButton(
-                                                  onSelected: (item) {
-                                                    Newspaper? news = _anecdoteController.getNewspaper(index);
-                                                    if (news != null) {
-                                                      _newspaperViewerController.newspaper = news;
-                                                      Get.to(NewspaperViewerScreen());
-                                                    }
-                                                  },
-                                                  itemBuilder: (BuildContext context) {
-                                                    return [
-                                                      PopupMenuItem(
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(Icons.picture_as_pdf),
-                                                            10.width,
-                                                            Text("Ouvrir la gazette"),
-                                                          ],
-                                                        ),
-                                                        value: 'newspaper',
-                                                      )
-                                                    ];
-                                                  },
-                                                ),
-                                              ],
-                                            ).paddingSymmetric(horizontal: 16),
-                                          ],
-                                        ),
-                                        16.height,
-                                        robotoText(text: _anecdoteController.getText(index), textAlign: TextAlign.start)
-                                            .paddingSymmetric(horizontal: 16),
-                                        16.height,
-                                        GestureDetector(
-                                            onTap: () async {
-                                              await showDialog(
-                                                context: context,
-                                                builder: (_) => Dialog(
-                                                    backgroundColor: Colors.transparent,
-                                                    child: FractionallySizedBox(
-                                                      widthFactor: 0.95,
-                                                      heightFactor: 0.95,
-                                                      child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: CachedNetworkImage(
-                                                            imageUrl: _anecdoteController.getFullSizeImage(index),
-                                                            fit: BoxFit.contain,
-                                                            progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                                                              child: SizedBox(
-                                                                height: 100,
-                                                                width: 100,
-                                                                child: CircularProgressIndicator(
-                                                                    value: downloadProgress.progress, color: AppColorPrimary),
-                                                              ),
-                                                            ),
-                                                            errorWidget: (context, url, error) => Icon(Icons.error, color: AppColorPrimary, size: 50),
-                                                          )),
-                                                    )),
-                                              );
-                                            },
-                                            child: CachedNetworkImage(
-                                              imageUrl: _anecdoteController.getImage(index),
-                                              height: 400,
-                                              width: ContextExtensions(context).width() - 32,
-                                              fit: BoxFit.cover,
-                                              progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-                                                child: SizedBox(
-                                                  height: 50,
-                                                  width: 50,
-                                                  child: CircularProgressIndicator(value: downloadProgress.progress, color: AppColorPrimary),
-                                                ),
-                                              ),
-                                              errorWidget: (context, url, error) => Icon(Icons.error, color: AppColorPrimary, size: 30),
-                                            ).cornerRadiusWithClipRRect(AppCommonRadius).center()),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                              ),
+  Widget build(BuildContext context) => Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 680),
+          child: RefreshIndicator(
+            onRefresh: _controller.refreshFeed,
+            child: GetBuilder<AnecdoteController>(
+                builder: (_) => Obx(() {
+                      final posts =
+                          _controller.anecdotes.toList(growable: false);
+                      final loading = _controller.isLoading.value;
+                      final loadingMore = _controller.isLoadingMore.value;
+                      final error = _controller.loadError.value;
+                      final moreError = _controller.moreError.value;
+                      return CustomScrollView(
+                        key: const PageStorageKey('home-feed'),
+                        controller: _controller.scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        slivers: [
+                          SliverToBoxAdapter(
+                              child:
+                                  HomeStatsComponent(controller: _controller)),
+                          SliverPadding(
+                            padding: const EdgeInsets.fromLTRB(16, 28, 16, 20),
+                            sliver: SliverToBoxAdapter(
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Le fil de la Gazette',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.w700)),
+                              ],
                             )),
-                ],
-              ),
-            ),
+                          ),
+                          if (loading)
+                            SliverToBoxAdapter(
+                                child: Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+                              child: LinearProgressIndicator(
+                                  semanticsLabel: posts.isEmpty
+                                      ? 'Chargement des anecdotes'
+                                      : 'Actualisation du fil'),
+                            )),
+                          if (error != null)
+                            SliverToBoxAdapter(
+                                child: RecoveryMessage(
+                                    message: error,
+                                    onRetry: _controller.loadFirstAnecdotes)),
+                          if (posts.isEmpty && !loading && error == null)
+                            SliverToBoxAdapter(
+                                child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(24, 24, 24, 40),
+                              child: Column(children: [
+                                Icon(Icons.auto_stories_outlined,
+                                    size: 44,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant),
+                                const SizedBox(height: 16),
+                                Text('Les souvenirs arrivent bientôt',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium),
+                                const SizedBox(height: 8),
+                                const Text(
+                                    'Les anecdotes apparaîtront ici une fois publiées dans une gazette.',
+                                    textAlign: TextAlign.center),
+                              ]),
+                            )),
+                          SliverPadding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            sliver: SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                              (context, index) => Padding(
+                                key: ValueKey(posts[index].id),
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: FeedPostCard(anecdote: posts[index]),
+                              ),
+                              childCount: posts.length,
+                            )),
+                          ),
+                          SliverToBoxAdapter(
+                              child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                            child: loadingMore
+                                ? const Center(
+                                    child: Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: CircularProgressIndicator(
+                                            semanticsLabel:
+                                                'Chargement de la suite')))
+                                : moreError != null
+                                    ? RecoveryMessage(
+                                        message: moreError,
+                                        onRetry: _controller.loadMoreAnecdotes)
+                                    : posts.isNotEmpty &&
+                                            error == null &&
+                                            !loading
+                                        ? _controller.canLoadMore
+                                            ? Center(
+                                                child: OutlinedButton.icon(
+                                                    onPressed: _controller
+                                                        .loadMoreAnecdotes,
+                                                    icon: const Icon(
+                                                        Icons.expand_more),
+                                                    label: const Text(
+                                                        'Voir plus d’anecdotes')))
+                                            : Text(
+                                                'Vous avez parcouru tous les souvenirs.',
+                                                textAlign: TextAlign.center,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall
+                                                    ?.copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurfaceVariant))
+                                        : const SizedBox.shrink(),
+                          )),
+                        ],
+                      );
+                    })),
           ),
-          16.height,
-        ],
-      ),
-    );
-  }
+        ),
+      );
 }

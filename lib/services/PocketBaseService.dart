@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:gazette/models/AnecdoteModel.dart';
+import 'package:gazette/models/PublishedAnecdoteStats.dart';
 import 'package:gazette/models/NewspaperModel.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -60,8 +61,12 @@ class PocketbaseService extends GetxService {
         await _client.collection('users').authRefresh();
         await refreshFileToken();
       } catch (e) {
-        _authStore.clear();
-        return false;
+        // A temporary connection failure must not throw away a valid session.
+        if (e is ClientException && (e.statusCode == 401 || e.statusCode == 403)) {
+          _authStore.clear();
+          return false;
+        }
+        Get.log('Session refresh unavailable: $e');
       }
       return true;
     } else {
@@ -208,6 +213,62 @@ class PocketbaseService extends GetxService {
       Get.log(e.toString());
       throw e.originalError;
     }
+  }
+
+  Future<List<Anecdote>> getCalendarAnecdotes() async {
+    // The general anecdote cache also contains drafts and partial feed pages.
+    // Fetch the complete published history with relations in each batch.
+    final records = await _client.collection('anecdotes').getFullList(
+          filter: 'published = true',
+          sort: '-date,-created,-id',
+          expand: 'user,edition',
+        );
+    return records.map((record) {
+      final anecdote = Anecdote.fromRecord(record);
+      final author = record.get<RecordModel?>('expand.user');
+      final gazette = record.get<RecordModel?>('expand.edition');
+      if (author != null) anecdote.user = User.fromRecord(author);
+      if (gazette != null) anecdote.newspaper = Newspaper.fromRecord(gazette);
+      return anecdote;
+    }).toList();
+  }
+
+  Future<PublishedAnecdoteStats> getPublishedAnecdoteStats() async {
+    // Request server totals without downloading the full anecdote history.
+    final results = await Future.wait([
+      _client.collection('anecdotes').getList(
+            page: 1,
+            perPage: 1,
+            filter: 'published = true',
+            fields: 'id',
+          ),
+      _client.collection('edition').getList(
+            page: 1,
+            perPage: 1,
+            sort: '-date,-number',
+            fields: 'id,number',
+          ),
+    ]);
+    final total = results[0].totalItems;
+    final editionCount = results[1].totalItems;
+    if (results[1].items.isEmpty) {
+      return PublishedAnecdoteStats(total: total, editionCount: editionCount, latestEditionCount: 0);
+    }
+    final latestEdition = results[1].items.first;
+    final latestAnecdotes = await _client.collection('anecdotes').getList(
+          page: 1,
+          perPage: 1,
+          filter: _client.filter('published = true && edition = {:edition}', {
+            'edition': latestEdition.id,
+          }),
+          fields: 'id',
+        );
+    return PublishedAnecdoteStats(
+      total: total,
+      editionCount: editionCount,
+      latestEditionCount: latestAnecdotes.totalItems,
+      latestEditionNumber: latestEdition.getIntValue('number'),
+    );
   }
 
   Future<List<Anecdote>> getAnecdotesPerPage(int page, int perPage) async {

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gazette/controllers/HomeDrawerController.dart';
 import 'package:gazette/controllers/ProfileController.dart';
 import 'package:gazette/screens/admin/AdminScreen.dart';
 import 'package:gazette/screens/auth/LogInScreen.dart';
@@ -8,10 +7,8 @@ import 'package:gazette/screens/profile/screens/ProfileScreen.dart';
 import 'package:gazette/screens/settings/SettingScreen.dart';
 import 'package:gazette/services/PocketBaseService.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:gazette/utils/Colors.dart';
-import 'package:gazette/utils/Common.dart';
 
 class HomeDrawerComponent extends StatefulWidget {
   @override
@@ -20,113 +17,292 @@ class HomeDrawerComponent extends StatefulWidget {
 
 class _HomeDrawerComponentState extends State<HomeDrawerComponent> {
   final ProfileController _profileController = Get.put(ProfileController());
-  final HomeDrawerController _homeDrawerController = Get.put(HomeDrawerController());
   final user = PocketbaseService.to.user!;
-  int selectedIndex = -1;
+  late final Future<PackageInfo> _packageInfo = PackageInfo.fromPlatform();
+  bool _signingOut = false;
+  String? _logoutError;
 
-  @override
-  void initState() {
-    setStatusBarColor(Colors.transparent);
-    _homeDrawerController;
-    super.initState();
+  void _open(Widget Function() page) {
+    Navigator.of(context).pop();
+    Get.to(page);
+  }
+
+  void _openProfile() {
+    _profileController.updateUser(user.id);
+    _open(() => ProfileScreen());
+  }
+
+  Future<void> _signOut() async {
+    if (_signingOut) return;
+    setState(() {
+      _signingOut = true;
+      _logoutError = null;
+    });
+    try {
+      await PocketbaseService.to.logout();
+      if (!mounted) return;
+      Get.offAll(() => LogInScreen());
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _signingOut = false;
+        _logoutError = 'Impossible de vous déconnecter. Réessayez.';
+      });
+      Get.log('Logout error: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        50.height,
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: () {
-                finish(context);
-                _profileController.updateUser(user.id);
-                Get.to(ProfileScreen());
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+    final theme = Theme.of(context);
+    final names = [user.firstname.trim(), user.lastname.trim()]
+        .where((name) => name.isNotEmpty)
+        .toList();
+    final name = names.isEmpty ? user.username : names.join(' ');
+    final initials = names.isEmpty
+        ? (user.username.isEmpty
+            ? '?'
+            : user.username.characters.first.toUpperCase())
+        : names.map((name) => name.characters.first).join().toUpperCase();
+    final avatar = user.getResizedAvatar();
+
+    Widget avatarFallback() => Center(
+          child: Text(initials,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColorPrimary)),
+        );
+
+    return Material(
+      color: theme.cardColor,
+      child: SafeArea(
+        child: LayoutBuilder(builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: user.getResizedAvatar(),
-                    height: 62,
-                    width: 62,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Image.asset(
-                      'images/gazette/icons/ic_Profile.png',
-                      color: AppColorPrimary,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(children: [
+                          const Icon(Icons.auto_stories_outlined,
+                              color: AppColorPrimary, size: 28),
+                          const SizedBox(width: 10),
+                          Expanded(
+                              child: Text('Gazette',
+                                  style: theme.textTheme.titleLarge
+                                      ?.copyWith(fontWeight: FontWeight.w700))),
+                          IconButton(
+                            tooltip: 'Fermer le menu',
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: const Icon(Icons.close),
+                          ),
+                        ]),
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: AppColorPrimary.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ExcludeSemantics(
+                                child: Container(
+                                  width: 60,
+                                  height: 60,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: theme.cardColor),
+                                  child: avatar.isEmpty
+                                      ? avatarFallback()
+                                      : CachedNetworkImage(
+                                          imageUrl: avatar,
+                                          fit: BoxFit.cover,
+                                          placeholder: (_, __) =>
+                                              avatarFallback(),
+                                          errorWidget: (_, __, ___) =>
+                                              avatarFallback(),
+                                        ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Text(name,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.w700)),
+                              if (user.username.isNotEmpty) ...[
+                                const SizedBox(height: 4),
+                                Text('@${user.username}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                        color: theme
+                                            .colorScheme.onSurfaceVariant)),
+                              ],
+                              if (user.admin) ...[
+                                const SizedBox(height: 12),
+                                Row(children: [
+                                  const Icon(Icons.verified_user_outlined,
+                                      size: 16, color: AppColorPrimary),
+                                  const SizedBox(width: 6),
+                                  Flexible(
+                                      child: Text('Administrateur',
+                                          style: theme.textTheme.labelMedium)),
+                                ]),
+                              ],
+                            ],
+                          ),
+                        ),
+                        const _SectionLabel('Mon compte'),
+                        _MenuItem(
+                          icon: Icons.person_outline,
+                          title: 'Mon profil',
+                          subtitle: 'Mes informations et anecdotes',
+                          onTap: _signingOut ? null : _openProfile,
+                        ),
+                        _MenuItem(
+                          icon: Icons.settings_outlined,
+                          title: 'Paramètres',
+                          subtitle: 'Apparence et cache',
+                          onTap: _signingOut
+                              ? null
+                              : () => _open(() => SettingScreen()),
+                        ),
+                        if (user.admin) ...[
+                          const _SectionLabel('Gestion de la gazette'),
+                          _MenuItem(
+                            icon: Icons.edit_note_outlined,
+                            title: 'Administration',
+                            subtitle: 'Gérer les anecdotes et publications',
+                            onTap: _signingOut
+                                ? null
+                                : () => _open(() => AdminScreen()),
+                          ),
+                        ],
+                      ],
                     ),
-                  ).cornerRadiusWithClipRRect(8),
-                  16.width,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(user.firstname, style: boldTextStyle(size: 18)),
-                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Divider(height: 1),
+                        const SizedBox(height: 12),
+                        if (_logoutError != null)
+                          Semantics(
+                              liveRegion: true,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Text(_logoutError!,
+                                    style: TextStyle(
+                                        color: theme.colorScheme.error)),
+                              )),
+                        TextButton.icon(
+                          onPressed: _signingOut ? null : _signOut,
+                          style: TextButton.styleFrom(
+                            foregroundColor: theme.colorScheme.error,
+                            minimumSize: const Size.fromHeight(48),
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 12),
+                          ),
+                          icon: _signingOut
+                              ? SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: theme.colorScheme.error))
+                              : const Icon(Icons.logout, size: 22),
+                          label: Text(
+                              _signingOut ? 'Déconnexion…' : 'Se déconnecter'),
+                        ),
+                        const SizedBox(height: 12),
+                        FutureBuilder<PackageInfo>(
+                          future: _packageInfo,
+                          builder: (context, snapshot) => Text(
+                            snapshot.hasData
+                                ? 'Gazette · Version ${snapshot.data!.version}'
+                                : 'Gazette',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            )
-          ],
-        ).paddingOnly(left: 16, right: 8, bottom: 20, top: 20),
-        20.height,
-        Column(mainAxisSize: MainAxisSize.min, children: [
-          SettingItemWidget(
-            decoration: BoxDecoration(color: context.cardColor),
-            title: "Profil",
-            titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Profile.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
-            onTap: () {
-              finish(context);
-              _profileController.updateUser(user.id);
-              Get.to(ProfileScreen());
-            },
-          ),
-          SettingItemWidget(
-            decoration: BoxDecoration(color: context.cardColor),
-            title: "Paramètres",
-            titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Settings.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
-            onTap: () {
-              finish(context);
-              Get.to(SettingScreen());
-            },
-          ),
-          GetBuilder<HomeDrawerController>(
-              builder: (_) => user.admin
-                  ? SettingItemWidget(
-                      decoration: BoxDecoration(color: context.cardColor),
-                      title: "Administration",
-                      titleTextStyle: boldTextStyle(size: 14),
-                      leading: Image.asset('images/gazette/icons/ic_Document.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
-                      onTap: () {
-                        finish(context);
-                        Get.to(AdminScreen());
-                      },
-                    )
-                  : Container()),
-          SettingItemWidget(
-            decoration: BoxDecoration(color: context.cardColor),
-            title: "Se déconnecter",
-            titleTextStyle: boldTextStyle(size: 14),
-            leading: Image.asset('images/gazette/icons/ic_Logout.png', height: 22, width: 22, fit: BoxFit.cover, color: AppColorPrimary),
-            onTap: () async {
-              await PocketbaseService.to.logout();
-              finish(context);
-              Get.off(LogInScreen());
-            },
-          ),
-        ]).expand(),
-        Divider(indent: 16, endIndent: 16),
-        SnapHelperWidget<PackageInfo>(
-          future: PackageInfo.fromPlatform(),
-          onSuccess: (data) => Text(data.version, style: boldTextStyle(color: getBodyColor())),
-        ),
-        20.height,
-      ],
+            ),
+          );
+        }),
+      ),
     );
   }
+}
+
+class _SectionLabel extends StatelessWidget {
+  const _SectionLabel(this.label);
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(12, 24, 12, 8),
+        child: Text(label,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                )),
+      );
+}
+
+class _MenuItem extends StatelessWidget {
+  const _MenuItem(
+      {required this.icon,
+      required this.title,
+      required this.subtitle,
+      required this.onTap});
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: ListTile(
+          enabled: onTap != null,
+          onTap: onTap,
+          hoverColor: AppColorPrimary.withValues(alpha: 0.06),
+          focusColor: AppColorPrimary.withValues(alpha: 0.12),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          leading: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: AppColorPrimary.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(12)),
+            child: Icon(icon, color: AppColorPrimary, size: 22),
+          ),
+          title:
+              Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          subtitle: Text(subtitle),
+          trailing: const Icon(Icons.chevron_right, size: 20),
+        ),
+      );
 }
