@@ -1,0 +1,28 @@
+# Site block for the front Caddy (the one with your TLS certificates).
+# The app and the PocketBase API share the same domain: no CORS needed.
+gazette.example.com {
+	encode zstd gzip
+
+	# PocketBase admin dashboard and superuser login are not exposed on Internet.
+	# Use an SSH tunnel instead: ssh -L 8090:127.0.0.1:8090 user@server
+	# then open http://localhost:8090/_/
+	@pbAdmin path /_ /_/* /api/collections/_superusers/*
+	respond @pbAdmin 404
+
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8090
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:8080
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		# File URLs carry an access token: never leak them through the Referer header
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+}

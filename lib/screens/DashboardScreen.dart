@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:gazette/screens/fragments/AddPostFragment.dart';
+import 'package:gazette/screens/fragments/CalendarFragment.dart';
 import 'package:gazette/screens/fragments/HomeFragment.dart';
 import 'package:gazette/screens/fragments/NewspaperFragment.dart';
-import 'package:gazette/screens/fragments/SearchFragment.dart';
+import 'package:gazette/utils/Colors.dart';
 import 'package:gazette/utils/Common.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -13,68 +13,52 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int selectedIndex = 0;
-
-  Widget getFragment() {
-    if (selectedIndex == 0) {
-      return HomeFragment();
-    } else if (selectedIndex == 1) {
-      return SearchFragment();
-    } else if (selectedIndex == 2) {
-      return AddPostFragment();
-    } else if (selectedIndex == 3) {
-      return NewspaperFragment();
-    } else if (selectedIndex == 4) {}
-    return SearchFragment();
-  }
-
-  @override
-  void initState() {
-    setStatusBarColor(Colors.transparent);
-    super.initState();
-  }
+  // Create tabs on first visit and retain their form and scroll state.
+  final List<Widget?> _tabs = [null, null, null, null];
 
   @override
   Widget build(BuildContext context) {
+    _tabs[selectedIndex] ??= switch (selectedIndex) {
+      0 => HomeFragment(),
+      1 => AddPostFragment(),
+      2 => NewspaperFragment(),
+      _ => CalendarFragment(),
+    };
     return Scaffold(
       backgroundColor: getScaffoldColor(),
-      body: getFragment(),
+      body: IndexedStack(
+        index: selectedIndex,
+        children: _tabs.map((tab) => tab ?? const SizedBox.shrink()).toList(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        items: [
+        selectedItemColor: AppColorPrimary,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        currentIndex: selectedIndex,
+        onTap: (index) => setState(() => selectedIndex = index),
+        items: const [
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Home.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
-            label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_HomeSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Accueil',
           ),
           BottomNavigationBarItem(
-            icon:
-                Image.asset('images/gazette/icons/ic_Search.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
-            label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_SearchSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            icon: Icon(Icons.add_circle_outline),
+            activeIcon: Icon(Icons.add_circle),
+            label: 'Publier',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Plus.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor).paddingTop(12),
-            label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_PlusSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            icon: Icon(Icons.newspaper_outlined),
+            activeIcon: Icon(Icons.newspaper),
+            label: 'Gazettes',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Newspaper.png', height: 24, width: 24, fit: BoxFit.cover, color: context.iconColor)
-                .paddingTop(12),
-            label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_NewspaperSelected.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('images/gazette/icons/ic_Calendar.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
-            label: '',
-            activeIcon: Image.asset('images/gazette/icons/ic_CalendarSelected2.png', height: 24, width: 24, fit: BoxFit.cover).paddingTop(12),
+            icon: Icon(Icons.calendar_month_outlined),
+            activeIcon: Icon(Icons.calendar_month),
+            label: 'Calendrier',
           ),
         ],
-        onTap: (val) {
-          selectedIndex = val;
-          setState(() {});
-        },
-        currentIndex: selectedIndex,
       ),
     );
   }
